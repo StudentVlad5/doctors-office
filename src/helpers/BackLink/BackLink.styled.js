@@ -14,7 +14,7 @@ const GoBack = styled(Link)`
   font-weight: 700;
   font-size: 12px;
   line-height: 1.33;
-  color: ${props => props.theme.white_text};
+  color: ${theme.white};
   text-decoration: none;
   text-transform: uppercase;
 
@@ -23,7 +23,7 @@ const GoBack = styled(Link)`
 
   &:hover,
   &:focus {
-    color: ${props => props.theme.grey};
+    color: ${theme.grey};
   }
 `;
 
