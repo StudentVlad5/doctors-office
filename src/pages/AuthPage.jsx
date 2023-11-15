@@ -1,10 +1,7 @@
-import { SEO } from 'utils/SEO';
-
 const AuthPage = () => {
   return (
     <>
-      <SEO title="Auth" description="Verification" />
-      <h1>Verification</h1>
+           <h1>Verification</h1>
     </>
   );
 };

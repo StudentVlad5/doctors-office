@@ -1,10 +1,14 @@
-import React from 'react';
-import { HeaderContainer, Link, Headline } from './Header.styled';
+import {
+  HeaderContainer,
+  Link,
+  Headline,
+  HeaderSection,
+} from './Header.styled';
 import logo from 'images/logo.png';
 
 export const Header = () => {
   return (
-    <Header>
+    <HeaderSection>
       <HeaderContainer>
         <Link to="/">
           <img
@@ -19,6 +23,6 @@ export const Header = () => {
           Алгоритм оказания помощи при <span>инсульте в остром периоде</span>
         </Headline>
       </HeaderContainer>
-    </Header>
+    </HeaderSection>
   );
 };

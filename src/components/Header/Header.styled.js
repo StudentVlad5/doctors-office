@@ -1,10 +1,10 @@
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import { theme } from 'components/baseStyles/Variables.styled';
 import { Container } from 'components/baseStyles/CommonStyle.styled';
-import { NavLink } from 'react-router-dom';
 
-const Header = styled.header`
-  width: 100%;
+const HeaderSection = styled.header`
+  width: 100vw;
   background: ${theme.colors.headerBlue};
 `;
 
@@ -28,4 +28,4 @@ const Headline = styled.p`
   }
 `;
 
-export { Header, HeaderContainer, Link, Headline };
+export { HeaderSection, HeaderContainer, Link, Headline };
