@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/doctors-office/static/css/main.cd2e038f.css",
-    "main.js": "/doctors-office/static/js/main.1768f495.js",
+    "main.js": "/doctors-office/static/js/main.2a558f2d.js",
     "index.html": "/doctors-office/index.html",
     "main.cd2e038f.css.map": "/doctors-office/static/css/main.cd2e038f.css.map",
-    "main.1768f495.js.map": "/doctors-office/static/js/main.1768f495.js.map"
+    "main.2a558f2d.js.map": "/doctors-office/static/js/main.2a558f2d.js.map"
   },
   "entrypoints": [
     "static/css/main.cd2e038f.css",
-    "static/js/main.1768f495.js"
+    "static/js/main.2a558f2d.js"
   ]
 }
