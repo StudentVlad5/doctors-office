@@ -20,4 +20,4 @@ if (!storedToken) {
   setTemporaryToken(temporaryToken);
 }
 
-const temporaryToken = getTemporaryToken();
+// const temporaryToken = getTemporaryToken();
