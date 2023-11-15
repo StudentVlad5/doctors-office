@@ -1,7 +1,6 @@
-import "modern-normalize";
-import { createGlobalStyle } from "styled-components";
-import { theme } from "./Variables.styled";
-
+import 'modern-normalize';
+import { createGlobalStyle } from 'styled-components';
+import { theme } from './Variables.styled';
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -10,12 +9,11 @@ export const GlobalStyle = createGlobalStyle`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Roboto', 'Poppins',
-    'Manrope', 'Oswald', 'Montserrat', 'Bungee', 'Open Sans', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
  
-  background-color: ${theme.colors.white};
+  background-color: ${theme.colors.grey};
   }
 
   code {
@@ -51,4 +49,4 @@ img {
   display:block;
   max-width: 100%;
   height: auto;
-}`
+}`;
