@@ -1,22 +1,41 @@
+import { lazy } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { SharedLayout } from './SharedLayout/SharedLayout';
 import { RestrictedRoute } from 'routes/RestrictedRoute';
 import { PrivateRoute } from 'routes/PrivateRoute';
 
+const AuthPage = lazy(() => import('pages/AuthPage'));
+const ActivePage = lazy(() => import('pages/ActivePage'));
+const DetailsPage = lazy(() => import('pages/DetailsPage'));
+const ArchivePage = lazy(() => import('pages/ArchivePage'));
 
 export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
-        <Route index element={
-          <RestrictedRoute redirectTo='/check_list_active' component={<h1>Verification</h1>} />}/>
-        <Route path="check_list_active" element={
-        <PrivateRoute redirectTo="/" component={<h1>Активные чек-листы</h1>}/>
-        }/>
-        <Route path="check_list_active/:id" element={<PrivateRoute redirectTo="/" component={<h1>Детализация чек-листа</h1>} />}/>
-        <Route path="check_list_closed" element={<PrivateRoute redirectTo="/" component={<h1>Архів чек-листов</h1>} />}/>
-        <Route path="check_list_closed/:id" element={<PrivateRoute redirectTo="/" component={<h1>Деталізація архівного чек-листа</h1>}/>}/>
-        <Route path="*" element={<Navigate to='/'/>} />
+        <Route
+          index
+          element={
+            <RestrictedRoute redirectTo="/checklist" component={<AuthPage />} />
+          }
+        />
+        <Route
+          path="checklist"
+          element={<PrivateRoute redirectTo="/" component={<ActivePage />} />}
+        />
+        <Route
+          path="checklist/:id"
+          element={<PrivateRoute redirectTo="/" component={<DetailsPage />} />}
+        />
+        <Route
+          path="archive"
+          element={<PrivateRoute redirectTo="/" component={<ArchivePage />} />}
+        />
+        <Route
+          path="archive/:id"
+          element={<PrivateRoute redirectTo="/" component={<DetailsPage />} />}
+        />
+        <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Routes>
   );
