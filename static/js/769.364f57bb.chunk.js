@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkdoctors_office=self.webpackChunkdoctors_office||[]).push([[769],{769:function(e,c,n){n.r(c);var r=n(184);c.default=function(){return(0,r.jsx)(r.Fragment,{children:(0,r.jsx)("h1",{children:"\u0414\u0435\u0442\u0430\u043b\u0456\u0437\u0430\u0446\u0456\u044f \u0430\u043a\u0442\u0438\u0432\u043d\u043e\u0433\u043e \u0447\u0435\u043a-\u043b\u0438\u0441\u0442\u0430"})})}}}]);
+//# sourceMappingURL=769.364f57bb.chunk.js.map

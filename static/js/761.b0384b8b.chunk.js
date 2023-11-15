@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkdoctors_office=self.webpackChunkdoctors_office||[]).push([[761],{761:function(e,c,n){n.r(c);var r=n(184);c.default=function(){return(0,r.jsx)(r.Fragment,{children:(0,r.jsx)("h1",{children:"\u0410\u0440\u0445\u0456\u0432 \u0447\u0435\u043a-\u043b\u0438\u0441\u0442\u043e\u0432"})})}}}]);
+//# sourceMappingURL=761.b0384b8b.chunk.js.map
