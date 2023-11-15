@@ -9,6 +9,7 @@ export const GlobalStyle = createGlobalStyle`
   display: flex;
   justify-content: center;
   align-items: center;
+  
   font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

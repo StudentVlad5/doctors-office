@@ -1,19 +1,24 @@
+import { lazy } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { SharedLayout } from './SharedLayout/SharedLayout';
 
+const AuthPage = lazy(() => import('pages/AuthPage'));
+const ActivePage = lazy(() => import('pages/ActivePage'));
+const DetailsPage = lazy(() => import('pages/DetailsPage'));
+const ArchivePage = lazy(() => import('pages/ArchivePage'));
 
 export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
-        <Route index element={<h1>Verification</h1>} />
+        <Route index element={<AuthPage />} />
 
-        <Route path="check_list_active" element={<h1>Активні чек-листи</h1>} />
-        <Route path="check_list_active/:id" element={<h1>Деталізація активного чек-листа</h1>} />
-        <Route path="check_list_closed" element={<h1>Архів чек-листів</h1>} />
-        <Route path="check_list_closed/:id" element={<h1>Деталізація архівного чек-листа</h1>} />
+        <Route path="checklist" element={<ActivePage />} />
+        <Route path="checklist/:id" element={<DetailsPage />} />
+        <Route path="archive" element={<ArchivePage />} />
+        <Route path="archive/:id" element={<DetailsPage />} />
 
-        <Route path="*" element={<h1>Verification</h1>} />
+        <Route path="*" element={<AuthPage />} />
       </Route>
     </Routes>
   );

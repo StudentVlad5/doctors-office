@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 const Header = styled.header`
   width: 100%;
-  background: ${theme.colors.darkBlue};
+  background: ${theme.colors.headerBlue};
 `;
 
 const HeaderContainer = styled(Container)`
