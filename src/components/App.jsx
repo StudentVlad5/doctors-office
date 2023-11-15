@@ -1,6 +1,8 @@
 import { lazy } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { SharedLayout } from './SharedLayout/SharedLayout';
+import { RestrictedRoute } from 'routes/RestrictedRoute';
+import { PrivateRoute } from 'routes/PrivateRoute';
 
 const AuthPage = lazy(() => import('pages/AuthPage'));
 const ActivePage = lazy(() => import('pages/ActivePage'));
@@ -11,14 +13,29 @@ export const App = () => {
   return (
     <Routes>
       <Route path="/" element={<SharedLayout />}>
-        <Route index element={<AuthPage />} />
-
-        <Route path="checklist" element={<ActivePage />} />
-        <Route path="checklist/:id" element={<DetailsPage />} />
-        <Route path="archive" element={<ArchivePage />} />
-        <Route path="archive/:id" element={<DetailsPage />} />
-
-        <Route path="*" element={<AuthPage />} />
+        <Route
+          index
+          element={
+            <RestrictedRoute redirectTo="/checklist" component={<AuthPage />} />
+          }
+        />
+        <Route
+          path="checklist"
+          element={<PrivateRoute redirectTo="/" component={<ActivePage />} />}
+        />
+        <Route
+          path="checklist/:id"
+          element={<PrivateRoute redirectTo="/" component={<DetailsPage />} />}
+        />
+        <Route
+          path="archive"
+          element={<PrivateRoute redirectTo="/" component={<ArchivePage />} />}
+        />
+        <Route
+          path="archive/:id"
+          element={<PrivateRoute redirectTo="/" component={<DetailsPage />} />}
+        />
+        <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Routes>
   );
