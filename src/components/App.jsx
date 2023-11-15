@@ -16,7 +16,7 @@ export const App = () => {
         <Route
           index
           element={
-            <RestrictedRoute redirectTo="/checklist" component={<AuthPage />} />
+            <RestrictedRoute redirectTo="checklist" component={<AuthPage />} />
           }
         />
         <Route

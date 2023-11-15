@@ -1,9 +1,11 @@
+import { theme } from 'components/baseStyles/Variables.styled';
 import { Loading } from 'notiflix/build/notiflix-loading-aio';
+
 const onLoading = () => {
   return Loading.circle('Loading...', {
     backgroundColor: 'transparent',
     svgSize: '160px',
-    svgColor: `${props => props.theme.white_fon}`,
+    svgColor: `${theme.colors.white}`,
     messageFontSize: '20px',
   });
 };
