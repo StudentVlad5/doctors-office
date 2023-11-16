@@ -1,7 +1,6 @@
-import styled from "styled-components";
-// import { theme } from "components/baseStyles/Variables.styled";
-import { Container } from "components/baseStyles/CommonStyle.styled";
-import { theme } from "components/baseStyles/Variables.styled";
+import styled from 'styled-components';
+import { Container } from 'components/baseStyles/CommonStyle.styled';
+import { theme } from 'components/baseStyles/Variables.styled';
 
 const ActiveListItemsSection = styled.section`
   display: flex;
@@ -13,7 +12,7 @@ const ActiveListItemsContainer = styled(Container)`
   justify-content: start;
   align-items: start;
   width: 100%;
-  min-height: 100vh;
+  /* min-height: 100vh; */
   padding: 10px 23px;
 `;
 const ControlContainer = styled.div`
@@ -21,10 +20,8 @@ const ControlContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
-  margin-top: 60px;
-  @media screen and (min-width: ${theme.breakpoints.tablet}) {
-    margin-top: 108px;
-  }
+  margin-top: 20px;
+
   @media screen and (min-width: ${theme.breakpoints.desktop}) {
     flex-direction: row;
     justify-content: end;
@@ -178,7 +175,8 @@ const ItemCircle = styled.div`
   height: 41px;
   border-radius: 50%;
   border: 1px solid ${theme.colors.black};
-  background-color: ${(props) => props.$color};
+  background-color: ${props => props.$color};
+
   &:nth-child(n)::after {
     position: absolute;
     display: block;
@@ -195,7 +193,7 @@ const ItemCircle = styled.div`
     }
   }
   &:nth-child(1)::after {
-    content: "Данные по пациенту";
+    content: 'Данные по пациенту';
     left: -250%;
     top: 0;
     @media screen and (min-width: ${theme.breakpoints.tablet}) {
@@ -204,7 +202,7 @@ const ItemCircle = styled.div`
     }
   }
   &:nth-child(3)::after {
-    content: "Начато лечение";
+    content: 'Начато лечение';
     left: 150%;
     top: 0;
     @media screen and (min-width: ${theme.breakpoints.tablet}) {
@@ -213,7 +211,8 @@ const ItemCircle = styled.div`
     }
   }
   &:nth-child(5)::after {
-    content: "Физиологические показатели";
+    content: 'Физиологические показатели';
+
     left: -250%;
     top: 0;
     @media screen and (min-width: ${theme.breakpoints.tablet}) {
@@ -222,7 +221,7 @@ const ItemCircle = styled.div`
     }
   }
   &:nth-child(7)::after {
-    content: "Сбор анамнеза 1/2";
+    content: 'Сбор анамнеза 1/2';
     left: 150%;
     top: 0;
     @media screen and (min-width: ${theme.breakpoints.tablet}) {
@@ -231,7 +230,7 @@ const ItemCircle = styled.div`
     }
   }
   &:nth-child(9)::after {
-    content: "Сбор анамнеза 2/2";
+    content: 'Сбор анамнеза 2/2';
     left: -250%;
     top: 0;
     @media screen and (min-width: ${theme.breakpoints.tablet}) {
@@ -244,7 +243,8 @@ const ItemLine = styled.div`
   display: flex;
   width: 10px;
   height: 20px;
-  background-color: ${(props) => props.$color};
+  background-color: ${props => props.$color};
+
   @media screen and (min-width: ${theme.breakpoints.tablet}) {
     width: 70px;
     height: 10px;
