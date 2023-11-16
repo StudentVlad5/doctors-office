@@ -1,9 +1,9 @@
-import { AvtorizationForm } from "components/AvtorizationForm/AvtorizationForm";
+import { AuthorizationForm } from "components/AuthorizationForm/AuthorizationForm";
 
 
 const AuthPage = () => {
   return (
-<AvtorizationForm/>
+<AuthorizationForm/>
   );
 };
 

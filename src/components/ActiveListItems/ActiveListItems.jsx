@@ -31,7 +31,7 @@ import { theme } from 'components/baseStyles/Variables.styled';
                             <ButtonToArhiveList type="button" aria-label="Перейти к списку архива чек-листов">Архив чек-листов</ButtonToArhiveList>
                         </Link>
                         <Link style={{textDecoration:"none"}} to="/">
-                        <ButtonLogOut type="button" aria-label="Выход" onClick={()=>removeItem("avtorization_id")}>Выход</ButtonLogOut>
+                        <ButtonLogOut type="button" aria-label="Выход" onClick={()=>removeItem("authorization_id")}>Выход</ButtonLogOut>
                         </Link>
                     </BtnContainer>
                 </ControlPanelContainer>
