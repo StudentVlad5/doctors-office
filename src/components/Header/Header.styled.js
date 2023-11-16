@@ -24,7 +24,6 @@ const Link = styled(NavLink)``;
 
 const Headline = styled.p`
   color: ${theme.colors.white};
-
   font-size: 18px;
   font-style: normal;
   font-weight: 400;

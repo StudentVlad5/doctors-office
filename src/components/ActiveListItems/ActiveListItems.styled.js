@@ -176,6 +176,7 @@ const ItemCircle = styled.div`
   border-radius: 50%;
   border: 1px solid ${theme.colors.black};
   background-color: ${props => props.$color};
+
   &:nth-child(n)::after {
     position: absolute;
     display: block;
@@ -211,6 +212,7 @@ const ItemCircle = styled.div`
   }
   &:nth-child(5)::after {
     content: 'Физиологические показатели';
+
     left: -250%;
     top: 0;
     @media screen and (min-width: ${theme.breakpoints.tablet}) {
@@ -242,6 +244,7 @@ const ItemLine = styled.div`
   width: 10px;
   height: 20px;
   background-color: ${props => props.$color};
+
   @media screen and (min-width: ${theme.breakpoints.tablet}) {
     width: 70px;
     height: 10px;
