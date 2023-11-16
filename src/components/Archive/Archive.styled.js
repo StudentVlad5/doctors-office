@@ -1,5 +1,11 @@
 import styled from 'styled-components';
 import { theme } from 'components/baseStyles/Variables.styled';
+import { Container } from 'components/baseStyles/CommonStyle.styled';
+
+const ArchiveContainer = styled(Container)`
+  position: relative;
+  min-height: calc(100vh - 100px);
+`;
 
 const Title = styled.h1`
   color: ${theme.colors.black};
@@ -35,4 +41,4 @@ const Subtitle = styled.h2`
   }
 `;
 
-export { Title, Subtitle };
+export { ArchiveContainer, Title, Subtitle };

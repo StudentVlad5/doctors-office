@@ -3,6 +3,7 @@ import {
   Link,
   Headline,
   HeaderSection,
+  HeadLogo
 } from './Header.styled';
 import logo from 'images/logo.png';
 
@@ -11,10 +12,8 @@ export const Header = () => {
     <HeaderSection>
       <HeaderContainer>
         <Link to="/">
-          <img
+          <HeadLogo
             src={logo}
-            width="115px"
-            height="49px"
             aria-label="Logo"
             loading="lazy"
           />

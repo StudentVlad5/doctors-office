@@ -31,10 +31,6 @@ export const App = () => {
           path="archive"
           element={<PrivateRoute redirectTo="/" component={<ArchivePage />} />}
         />
-        <Route
-          path="archive/:id"
-          element={<PrivateRoute redirectTo="/" component={<DetailsPage />} />}
-        />
         <Route path="*" element={<Navigate to="/" />} />
       </Route>
     </Routes>

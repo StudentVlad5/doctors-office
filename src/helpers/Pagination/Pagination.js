@@ -1,5 +1,10 @@
 import Pagination from 'rc-pagination';
-import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
+import {
+  // MdKeyboardDoubleArrowLeft,
+  // MdKeyboardDoubleArrowRight,
+  MdNavigateBefore,
+  MdNavigateNext,
+} from 'react-icons/md';
 import PropTypes from 'prop-types';
 
 export const PaginationBlock = ({

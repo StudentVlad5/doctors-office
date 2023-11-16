@@ -44,10 +44,10 @@ img {
 
 // ----pagination----//
 .table-filter-info {
-  display:inline-block;
-  width:100%;
-  margin: auto auto 45px auto;
-  overflow: auto;
+position:absolute;
+bottom:45px;
+left:50%;
+transform: translateX(-50%);
 }
 
 .rc-pagination-total-text{

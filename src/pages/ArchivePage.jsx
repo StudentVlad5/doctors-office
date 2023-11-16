@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
-import { Container } from 'components/baseStyles/CommonStyle.styled';
-
 import { ArchiveTable } from 'components/Archive/ArchiveTable';
-import { Subtitle, Title } from 'components/Archive/Arhive.styled';
+import {
+  ArchiveContainer,
+  Subtitle,
+  Title,
+} from 'components/Archive/Archive.styled';
 
 const ArchivePage = () => {
   useEffect(() => {
@@ -10,11 +12,11 @@ const ArchivePage = () => {
   }, []);
 
   return (
-    <Container>
+    <ArchiveContainer>
       <Title>Архив чек-листов</Title>
       <Subtitle>Фильтры и поиск</Subtitle>
       <ArchiveTable />
-    </Container>
+    </ArchiveContainer>
   );
 };
 

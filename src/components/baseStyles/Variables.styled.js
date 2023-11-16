@@ -18,5 +18,6 @@ export const theme = {
     grey: '#EDEDED',
     darkGrey: '#D9D9D9',
     accentCoral: '#FF9898',
+    border: "#989898"
   },
 };

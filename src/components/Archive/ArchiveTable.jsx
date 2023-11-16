@@ -17,6 +17,7 @@ import {
   TableRow,
 } from './ArchiveTable.styled';
 
+import { MdFilterList } from 'react-icons/md';
 import { ReactComponent as Close } from 'images/svg/close.svg';
 import { ReactComponent as Excel } from 'images/svg/excel.svg';
 import { ReactComponent as Filter } from 'images/svg/filter.svg';
@@ -25,6 +26,7 @@ import archive from 'data/archive.json';
 
 export const ArchiveTable = () => {
   const [checklists, setChecklists] = useState(archive);
+  console.log('ArchiveTable ~ checklists:', checklists);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -46,6 +48,7 @@ export const ArchiveTable = () => {
   //   }, []);
 
   const [filterChecklists, setFilterChecklists] = useState(archive);
+  console.log('ArchiveTable ~ filterChecklists:', filterChecklists);
   const [filterChecklist, setFilterChecklist] = useState('');
   const [filterBrigadeSMP, setFilterBrigadeSMP] = useState('');
   const [filterPatientINN, setFilterPatientINN] = useState('');
@@ -97,21 +100,30 @@ export const ArchiveTable = () => {
     const peremOfFilter = [];
     checklists.map(item => {
       if (
-        item.Checklist.toString().toLowerCase().includes(filterChecklist) &&
-        item.BrigadeSMP.toString().toLowerCase().includes(filterBrigadeSMP) &&
-        item.PatientINN.toString().toLowerCase().includes(filterPatientINN) &&
-        item.PatientFIO.toString().toLowerCase().includes(filterPatientFIO) &&
-        item.Hospital.toString().toLowerCase().includes(filterHospital) &&
-        item.EmployeeID.toString().includes(filterEmployeeID) &&
-        item.StatusChecklist.join(',')
+        item.numberChecklist
+          .toString()
+          .toLowerCase()
+          .includes(filterChecklist) &&
+        item.dateChecklist.toString().toLowerCase().includes(filterChecklist) &&
+        item.brigadeSMP.toString().toLowerCase().includes(filterBrigadeSMP) &&
+        item.patientINN.toString().toLowerCase().includes(filterPatientINN) &&
+        item.patientFIO.toString().toLowerCase().includes(filterPatientFIO) &&
+        item.hospital.toString().toLowerCase().includes(filterHospital) &&
+        item.employeeID.toString().includes(filterEmployeeID) &&
+        item.statusChecklist
           .toString()
           .toLowerCase()
           .includes(filterStatusChecklist) &&
-        item.DateStartChecklist.join(',')
+        item.dateStartChecklist
           .toString()
           .toLowerCase()
           .includes(filterDateStartChecklist) &&
-        item.DurationOfHospitalization.toString()
+        item.timeStartChecklist
+          .toString()
+          .toLowerCase()
+          .includes(filterDateStartChecklist) &&
+        item.durationOfHospitalization
+          .toString()
           .toLowerCase()
           .includes(filterDurationOfHospitalization)
       ) {
@@ -165,7 +177,8 @@ export const ArchiveTable = () => {
   //     const peremOfFilter = [];
   //     checklists.map(item => {
   //       if (
-  //         item.checklist?.toString().toLowerCase().includes(filterCl) &&
+  //         item.numberChecklist?.toString().toLowerCase().includes(filterCl) &&
+  //         item.dateChecklist?.toString().toLowerCase().includes(filterCl) &&
   //         item.brigadeSMP?.toString().toLowerCase().includes(filterBr) &&
   //         item.patientINN?.toString().toLowerCase().includes(filterPInn) &&
   //         item.patientFIO?.toString().toLowerCase().includes(filterPFio) &&
@@ -173,7 +186,8 @@ export const ArchiveTable = () => {
   //         item.employeeID?.toString().toLowerCase().includes(filterEm) &&
   //         item.statusChecklist?.toString().toLowerCase().includes(filterSC) &&
   //         item.dateStartChecklist?.toString().toLowerCase().includes(filterSDC) &&
-  //         item.durationOfHospitalization
+  //         item.timeStartChecklist?.toString().toLowerCase().includes(filterSDC) &&
+  //         item.durationOfHospitalization;
   //           ?.toString()
   //           .toLowerCase()
   //           .includes(filterDu)
@@ -210,10 +224,6 @@ export const ArchiveTable = () => {
     document
       .querySelector(`input[name='${e.currentTarget.id}']`)
       .classList.toggle('active');
-    console.log(
-      'e.currentTarget.id:',
-      document.querySelector(`input[name='${e.currentTarget.id}']`).classList
-    );
   };
 
   // table pagination
@@ -243,270 +253,259 @@ export const ArchiveTable = () => {
       </BtnWrapper>
       {isLoading ? onLoading() : onLoaded()}
       {error && onFetchError('Whoops, something went wrong')}
-      {checklists.length > 0 && !error && (
-        <Table>
-          <TableFilter>
-            <TableRow>
-              <TableHead>
-                <span>Чек-лист</span>
-                <input
-                  type="text"
-                  name="filterChecklist"
-                  placeholder=""
-                  value={filterChecklist}
-                  onClick={e => startFilterChecklists(e)}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterChecklist"
-                  onClick={e => {
-                    toggleFilterItem(e);
-                  }}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-              <TableHead>
-                <span>
-                  № Бригады <br />
-                  СМП
-                </span>
-                <input
-                  type="text"
-                  name="filterBrigadeSMP"
-                  placeholder=""
-                  value={filterBrigadeSMP}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterBrigadeSMP"
-                  onClick={e => startFilterChecklists(e)}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-              <TableHead>
-                <span>
-                  ИИН <br />
-                  пациента
-                </span>
-                <input
-                  type="number"
-                  name="filterPatientINN"
-                  placeholder=""
-                  value={filterPatientINN}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterPatientINN"
-                  onClick={e => startFilterChecklists(e)}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-              <TableHead>
-                <span>
-                  ФИО <br />
-                  пациента
-                </span>
-                <input
-                  type="text"
-                  name="filterPatientFIO"
-                  placeholder=""
-                  value={filterPatientFIO}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterPatientFIO"
-                  onClick={e => startFilterChecklists(e)}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-              <TableHead>
-                <span>
-                  Поликлиника <br />
-                  прикрепления
-                </span>
-                <input
-                  type="text"
-                  name="filterHospital"
-                  placeholder=""
-                  value={filterHospital}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterHospital"
-                  onClick={e => startFilterChecklists(e)}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-              <TableHead>
-                <span>
-                  Идентификатор <br />
-                  сотрудника
-                </span>
-                <input
-                  type="number"
-                  name="filterEmployeeID"
-                  placeholder=""
-                  value={filterEmployeeID}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterEmployeeID"
-                  onClick={e => startFilterChecklists(e)}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-              <TableHead>
-                <span>
-                  Статус <br />
-                  чек-листа
-                </span>
-                <input
-                  type="text"
-                  name="filterStatusChecklist"
-                  placeholder=""
-                  value={filterStatusChecklist}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterStatusChecklist"
-                  onClick={e => startFilterChecklists(e)}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-              <TableHead>
-                <span>
-                  Дата и время начала <br />
-                  чек-листа
-                </span>
-                <input
-                  type="text"
-                  name="filterDateStartChecklist"
-                  placeholder=""
-                  value={filterDateStartChecklist}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterDateStartChecklist"
-                  onClick={e => startFilterChecklists(e)}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-              <TableHead>
-                <span>
-                  Время от времени до <br />
-                  госпитализации <br />
-                  (от двери до иглы)
-                </span>
-                <input
-                  type="text"
-                  name="filterDurationOfHospitalization"
-                  placeholder=""
-                  value={filterDurationOfHospitalization}
-                  onKeyDown={e => handleSearchOnEnter(e)}
-                  onChange={e => handleChangeFilter(e)}
-                />
-                <BtnFilter
-                  type="button"
-                  id="filterDurationOfHospitalization"
-                  onClick={e => startFilterChecklists(e)}
-                >
-                  <Filter />
-                </BtnFilter>
-              </TableHead>
-            </TableRow>
-          </TableFilter>
-          <tbody>
-            {/* <TableRow>
-              <TableHead>Чек-лист</TableHead>
-              <TableHead>
+      <Table>
+        <TableFilter>
+          <TableRow>
+            <TableHead>
+              <span>Чек-лист</span>
+              <input
+                type="text"
+                name="filterChecklist"
+                placeholder=""
+                value={filterChecklist}
+                // onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => {
+                  handleChangeFilter(e);
+                  startFilterChecklists(e);
+                }}
+              />
+              <BtnFilter
+                type="button"
+                id="filterChecklist"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
                 № Бригады <br />
                 СМП
-              </TableHead>
-              <TableHead>
+              </span>
+              <input
+                type="text"
+                name="filterBrigadeSMP"
+                placeholder=""
+                value={filterBrigadeSMP}
+                onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterBrigadeSMP"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
                 ИИН <br />
                 пациента
-              </TableHead>
-              <TableHead>
+              </span>
+              <input
+                type="number"
+                name="filterPatientINN"
+                placeholder=""
+                value={filterPatientINN}
+                onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterPatientINN"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
                 ФИО <br />
                 пациента
-              </TableHead>
-              <TableHead>
+              </span>
+              <input
+                type="text"
+                name="filterPatientFIO"
+                placeholder=""
+                value={filterPatientFIO}
+                onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterPatientFIO"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
                 Поликлиника <br />
                 прикрепления
-              </TableHead>
-              <TableHead>
+              </span>
+              <input
+                type="text"
+                name="filterHospital"
+                placeholder=""
+                value={filterHospital}
+                onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterHospital"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
                 Идентификатор <br />
                 сотрудника
-              </TableHead>
-              <TableHead>
+              </span>
+              <input
+                type="number"
+                name="filterEmployeeID"
+                placeholder=""
+                value={filterEmployeeID}
+                onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterEmployeeID"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
                 Статус <br />
                 чек-листа
-              </TableHead>
-              <TableHead>
+              </span>
+              <input
+                type="text"
+                name="filterStatusChecklist"
+                placeholder=""
+                value={filterStatusChecklist}
+                onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterStatusChecklist"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
                 Дата и время начала <br />
                 чек-листа
-              </TableHead>
-              <TableHead>
+              </span>
+              <input
+                type="text"
+                name="filterDateStartChecklist"
+                placeholder=""
+                value={filterDateStartChecklist}
+                onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterDateStartChecklist"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
                 Время от времени до <br />
                 госпитализации <br />
                 (от двери до иглы)
-              </TableHead>
-            </TableRow> */}
-            {filterChecklists.length > 0 &&
-              !error &&
-              filterChecklists
-                .slice((current - 1) * size, current * size)
-                .map(checklist => (
-                  <TableRow key={checklist._id}>
-                    <TableData>
-                      <Link to={`/archive/${checklist._id}`}>
-                        № {checklist.numberChecklist} от{' '}
-                        {new Date(checklist.dateChecklist).toLocaleDateString()}
-                      </Link>
-                    </TableData>
-                    <TableData>№ {checklist.brigadeSMP}</TableData>
-                    <TableData>{checklist.patientINN}</TableData>
-                    <TableData>{checklist.patientFIO}</TableData>
-                    <TableData>{checklist.hospital}</TableData>
-                    <TableData>{checklist.employeeID}</TableData>
-                    <TableData>{checklist.statusChecklist}</TableData>
-                    <TableData>
-                      {new Date(
-                        checklist.dateStartChecklist
-                      ).toLocaleDateString()}
-                      <br />
-                      {checklist.timeStartChecklist}
-                    </TableData>
-                    <TableData>{checklist.durationOfHospitalization}</TableData>
-                  </TableRow>
-                ))}
-          </tbody>
-        </Table>
-      )}
+              </span>
+              <input
+                type="text"
+                name="filterDurationOfHospitalization"
+                placeholder=""
+                value={filterDurationOfHospitalization}
+                onSubmit={e => startFilterChecklists(e)}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterDurationOfHospitalization"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <Filter />
+              </BtnFilter>
+            </TableHead>
+          </TableRow>
+        </TableFilter>
+        <tbody>
+          {filterChecklists.length > 0 &&
+            !error &&
+            filterChecklists
+              .slice((current - 1) * size, current * size)
+              .map(checklist => (
+                <TableRow key={checklist._id}>
+                  <TableData>
+                    <Link to={`/checklist/${checklist._id}`}>
+                      № {checklist.numberChecklist} от{' '}
+                      {new Date(checklist.dateChecklist).toLocaleDateString()}
+                    </Link>
+                  </TableData>
+                  <TableData>№ {checklist.brigadeSMP}</TableData>
+                  <TableData>{checklist.patientINN}</TableData>
+                  <TableData>{checklist.patientFIO}</TableData>
+                  <TableData>{checklist.hospital}</TableData>
+                  <TableData>{checklist.employeeID}</TableData>
+                  <TableData>{checklist.statusChecklist}</TableData>
+                  <TableData>
+                    {new Date(
+                      checklist.dateStartChecklist
+                    ).toLocaleDateString()}
+                    <br />
+                    {checklist.timeStartChecklist}
+                  </TableData>
+                  <TableData>{checklist.durationOfHospitalization}</TableData>
+                </TableRow>
+              ))}
+        </tbody>
+      </Table>
       <PaginationBlock
         items={filterChecklists}
         size={size}

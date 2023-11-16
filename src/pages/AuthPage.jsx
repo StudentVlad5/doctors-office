@@ -1,8 +1,9 @@
+import { AvtorizationForm } from "components/AvtorizationForm/AvtorizationForm";
+
+
 const AuthPage = () => {
   return (
-    <>
-           <h1>Verification</h1>
-    </>
+<AvtorizationForm/>
   );
 };
 

@@ -2,24 +2,16 @@ import styled from 'styled-components';
 import { theme } from 'components/baseStyles/Variables.styled';
 import { NavLink } from 'react-router-dom';
 
-const AdminContainer = styled.div`
-  position: relative;
-  padding: 20px;
-  overflow-x: scroll;
-`;
-
-const Heading = styled.div`
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 10px;
-`;
-
 const Table = styled.table`
   width: 100%;
   color: ${theme.colors.black};
-  /* table-layout: fixed; */
+  table-layout: fixed;
   border-collapse: collapse;
-  margin-bottom: auto;
+  margin-bottom: 45px;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    table-layout: auto;
+  }
 `;
 
 const TableFilter = styled.thead`
@@ -273,8 +265,6 @@ const Link = styled(NavLink)`
 `;
 
 export {
-  AdminContainer,
-  Heading,
   Table,
   TableFilter,
   TableRow,
