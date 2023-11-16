@@ -1,9 +1,9 @@
+const { ActiveListItems } = require("components/ActiveListItems/ActiveListItems")
+
 const ActivePage = () => {
   return (
-    <>
-      <h1>Активні чек-лісти</h1>
-    </>
-  );
+      <ActiveListItems/>
+      );
 };
 
 export default ActivePage;

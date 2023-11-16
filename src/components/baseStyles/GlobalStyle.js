@@ -1,6 +1,6 @@
-import 'modern-normalize';
-import { createGlobalStyle } from 'styled-components';
-import { theme } from './Variables.styled';
+import "modern-normalize";
+import { createGlobalStyle } from "styled-components";
+import { theme } from "./Variables.styled";
 
 export const GlobalStyle = createGlobalStyle`
   body {
@@ -17,21 +17,20 @@ export const GlobalStyle = createGlobalStyle`
   background-color: ${theme.colors.grey};
   }
 
-  code {
+  /* code {
   font-family: source-code-pro, 'Menlo', 'Monaco', 'Consolas', 'Courier New',
     monospace;
-  }
+  } */
   
   main {
     width: 100%;
     min-height: calc(100vh - 50px);
   }
-  #canvas_mouse{
-    position: fixed;
-    top:0;
-    left:0;
-    height: 100vh;
-    width: 100vw;
+  #root{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
   }
 
 //-----reset-----//
@@ -50,4 +49,5 @@ img {
   display:block;
   max-width: 100%;
   height: auto;
-}`;
+}
+`;
