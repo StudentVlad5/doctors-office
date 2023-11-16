@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { App } from "components/App";
 import { GlobalStyle } from "components/baseStyles/GlobalStyle";
 
+
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <BrowserRouter basename="doctors-office">
