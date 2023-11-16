@@ -2,12 +2,12 @@ import styled from "styled-components";
 import { theme } from "components/baseStyles/Variables.styled";
 import { Container } from "components/baseStyles/CommonStyle.styled";
 
-const AvtorizationSection = styled.section`
+const AuthorizationSection = styled.section`
   display: flex;
   width: 100%;
 `;
 
-const AvtorizationContainer = styled(Container)`
+const AuthorizationContainer = styled(Container)`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -15,7 +15,7 @@ const AvtorizationContainer = styled(Container)`
   min-height: 100vh;
   padding: 10px;
 `;
-const AvtorizationFormItem = styled.form`
+const AuthorizationFormItem = styled.form`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -92,9 +92,9 @@ const ButtonSubmit = styled.button`
 `;
 
 export {
-  AvtorizationSection,
-  AvtorizationContainer,
-  AvtorizationFormItem,
+  AuthorizationSection,
+  AuthorizationContainer,
+  AuthorizationFormItem,
   Titleline,
   Input,
   ButtonSubmit,
