@@ -1,21 +1,23 @@
 {
   "files": {
     "main.css": "/doctors-office/static/css/main.cd2e038f.css",
-    "main.js": "/doctors-office/static/js/main.0948492c.js",
+    "main.js": "/doctors-office/static/js/main.1bb38741.js",
     "static/js/923.031593e8.chunk.js": "/doctors-office/static/js/923.031593e8.chunk.js",
     "static/js/849.e1c2032e.chunk.js": "/doctors-office/static/js/849.e1c2032e.chunk.js",
-    "static/js/769.364f57bb.chunk.js": "/doctors-office/static/js/769.364f57bb.chunk.js",
+    "static/js/260.c820833f.chunk.js": "/doctors-office/static/js/260.c820833f.chunk.js",
     "static/js/761.b0384b8b.chunk.js": "/doctors-office/static/js/761.b0384b8b.chunk.js",
+    "static/media/word.svg": "/doctors-office/static/media/word.a2b9035d0c073c07292ae28658655e25.svg",
+    "static/media/copy.svg": "/doctors-office/static/media/copy.27957b9c266a76c4681c376514e660a4.svg",
     "index.html": "/doctors-office/index.html",
     "main.cd2e038f.css.map": "/doctors-office/static/css/main.cd2e038f.css.map",
-    "main.0948492c.js.map": "/doctors-office/static/js/main.0948492c.js.map",
+    "main.1bb38741.js.map": "/doctors-office/static/js/main.1bb38741.js.map",
     "923.031593e8.chunk.js.map": "/doctors-office/static/js/923.031593e8.chunk.js.map",
     "849.e1c2032e.chunk.js.map": "/doctors-office/static/js/849.e1c2032e.chunk.js.map",
-    "769.364f57bb.chunk.js.map": "/doctors-office/static/js/769.364f57bb.chunk.js.map",
+    "260.c820833f.chunk.js.map": "/doctors-office/static/js/260.c820833f.chunk.js.map",
     "761.b0384b8b.chunk.js.map": "/doctors-office/static/js/761.b0384b8b.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cd2e038f.css",
-    "static/js/main.0948492c.js"
+    "static/js/main.1bb38741.js"
   ]
 }
