@@ -17,7 +17,7 @@ import {
   TableRow,
 } from './ArchiveTable.styled';
 
-import { MdFilterList } from 'react-icons/md';
+// import { MdFilterList } from 'react-icons/md';
 import { ReactComponent as Close } from 'images/svg/close.svg';
 import { ReactComponent as Excel } from 'images/svg/excel.svg';
 import { ReactComponent as Filter } from 'images/svg/filter.svg';
@@ -30,22 +30,22 @@ export const ArchiveTable = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  //   useEffect(() => {
-  //     (async function getData() {
-  //       setIsLoading(true);
-  //       try {
-  //         const { data } = await fetchData('/checklists');
-  //         setChecklists(data);
-  //         if (!data) {
-  //           return onFetchError('Whoops, something went wrong');
-  //         }
-  //       } catch (error) {
-  //         setError(error);
-  //       } finally {
-  //         setIsLoading(false);
-  //       }
-  //     })();
-  //   }, []);
+  useEffect(() => {
+    (async function getData() {
+      setIsLoading(true);
+      try {
+        const { data } = await fetchData('/checklists');
+        setChecklists(data);
+        if (!data) {
+          return onFetchError('Whoops, something went wrong');
+        }
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
+  }, []);
 
   const [filterChecklists, setFilterChecklists] = useState(archive);
   console.log('ArchiveTable ~ filterChecklists:', filterChecklists);
@@ -98,6 +98,7 @@ export const ArchiveTable = () => {
   const startFilterChecklists = e => {
     e.preventDefault();
     const peremOfFilter = [];
+    // eslint-disable-next-line array-callback-return
     checklists.map(item => {
       if (
         item.numberChecklist
