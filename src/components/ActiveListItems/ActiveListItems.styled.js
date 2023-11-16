@@ -160,6 +160,7 @@ const ItemBtn = styled.button`
   padding: 10px;
   margin-top: 12px;
   border-radius: 10px;
+  border-color: transparent;
   color: ${theme.colors.black};
   background-color: ${theme.colors.lightGreen};
   cursor: pointer;
