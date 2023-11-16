@@ -12,6 +12,7 @@ export const theme = {
     textBlue: '#2F5597;',
     darkBlue: '#9DC3E6',
     lightBlue: '#D2E3FF',
+    btnBlue: '#BDD7EE',
     darkGreen: '#009B2B',
     lightGreen: '#92D050',
     grey: '#EDEDED',

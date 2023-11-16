@@ -1,5 +1,5 @@
 import Pagination from 'rc-pagination';
-import { MdFastRewind, MdFastForward } from 'react-icons/md';
+import { MdNavigateBefore, MdNavigateNext } from 'react-icons/md';
 import PropTypes from 'prop-types';
 
 export const PaginationBlock = ({
@@ -27,14 +27,14 @@ export const PaginationBlock = ({
     if (type === 'prev') {
       return (
         <button>
-          <MdFastRewind />
+          <MdNavigateBefore />
         </button>
       );
     }
     if (type === 'next') {
       return (
         <button>
-          <MdFastForward />
+          <MdNavigateNext />
         </button>
       );
     }
