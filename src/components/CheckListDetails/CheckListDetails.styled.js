@@ -1,7 +1,7 @@
 import { theme } from 'components/baseStyles/Variables.styled';
 import styled from 'styled-components';
-import { ReactComponent as copyIcon } from 'images/details/copy.svg';
-import { ReactComponent as wordIcon } from 'images/details/word.svg';
+import { ReactComponent as copyIcon } from 'images/svg/copy.svg';
+import { ReactComponent as wordIcon } from 'images/svg/word.svg';
 
 export const CheckListBox = styled.div`
   display: flex;
