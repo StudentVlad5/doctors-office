@@ -6,30 +6,48 @@ import { Container } from 'components/baseStyles/CommonStyle.styled';
 import {
   AdditionalInfoBox,
   AdditionalInfoBtn,
+  AdditionalInfoBtnBox,
   AdditionalInfoDataBox,
   AdditionalInfoDataInput,
   AdditionalInfoDataInput2,
   AdditionalInfoDataLable,
   AdditionalInfoDataLable2,
+  AdditionalInfoDataLableBox,
   AdditionalInfoForm,
   AdditionalInfoFormInput,
   AdditionalInfoFormLable,
   AdditionalInfoFormText,
+  BackContainer,
+  BackLink,
   CheckListBox,
   CheckListBtn,
   CheckListBtnBox,
   CheckListText,
+  CheckListTextBack,
   CopyIcon,
   PatientBox,
   PatientBoxTitle,
   Table,
   Td,
+  TdSmall,
   Tr,
+  TrRed,
+  Triangle,
   WordIcon,
 } from './CheckListDetails.styled';
+import clipboardCopy from 'clipboard-copy';
 
 export const CheckListDetails = () => {
   const [data, setData] = useState([]);
+  const [isCopied, setIsCopied] = useState(false);
+  const [inputData, setInputData] = useState([
+    {
+      clinic: '',
+      hospitalizationTime: '',
+      hospitalizationDate: '',
+    },
+  ]);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -50,29 +68,139 @@ export const CheckListDetails = () => {
     })();
   }, []);
 
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log(inputData);
+
+    setInputData({
+      clinic: '',
+      hospitalizationTime: '',
+      hospitalizationDate: '',
+    });
+  };
+
+  const handleCopy = () => {
+    const patientData = `
+    Личные данные пациента:
+      ФИО пациента: ${data.normal.patientFullName}
+      ИИН пациента: ${data.normal.patientINN}
+      Визуальное описание: ${data.normal.visualDescription}
+
+    Методика F-A-S-T:
+      Провисание на лице: ${
+        data.normal.saggingFace.toString() === 'true' ? 'Да' : '-'
+      }
+      Смещение рук: ${
+        data.normal.handDisplacement.toString() === 'true' ? 'Да' : '-'
+      }
+      Нарушения речи: ${
+        data.normal.speechDisorders.toString() === 'true' ? 'Да' : '-'
+      }
+      Время появления первых симптомов: ${data.normal.firstSymptomsTimeHh}:${
+      data.normal.firstSymptomsTimeMm
+    } 31.08.2023
+
+    Физиологические параметры:
+      Содержание сахара в крови: ${data.normal.bloodSugarLevel} ммоль/л
+      Температура тела: ${data.normal.bodyTemperature} °C
+      Артериальное давление: ${data.normal.arterialPressureD}/${
+      data.normal.arterialPressureS
+    } мм. рт. ст.
+      Масса тела пациента: ${data.normal.patientBodyWeight} кг
+      Возраст пациента: ${data.normal.patientAge} лет
+
+    Анамнез:
+      Внутричерепные кровоизлияния: ${
+        data.normal.intracranialHemorrhages.toString() === 'true' ? 'Да' : '-'
+      }
+      Большие операции или тяжелые травмы за последние 14 суток: ${
+        data.normal.majorSurgeriesOrSevereInjuries.toString() === 'true'
+          ? 'Да'
+          : '-'
+      }
+      Недавние внутричерепные или интраспинальные хирургические вмешательства: ${
+        data.normal.surgicalInterventions.toString() === 'true' ? 'Да' : '-'
+      }
+      Инфаркт миокарда в предшествующие инсульту 3 месяца: ${
+        data.normal.myocardialInfarction.toString() === 'true' ? 'Да' : '-'
+      }
+      Инсульт в предшествующие инсульту 3 месяца: ${
+        data.normal.stroke.toString() === 'true' ? 'Да' : '-'
+      }
+      Проведена пункция артерии в сложной для компрессии области в предшествующие инсульту 7 дней: ${
+        data.normal.arterialPuncture.toString() === 'true' ? 'Да' : '-'
+      }
+      Малые операции или инвазивные вмешательства в последние 10 дней: ${
+        data.normal.smallOperations.toString() === 'true' ? 'Да' : '-'
+      }
+      Сердечно-сосудистые заболевания (подострый бактериальный эндокардит, острый перикардит): ${
+        data.normal.cardiovascularDiseases.toString() === 'true' ? 'Да' : '-'
+      }
+      Острое инфекционное заболевание: ${
+        data.normal.acuteInfectiousDisease.toString() === 'true' ? 'Да' : '-'
+      }
+      Кровоизлияния в ЖКТ и мочевыводящих путях не позднее 21 дня до инсульта: ${
+        data.normal.hemorrhagicStroke.toString() === 'true' ? 'Да' : '-'
+      }
+      Судорожные приступы в дебюте заболевания (имеется связь с острой церебральной ишемией): ${
+        data.normal.convulsions.toString() === 'true' ? 'Да' : '-'
+      }
+      ОНМК ранее: ${data.normal.stroke.toString() === 'true' ? 'Да' : '-'}
+      Гемморагический: ${
+        data.normal.hemorrhages.toString() === 'true' ? 'Да' : '-'
+      }
+      САК: ${data.normal.SACStroke.toString() === 'true' ? 'Да' : '-'}
+      Ишемический инсульт: ${
+        data.normal.ischemicStroke.toString() === 'true' ? 'Да' : '-'
+      }
+
+    Данные по заполнителю:
+      ФИО сотрудника: ${data.normal.medicalStaffFullName}
+      № бригады СМП: №01/04
+      Заполнение чек-листа начато: 15:45 31.08.2023
+      Заполнение чек-листа завершено: 16:05 31.08.2023
+  `;
+    clipboardCopy(patientData);
+
+    navigator.clipboard.writeText(patientData).then(() => {
+      setIsCopied(true);
+      setTimeout(() => setIsCopied(false), 3000);
+    });
+  };
+
   return (
     <Container>
       {isLoading ? onLoading() : onLoaded()}
       {error && onFetchError('Whoops, something went wrong')}
-      {data && data.normal && !error && (
+      {setData && data.normal && !error && (
         <>
           <CheckListBox>
-            <CheckListText>
-              Чек-лист №5 <br />
-              от 31/03/2023
-              <br />
-              Бригада №01/04
-              <br />
-              <span style={{ marginRight: '10px' }}>
-                Предполагаемое время прибытия в больницу
-              </span>
-              {data.normal.deliveryTimeHh}:{data.normal.deliveryTimeMm} <br />
-              Номер телефона: 8 705 999 56 74
-            </CheckListText>
+            <div>
+              <BackContainer>
+                <BackLink to="/checklist">
+                  <Triangle />
+                  <CheckListTextBack>Назад</CheckListTextBack>
+                </BackLink>
+              </BackContainer>
+
+              <CheckListText>
+                Чек-лист №5 <br />
+                от 31/03/2023
+                <br />
+                Бригада №01/04
+                <br />
+                <span style={{ marginRight: '10px' }}>
+                  Предполагаемое время прибытия в больницу
+                </span>
+                {data.normal.deliveryTimeHh}:{data.normal.deliveryTimeMm} <br />
+                Номер телефона: 8 705 999 56 74
+              </CheckListText>
+            </div>
 
             <CheckListBtnBox>
-              <CheckListBtn type="button">
-                <CopyIcon /> Скопировать данные
+              <CheckListBtn type="button" onClick={handleCopy}>
+                <CopyIcon />
+                {isCopied ? 'Скопировано!' : 'Скопировать данные'}
               </CheckListBtn>
               <CheckListBtn type="button">
                 <WordIcon /> Скачать в word
@@ -83,6 +211,7 @@ export const CheckListDetails = () => {
           <PatientBox>
             <PatientBoxTitle>Личные данные пациента</PatientBoxTitle>
             <Table>
+              <tbody>
               <Tr>
                 <Td>ФИО пациента</Td>
                 <Td>{data.normal.patientFullName}</Td>
@@ -95,10 +224,12 @@ export const CheckListDetails = () => {
                 <Td>Визуальное описание - при отсутствии личных данных</Td>
                 <Td>{data.normal.visualDescription}</Td>
               </Tr>
+              </tbody>
             </Table>
 
             <PatientBoxTitle>Методика F-A-S-T</PatientBoxTitle>
             <Table>
+              <tbody>
               <Tr>
                 <Td>Провисание на лице</Td>
                 <Td>
@@ -128,174 +259,189 @@ export const CheckListDetails = () => {
                   {data.normal.firstSymptomsTimeMm} 31.08.2023
                 </Td>
               </Tr>
+              </tbody>
             </Table>
 
             <PatientBoxTitle>Физиологические параметры</PatientBoxTitle>
             <Table>
+              <tbody>
               <Tr>
                 <Td>Содержание сахара в крови</Td>
                 <Td>{data.normal.bloodSugarLevel}</Td>
+                <Td>ммоль/л</Td>
               </Tr>
               <Tr>
                 <Td>Температура тела</Td>
                 <Td>{data.normal.bodyTemperature}</Td>
+                <Td>°C</Td>
               </Tr>
               <Tr>
                 <Td>Артериальное давление</Td>
 
-                {/* ТУТ ДВА arterialPressureS ЯКИЙ ТРЕБА ПОКАЗУВАТИ ??????? !!!!!!!!!!!!!111*/}
-
                 <Td>
-                  {data.normal.arterialPressureD}{' '}
+                  {data.normal.arterialPressureD}/
                   {data.normal.arterialPressureS}
                 </Td>
+                <Td>мм. рт. ст.</Td>
               </Tr>
               <Tr>
                 <Td>Масса тела пациента</Td>
                 <Td>{data.normal.patientBodyWeight}</Td>
+                <Td>кг</Td>
               </Tr>
-              <Tr>
+              <TrRed>
                 <Td>Возраст пациента</Td>
                 <Td>{data.normal.patientAge}</Td>
-              </Tr>
+                <Td>лет</Td>
+              </TrRed>
+              </tbody>
             </Table>
 
             <PatientBoxTitle>Анамнез</PatientBoxTitle>
             <Table>
+              <tbody>
               <Tr>
-                <Td>Внутричерепные кровоизлияния</Td>
-                <Td>
+                <TdSmall>Внутричерепные кровоизлияния</TdSmall>
+                <TdSmall style={{ width: 194 }}>
                   {data.normal.intracranialHemorrhages.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>
+                <TdSmall>
                   Большие операции или тяжелые травмы за последние 14 суток
-                </Td>
-                <Td>
+                </TdSmall>
+                <TdSmall>
                   {data.normal.majorSurgeriesOrSevereInjuries.toString() ===
                   'true'
                     ? 'Да'
                     : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>
+                <TdSmall>
                   Недавние внутричерепные или интраспинальные хирургические
                   вмешательства
-                </Td>
-                <Td>
+                </TdSmall>
+                <TdSmall>
                   {data.normal.surgicalInterventions.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
-              <Tr>
-                <Td>Инфаркт миокарда в предшествующие инсульту 3 месяца</Td>
-                <Td>
+              <TrRed>
+                <TdSmall>
+                  Инфаркт миокарда в предшествующие инсульту 3 месяца
+                </TdSmall>
+                <TdSmall>
                   {data.normal.myocardialInfarction.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
-              </Tr>
+                </TdSmall>
+              </TrRed>
+              <TrRed>
+                <TdSmall>Инсульт в предшествующие инсульту 3 месяца</TdSmall>
+                <TdSmall>
+                  {data.normal.stroke.toString() === 'true' ? 'Да' : '-'}
+                </TdSmall>
+              </TrRed>
               <Tr>
-                <Td>Инсульт в предшествующие инсульту 3 месяца</Td>
-                <Td>{data.normal.stroke.toString() === 'true' ? 'Да' : '-'}</Td>
-              </Tr>
-              <Tr>
-                <Td>
+                <TdSmall>
                   Проведена пункция артерии в сложной для компрессии области в
                   предшествующие инсульту 7 дней.
-                </Td>
-                <Td>
+                </TdSmall>
+                <TdSmall>
                   {data.normal.arterialPuncture.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>
+                <TdSmall>
                   Малые операции или инвазивные вмешательства в последние 10
                   дней
-                </Td>
-                <Td>
+                </TdSmall>
+                <TdSmall>
                   {data.normal.smallOperations.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>
+                <TdSmall>
                   Сердечно-сосудистые заболевания (подострый бактериальный
                   эндокардит, острый перикардит)
-                </Td>
-                <Td>
+                </TdSmall>
+                <TdSmall>
                   {data.normal.cardiovascularDiseases.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>Острое инфекционное заболевание</Td>
-                <Td>
+                <TdSmall>Острое инфекционное заболевание</TdSmall>
+                <TdSmall>
                   {data.normal.acuteInfectiousDisease.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>
+                <TdSmall>
                   Кровоизлияния в ЖКТ и мочевыводящих путях не позднее 21 дня до
                   инсульта
-                </Td>
-                <Td>
+                </TdSmall>
+                <TdSmall>
                   {data.normal.hemorrhagicStroke.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>
+                <TdSmall>
                   Судорожные приступы в дебюте заболевания (имеется связь с
                   острой церебральной ишемией)
-                </Td>
-                <Td>
+                </TdSmall>
+                <TdSmall>
                   {data.normal.convulsions.toString() === 'true' ? 'Да' : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>ОНМК ранее</Td>
+                <TdSmall>ОНМК ранее</TdSmall>
 
                 {/* НЕ ЗНАЙШОВ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
 
-                <Td>{data.normal.stroke.toString() === 'true' ? 'Да' : '-'}</Td>
+                <TdSmall>
+                  {data.normal.stroke.toString() === 'true' ? 'Да' : '-'}
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>Гемморагический</Td>
-                <Td>
+                <TdSmall>Гемморагический</TdSmall>
+                <TdSmall>
                   {data.normal.hemorrhages.toString() === 'true' ? 'Да' : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
               <Tr>
-                <Td>САК</Td>
-                <Td>
+                <TdSmall>САК</TdSmall>
+                <TdSmall>
                   {data.normal.SACStroke.toString() === 'true' ? 'Да' : '-'}
-                </Td>
+                </TdSmall>
               </Tr>
-              <Tr>
-                <Td>Ишемический инсульт</Td>
-                <Td>
+              <TrRed>
+                <TdSmall>Ишемический инсульт</TdSmall>
+                <TdSmall>
                   {data.normal.ischemicStroke.toString() === 'true'
                     ? 'Да'
                     : '-'}
-                </Td>
-              </Tr>
+                </TdSmall>
+              </TrRed>
+              </tbody>
             </Table>
 
             <PatientBoxTitle>Данные по заполнителю</PatientBoxTitle>
             <Table style={{ marginBottom: 65 }}>
+              <tbody>
               <Tr>
                 <Td>ФИО сотрудника</Td>
                 <Td>{data.normal.medicalStaffFullName}</Td>
@@ -319,41 +465,70 @@ export const CheckListDetails = () => {
 
                 <Td>16:05 31.08.2023</Td>
               </Tr>
+              </tbody>
             </Table>
+          </PatientBox>
 
-            <AdditionalInfoBox>
-              <PatientBoxTitle>
-                Дополнительная информация от инсультного центра
-              </PatientBoxTitle>
+          <AdditionalInfoBox>
+            <PatientBoxTitle>
+              Дополнительная информация от инсультного центра
+            </PatientBoxTitle>
 
-              <AdditionalInfoForm>
-                <AdditionalInfoFormLable>
-                  <AdditionalInfoFormText>
-                    Поликлиника прикрепления пациента
-                  </AdditionalInfoFormText>
-                  <AdditionalInfoFormInput type="text" />
-                </AdditionalInfoFormLable>
+            <AdditionalInfoForm>
+              <AdditionalInfoFormLable>
+                <AdditionalInfoFormText>
+                  Поликлиника прикрепления пациента
+                </AdditionalInfoFormText>
+                <AdditionalInfoFormInput
+                  type="text"
+                  value={inputData.clinic}
+                  onChange={e =>
+                    setInputData({ ...inputData, clinic: e.target.value })
+                  }
+                />
+              </AdditionalInfoFormLable>
 
-                <AdditionalInfoDataBox>
-                  <AdditionalInfoFormText>
-                    Дата и время госпитализации
-                  </AdditionalInfoFormText>
+              <AdditionalInfoDataBox>
+                <AdditionalInfoFormText>
+                  Дата и время госпитализации
+                </AdditionalInfoFormText>
 
+                <AdditionalInfoDataLableBox>
                   <AdditionalInfoDataLable>
-                    <AdditionalInfoDataInput type="text" />
+                    <AdditionalInfoDataInput
+                      type="time"
+                      value={inputData.hospitalizationTime}
+                      onChange={e =>
+                        setInputData({
+                          ...inputData,
+                          hospitalizationTime: e.target.value,
+                        })
+                      }
+                    />
                   </AdditionalInfoDataLable>
 
                   <AdditionalInfoDataLable2>
-                    <AdditionalInfoDataInput2 type="text" />
+                    <AdditionalInfoDataInput2
+                      type="date"
+                      value={inputData.hospitalizationDate}
+                      onChange={e =>
+                        setInputData({
+                          ...inputData,
+                          hospitalizationDate: e.target.value,
+                        })
+                      }
+                    />
                   </AdditionalInfoDataLable2>
-                </AdditionalInfoDataBox>
+                </AdditionalInfoDataLableBox>
+              </AdditionalInfoDataBox>
 
-                <AdditionalInfoBtn type="submit">
+              <AdditionalInfoBtnBox>
+                <AdditionalInfoBtn type="submit" onClick={handleSubmit}>
                   Сохранить чек-лист
                 </AdditionalInfoBtn>
-              </AdditionalInfoForm>
-            </AdditionalInfoBox>
-          </PatientBox>
+              </AdditionalInfoBtnBox>
+            </AdditionalInfoForm>
+          </AdditionalInfoBox>
         </>
       )}
     </Container>
