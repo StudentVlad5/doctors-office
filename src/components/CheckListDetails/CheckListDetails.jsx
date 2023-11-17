@@ -211,6 +211,7 @@ export const CheckListDetails = () => {
           <PatientBox>
             <PatientBoxTitle>Личные данные пациента</PatientBoxTitle>
             <Table>
+              <tbody>
               <Tr>
                 <Td>ФИО пациента</Td>
                 <Td>{data.normal.patientFullName}</Td>
@@ -223,10 +224,12 @@ export const CheckListDetails = () => {
                 <Td>Визуальное описание - при отсутствии личных данных</Td>
                 <Td>{data.normal.visualDescription}</Td>
               </Tr>
+              </tbody>
             </Table>
 
             <PatientBoxTitle>Методика F-A-S-T</PatientBoxTitle>
             <Table>
+              <tbody>
               <Tr>
                 <Td>Провисание на лице</Td>
                 <Td>
@@ -256,10 +259,12 @@ export const CheckListDetails = () => {
                   {data.normal.firstSymptomsTimeMm} 31.08.2023
                 </Td>
               </Tr>
+              </tbody>
             </Table>
 
             <PatientBoxTitle>Физиологические параметры</PatientBoxTitle>
             <Table>
+              <tbody>
               <Tr>
                 <Td>Содержание сахара в крови</Td>
                 <Td>{data.normal.bloodSugarLevel}</Td>
@@ -289,10 +294,12 @@ export const CheckListDetails = () => {
                 <Td>{data.normal.patientAge}</Td>
                 <Td>лет</Td>
               </TrRed>
+              </tbody>
             </Table>
 
             <PatientBoxTitle>Анамнез</PatientBoxTitle>
             <Table>
+              <tbody>
               <Tr>
                 <TdSmall>Внутричерепные кровоизлияния</TdSmall>
                 <TdSmall style={{ width: 194 }}>
@@ -429,10 +436,12 @@ export const CheckListDetails = () => {
                     : '-'}
                 </TdSmall>
               </TrRed>
+              </tbody>
             </Table>
 
             <PatientBoxTitle>Данные по заполнителю</PatientBoxTitle>
             <Table style={{ marginBottom: 65 }}>
+              <tbody>
               <Tr>
                 <Td>ФИО сотрудника</Td>
                 <Td>{data.normal.medicalStaffFullName}</Td>
@@ -456,6 +465,7 @@ export const CheckListDetails = () => {
 
                 <Td>16:05 31.08.2023</Td>
               </Tr>
+              </tbody>
             </Table>
           </PatientBox>
 
