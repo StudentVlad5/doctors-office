@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData } from 'services/APIservice';
 import { PaginationBlock } from 'helpers/Pagination/Pagination';
-import { getFromStorage } from 'services/localStorService';
+import {
+  getFromStorage,
+  removeItem,
+  saveToStorage,
+} from 'services/localStorService';
 import { onLoading, onLoaded } from 'helpers/Loader/Loader';
 import { onFetchError } from 'helpers/Messages/NotifyMessages';
 import {
@@ -23,13 +27,24 @@ import { ReactComponent as Filter } from 'images/svg/filter.svg';
 
 import archive from 'data/archive.json';
 
-const today = new Date().getDay();
-console.log('getData ~ today:', today);
-const archiveChecklists = archive.filter(({ date }) => new Date(date) < today);
-console.log('archiveChecklists:', archiveChecklists);
+const initialState = {
+  filterChecklist: '',
+  filterBrigadeSMP: '',
+  filterPatientINN: '',
+  filterPatientFIO: '',
+  filterHospital: '',
+  filterEmployeeID: '',
+  filterStatusChecklist: '',
+  filterDateStartChecklist: '',
+  filterDurationOfHospitalization: '',
+};
 
 export const ArchiveTable = () => {
   const [checklists, setChecklists] = useState([]);
+  const [filterChecklists, setFilterChecklists] = useState([]);
+  const [filters, setFilters] = useState(
+    getFromStorage('filters') ? getFromStorage('filters') : initialState
+  );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [reload, setReload] = useState(false);
@@ -38,127 +53,108 @@ export const ArchiveTable = () => {
     (async function getData() {
       setIsLoading(true);
       try {
-        const { data } = await fetchData('*');
-        if (!data) {
-          return onFetchError('Whoops, something went wrong');
-        }
-        setChecklists(data);
-        setFilterChecklists(data);
+        // const { data } = await fetchData('*');
+        // if (!data) {
+        //   return onFetchError('Whoops, something went wrong');
+        // }
+        // setChecklists(data);
+        // setFilterChecklists(data);
+        const sortedChecklists = [...archive].sort(
+          (a, b) => b.dateStartChecklist - a.dateStartChecklist
+        );
+        setChecklists(sortedChecklists);
+        setFilterChecklists(sortedChecklists);
+        saveToStorage('filters', filters);
+        // getActiveInput();
       } catch (error) {
         setError(error);
+        console.log('getData ~ error:', error);
       } finally {
         setIsLoading(false);
         setReload(false);
       }
     })();
-  }, [reload]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reload, filters]);
 
-  const [filterChecklists, setFilterChecklists] = useState([]);
-  const [filterChecklist, setFilterChecklist] = useState('');
-  const [filterBrigadeSMP, setFilterBrigadeSMP] = useState('');
-  const [filterPatientINN, setFilterPatientINN] = useState('');
-  const [filterPatientFIO, setFilterPatientFIO] = useState('');
-  const [filterHospital, setFilterHospital] = useState('');
-  const [filterEmployeeID, setFilterEmployeeID] = useState('');
-  const [filterStatusChecklist, setFilterStatusChecklist] = useState('');
-  const [filterDateStartChecklist, setFilterDateStartChecklist] = useState('');
-  const [filterDurationOfHospitalization, setFilterDurationOfHospitalization] =
-    useState('');
+  // get selected filter elements after refresh
+  const handleActiveInput = key => {
+    const filtersFromLS = getFromStorage('filters');
+    const selectedFilters = filtersFromLS[key];
+    if (selectedFilters) {
+      selectedFilters.forEach(item => {
+        const inputs = document.querySelectorAll(`input[name="${item}"]`);
+        inputs?.forEach(input => input.classList.add('active'));
+      });
+    }
+  };
+
+  const getActiveInput = () => {
+    initialState.forEach(filter => handleActiveInput(filter));
+  };
 
   const handleChangeFilter = e => {
     e.preventDefault();
-    switch (e.currentTarget.name) {
-      case 'filterChecklist':
-        setFilterChecklist(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterChecklist']`)
-          .classList.toggle('active');
-        break;
-      case 'filterBrigadeSMP':
-        setFilterBrigadeSMP(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterBrigadeSMP']`)
-          .classList.toggle('active');
-        break;
-      case 'filterPatientINN':
-        setFilterPatientINN(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterPatientINN']`)
-          .classList.toggle('active');
-        break;
-      case 'filterPatientFIO':
-        setFilterPatientFIO(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterPatientFIO']`)
-          .classList.toggle('active');
-        break;
-      case 'filterHospital':
-        setFilterHospital(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterHospital']`)
-          .classList.toggle('active');
-        break;
-      case 'filterEmployeeID':
-        setFilterEmployeeID(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterEmployeeID']`)
-          .classList.toggle('active');
-        break;
-      case 'filterStatusChecklist':
-        setFilterStatusChecklist(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterStatusChecklist']`)
-          .classList.toggle('active');
-        break;
-      case 'filterDateStartChecklist':
-        setFilterDateStartChecklist(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterDateStartChecklist']`)
-          .classList.toggle('active');
-        break;
-      case 'filterDurationOfHospitalization':
-        setFilterDurationOfHospitalization(e.currentTarget.value);
-        document
-          .querySelector(`button[id='filterDurationOfHospitalization']`)
-          .classList.toggle('active');
-        break;
-      default:
-        break;
-    }
+    const { name, value } = e.currentTarget;
+    const selectedFilters = {
+      ...filters,
+      [name]: value,
+    };
+    setFilters(selectedFilters);
+    saveToStorage('filters', selectedFilters);
+    document.querySelector(`button[id='${name}']`).classList.toggle('active');
+    // startFilterChecklists(e);
   };
 
   const startFilterChecklists = e => {
     e.preventDefault();
     const peremOfFilter = [];
-    // eslint-disable-next-line array-callback-return
     checklists.map(item => {
       if (
         item.numberChecklist
           .toString()
           .toLowerCase()
-          .includes(filterChecklist) &&
-        item.dateChecklist.toString().toLowerCase().includes(filterChecklist) &&
-        item.brigadeSMP.toString().toLowerCase().includes(filterBrigadeSMP) &&
-        item.patientINN.toString().toLowerCase().includes(filterPatientINN) &&
-        item.patientFIO.toString().toLowerCase().includes(filterPatientFIO) &&
-        item.hospital.toString().toLowerCase().includes(filterHospital) &&
-        item.employeeID.toString().includes(filterEmployeeID) &&
+          .includes(filters['filterChecklist']) &&
+        // item.dateChecklist
+        //   .toString()
+        //   .toLowerCase()
+        //   .includes(filters['filterChecklist']) &&
+        item.brigadeSMP
+          .toString()
+          .toLowerCase()
+          .includes(filters['filterBrigadeSMP']) &&
+        item.patientINN
+          .toString()
+          .toLowerCase()
+          .includes(filters['filterPatientINN']) &&
+        item.patientFIO
+          .toString()
+          .toLowerCase()
+          .includes(filters['filterPatientFIO']) &&
+        item.hospital
+          .toString()
+          .toLowerCase()
+          .includes(filters['filterHospital']) &&
+        item.employeeID
+          .toString()
+          .toLowerCase()
+          .includes(filters['filterEmployeeID']) &&
         item.statusChecklist
           .toString()
           .toLowerCase()
-          .includes(filterStatusChecklist) &&
+          .includes(filters['filterStatusChecklist']) &&
         item.dateStartChecklist
           .toString()
           .toLowerCase()
-          .includes(filterDateStartChecklist) &&
-        item.timeStartChecklist
-          .toString()
-          .toLowerCase()
-          .includes(filterDateStartChecklist) &&
+          .includes(filters['filterDateStartChecklist']) &&
+        // item.timeStartChecklist
+        //   .toString()
+        //   .toLowerCase()
+        //   .includes(filters['filterDateStartChecklist']) &&
         item.durationOfHospitalization
           .toString()
           .toLowerCase()
-          .includes(filterDurationOfHospitalization)
+          .includes(filters['filterDurationOfHospitalization'])
       ) {
         peremOfFilter.push(item);
       }
@@ -167,71 +163,10 @@ export const ArchiveTable = () => {
     setFilterChecklists(peremOfFilter);
   };
 
-  const clearAllFilters = () => {
-    setReload(true);
-    setFilterChecklist('');
-    setFilterBrigadeSMP('');
-    setFilterPatientINN('');
-    setFilterPatientFIO('');
-    setFilterHospital('');
-    setFilterEmployeeID('');
-    setFilterStatusChecklist('');
-    setFilterDateStartChecklist('');
-    setFilterDurationOfHospitalization('');
-    document
-      .querySelector(`button[id='filterChecklist']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterChecklist']`)
-      .classList.remove('active');
-    document
-      .querySelector(`button[id='filterBrigadeSMP']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterBrigadeSMP']`)
-      .classList.remove('active');
-    document
-      .querySelector(`button[id='filterPatientINN']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterPatientINN']`)
-      .classList.remove('active');
-    document
-      .querySelector(`button[id='filterPatientFIO']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterPatientFIO']`)
-      .classList.remove('active');
-    document
-      .querySelector(`button[id='filterHospital']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterHospital']`)
-      .classList.remove('active');
-    document
-      .querySelector(`button[id='filterEmployeeID']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterEmployeeID']`)
-      .classList.remove('active');
-    document
-      .querySelector(`button[id='filterStatusChecklist']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterStatusChecklist']`)
-      .classList.remove('active');
-    document
-      .querySelector(`button[id='filterDateStartChecklist']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterDateStartChecklist']`)
-      .classList.remove('active');
-    document
-      .querySelector(`button[id='filterDurationOfHospitalization']`)
-      .classList.remove('active');
-    document
-      .querySelector(`input[name='filterDurationOfHospitalization']`)
-      .classList.remove('active');
+  const handleClearAllFilters = e => {
+    setFilters(initialState);
+    const listOfInput = document.querySelectorAll('.active');
+    listOfInput.forEach(item => item.classList.remove('active'));
   };
 
   const handleSearchOnEnter = e => {
@@ -263,7 +198,7 @@ export const ArchiveTable = () => {
           name="clearFilters"
           aria-label="Сбросить фильтры"
           onClick={e => {
-            clearAllFilters(e);
+            handleClearAllFilters(e);
           }}
         >
           <Close /> <span>Сбросить фильтры</span>
@@ -283,7 +218,7 @@ export const ArchiveTable = () => {
                 type="text"
                 name="filterChecklist"
                 placeholder=""
-                value={filterChecklist}
+                value={filters['filterChecklist']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -306,7 +241,7 @@ export const ArchiveTable = () => {
                 type="text"
                 name="filterBrigadeSMP"
                 placeholder=""
-                value={filterBrigadeSMP}
+                value={filters['filterBrigadeSMP']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -329,7 +264,7 @@ export const ArchiveTable = () => {
                 type="number"
                 name="filterPatientINN"
                 placeholder=""
-                value={filterPatientINN}
+                value={filters['filterPatientINN']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -352,7 +287,7 @@ export const ArchiveTable = () => {
                 type="text"
                 name="filterPatientFIO"
                 placeholder=""
-                value={filterPatientFIO}
+                value={filters['filterPatientFIO']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -375,7 +310,7 @@ export const ArchiveTable = () => {
                 type="text"
                 name="filterHospital"
                 placeholder=""
-                value={filterHospital}
+                value={filters['filterHospital']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -398,7 +333,7 @@ export const ArchiveTable = () => {
                 type="number"
                 name="filterEmployeeID"
                 placeholder=""
-                value={filterEmployeeID}
+                value={filters['filterEmployeeID']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -421,7 +356,7 @@ export const ArchiveTable = () => {
                 type="text"
                 name="filterStatusChecklist"
                 placeholder=""
-                value={filterStatusChecklist}
+                value={filters['filterStatusChecklist']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -444,7 +379,7 @@ export const ArchiveTable = () => {
                 type="text"
                 name="filterDateStartChecklist"
                 placeholder=""
-                value={filterDateStartChecklist}
+                value={filters['filterDateStartChecklist']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -468,7 +403,7 @@ export const ArchiveTable = () => {
                 type="text"
                 name="filterDurationOfHospitalization"
                 placeholder=""
-                value={filterDurationOfHospitalization}
+                value={filters['filterDurationOfHospitalization']}
                 onKeyDown={e => handleSearchOnEnter(e)}
                 onChange={e => handleChangeFilter(e)}
               />
@@ -515,13 +450,15 @@ export const ArchiveTable = () => {
               ))}
         </tbody>
       </Table>
-      <PaginationBlock
-        items={filterChecklists}
-        size={size}
-        setSize={setSize}
-        current={current}
-        setCurrent={setCurrent}
-      />
+      {filterChecklists.length > 0 && !error && (
+        <PaginationBlock
+          items={filterChecklists}
+          size={size}
+          setSize={setSize}
+          current={current}
+          setCurrent={setCurrent}
+        />
+      )}
     </>
   );
 };
