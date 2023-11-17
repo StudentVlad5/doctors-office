@@ -23,7 +23,7 @@ import {
 
 import { ReactComponent as Close } from 'images/svg/close.svg';
 import { ReactComponent as Excel } from 'images/svg/excel.svg';
-import { ReactComponent as Filter } from 'images/svg/filter.svg';
+import { FaFilter } from 'react-icons/fa';
 
 import archive from 'data/archive.json';
 
@@ -92,6 +92,59 @@ export const ArchiveTable = () => {
   const getActiveInput = () => {
     initialState.forEach(filter => handleActiveInput(filter));
   };
+
+  //get archive checklists
+  function getWeekNumber(date) {
+    if (new Date(date).getDay() === 0) {
+      const startOfYear = new Date(date.getFullYear(), 0, 1);
+      const startOfWeek = new Date(
+        startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+      );
+
+      const diffInTime = date.getTime() - startOfWeek.getTime();
+      const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+
+      return diffInWeeks;
+    }
+
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const startOfWeek = new Date(
+      startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+    );
+
+    const diffInTime = date.getTime() - startOfWeek.getTime();
+    const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+
+    return diffInWeeks + 1; // Add 1 to account for the first week
+  }
+
+  useEffect(() => {
+    (async function getData() {
+      setIsLoading(true);
+      try {
+        const { data } = await fetchData('*');
+        if (!data) {
+          return onFetchError('Whoops, something went wrong');
+        }
+        const today = new Date();
+        const currentWeekNumber = getWeekNumber(today);
+        const archiveChecklists = archive.filter(
+          //uses the archive.json until the fetch is working
+          ({ dateStartChecklist }) =>
+            currentWeekNumber === getWeekNumber(new Date(dateStartChecklist)) &&
+            today.getDay() >= new Date(dateStartChecklist).getDay()
+        );
+        setChecklists(archiveChecklists);
+        setFilterChecklists(archiveChecklists);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+        setReload(false);
+        setTimeout(() => getData(), 60000);
+      }
+    })();
+  }, [reload]);
 
   const handleChangeFilter = e => {
     e.preventDefault();
@@ -229,7 +282,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -252,7 +305,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -275,7 +328,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -298,7 +351,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -321,7 +374,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -344,7 +397,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -367,7 +420,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -390,7 +443,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -414,7 +467,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
           </TableRow>
