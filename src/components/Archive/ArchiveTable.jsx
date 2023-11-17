@@ -19,39 +19,15 @@ import {
 
 import { ReactComponent as Close } from 'images/svg/close.svg';
 import { ReactComponent as Excel } from 'images/svg/excel.svg';
-import { ReactComponent as Filter } from 'images/svg/filter.svg';
+import { FaFilter } from 'react-icons/fa';
 
 import archive from 'data/archive.json';
-
-const today = new Date().getDay();
-console.log('getData ~ today:', today);
-const archiveChecklists = archive.filter(({ date }) => new Date(date) < today);
-console.log('archiveChecklists:', archiveChecklists);
 
 export const ArchiveTable = () => {
   const [checklists, setChecklists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [reload, setReload] = useState(false);
-
-  useEffect(() => {
-    (async function getData() {
-      setIsLoading(true);
-      try {
-        const { data } = await fetchData('*');
-        if (!data) {
-          return onFetchError('Whoops, something went wrong');
-        }
-        setChecklists(data);
-        setFilterChecklists(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setIsLoading(false);
-        setReload(false);
-      }
-    })();
-  }, [reload]);
 
   const [filterChecklists, setFilterChecklists] = useState([]);
   const [filterChecklist, setFilterChecklist] = useState('');
@@ -64,6 +40,46 @@ export const ArchiveTable = () => {
   const [filterDateStartChecklist, setFilterDateStartChecklist] = useState('');
   const [filterDurationOfHospitalization, setFilterDurationOfHospitalization] =
     useState('');
+
+  //get archive checklists
+  function getWeekNumber(date) {
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const startOfWeek = new Date(
+      startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+    );
+
+    const diffInTime = date.getTime() - startOfWeek.getTime();
+    const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+
+    return diffInWeeks + 1; // Add 1 to account for the first week
+  }
+
+  useEffect(() => {
+    (async function getData() {
+      setIsLoading(true);
+      try {
+        const { data } = await fetchData('*');
+        if (!data) {
+          return onFetchError('Whoops, something went wrong');
+        }
+        const today = new Date();
+        const currentWeekNumber = getWeekNumber(today);
+        const archiveChecklists = archive.filter(
+          //uses the archive.json until the fetch is working
+          ({ dateStartChecklist }) =>
+            currentWeekNumber === getWeekNumber(new Date(dateStartChecklist)) &&
+            today.getDate() >= new Date(dateStartChecklist).getDate()
+        );
+        setChecklists(archiveChecklists);
+        setFilterChecklists(archiveChecklists);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+        setReload(false);
+      }
+    })();
+  }, [reload]);
 
   const handleChangeFilter = e => {
     e.preventDefault();
@@ -130,14 +146,13 @@ export const ArchiveTable = () => {
   const startFilterChecklists = e => {
     e.preventDefault();
     const peremOfFilter = [];
-    // eslint-disable-next-line array-callback-return
     checklists.map(item => {
       if (
         item.numberChecklist
           .toString()
           .toLowerCase()
           .includes(filterChecklist) &&
-        item.dateChecklist.toString().toLowerCase().includes(filterChecklist) &&
+        // item.dateChecklist.toString().toLowerCase().includes(filterChecklist) &&
         item.brigadeSMP.toString().toLowerCase().includes(filterBrigadeSMP) &&
         item.patientINN.toString().toLowerCase().includes(filterPatientINN) &&
         item.patientFIO.toString().toLowerCase().includes(filterPatientFIO) &&
@@ -151,10 +166,10 @@ export const ArchiveTable = () => {
           .toString()
           .toLowerCase()
           .includes(filterDateStartChecklist) &&
-        item.timeStartChecklist
-          .toString()
-          .toLowerCase()
-          .includes(filterDateStartChecklist) &&
+        // item.timeStartChecklist
+        //   .toString()
+        //   .toLowerCase()
+        //   .includes(filterDateStartChecklist) &&
         item.durationOfHospitalization
           .toString()
           .toLowerCase()
@@ -294,7 +309,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -317,7 +332,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -340,7 +355,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -363,7 +378,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -386,7 +401,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -409,7 +424,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -432,7 +447,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -455,7 +470,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
             <TableHead>
@@ -479,7 +494,7 @@ export const ArchiveTable = () => {
                   toggleFilterItem(e);
                 }}
               >
-                <Filter />
+                <FaFilter />
               </BtnFilter>
             </TableHead>
           </TableRow>
@@ -515,13 +530,15 @@ export const ArchiveTable = () => {
               ))}
         </tbody>
       </Table>
-      <PaginationBlock
-        items={filterChecklists}
-        size={size}
-        setSize={setSize}
-        current={current}
-        setCurrent={setCurrent}
-      />
+      {filterChecklists.length > 0 && !error && (
+        <PaginationBlock
+          items={filterChecklists}
+          size={size}
+          setSize={setSize}
+          current={current}
+          setCurrent={setCurrent}
+        />
+      )}
     </>
   );
 };

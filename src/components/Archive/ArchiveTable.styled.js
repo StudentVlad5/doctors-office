@@ -143,7 +143,7 @@ const BtnFilter = styled.button`
   cursor: pointer;
 
   &.active {
-    color: ${theme.colors.darkBlue};
+    color: ${theme.colors.darkGreen};
   }
 
   & svg {
