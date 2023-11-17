@@ -23,6 +23,11 @@ import { ReactComponent as Filter } from 'images/svg/filter.svg';
 
 import archive from 'data/archive.json';
 
+const today = new Date().getDay();
+console.log('getData ~ today:', today);
+const archiveChecklists = archive.filter(({ date }) => new Date(date) < today);
+console.log('archiveChecklists:', archiveChecklists);
+
 export const ArchiveTable = () => {
   const [checklists, setChecklists] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -33,14 +38,12 @@ export const ArchiveTable = () => {
     (async function getData() {
       setIsLoading(true);
       try {
-        // const { data } = await fetchData('/checklists');
-        // if (!data) {
-        //   return onFetchError('Whoops, something went wrong');
-        // }
-        // setChecklists(data);
-        // setFilterChecklists(data);
-        setChecklists(archive);
-        setFilterChecklists(archive);
+        const { data } = await fetchData('*');
+        if (!data) {
+          return onFetchError('Whoops, something went wrong');
+        }
+        setChecklists(data);
+        setFilterChecklists(data);
       } catch (error) {
         setError(error);
       } finally {
