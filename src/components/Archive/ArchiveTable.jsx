@@ -43,6 +43,18 @@ export const ArchiveTable = () => {
 
   //get archive checklists
   function getWeekNumber(date) {
+    if (new Date(date).getDay() === 0) {
+      const startOfYear = new Date(date.getFullYear(), 0, 1);
+      const startOfWeek = new Date(
+        startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+      );
+
+      const diffInTime = date.getTime() - startOfWeek.getTime();
+      const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+
+      return diffInWeeks;
+    }
+
     const startOfYear = new Date(date.getFullYear(), 0, 1);
     const startOfWeek = new Date(
       startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
@@ -68,7 +80,7 @@ export const ArchiveTable = () => {
           //uses the archive.json until the fetch is working
           ({ dateStartChecklist }) =>
             currentWeekNumber === getWeekNumber(new Date(dateStartChecklist)) &&
-            today.getDate() >= new Date(dateStartChecklist).getDate()
+            today.getDay() >= new Date(dateStartChecklist).getDay()
         );
         setChecklists(archiveChecklists);
         setFilterChecklists(archiveChecklists);
@@ -77,6 +89,7 @@ export const ArchiveTable = () => {
       } finally {
         setIsLoading(false);
         setReload(false);
+        setTimeout(() => getData(), 60000);
       }
     })();
   }, [reload]);
@@ -146,6 +159,7 @@ export const ArchiveTable = () => {
   const startFilterChecklists = e => {
     e.preventDefault();
     const peremOfFilter = [];
+    // eslint-disable-next-line array-callback-return
     checklists.map(item => {
       if (
         item.numberChecklist
