@@ -112,9 +112,13 @@ export const CheckListBtn = styled.button`
   }
 `;
 
-export const CopyIcon = styled(copyIcon)``;
+export const CopyIcon = styled(copyIcon)`
+  margin-right: 36px;
+`;
 
-export const WordIcon = styled(wordIcon)``;
+export const WordIcon = styled(wordIcon)`
+  margin-right: 36px;
+`;
 
 export const PatientBox = styled.div``;
 
