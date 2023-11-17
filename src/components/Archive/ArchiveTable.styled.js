@@ -17,7 +17,7 @@ const Table = styled.table`
 const TableFilter = styled.thead`
   & th {
     position: relative;
-    padding-right: 20px;
+    padding: 5px 20px 5px 5px;
     background: ${theme.colors.darkGrey};
   }
 
@@ -142,10 +142,15 @@ const BtnFilter = styled.button`
   border: none;
   cursor: pointer;
 
-  & > svg {
+  &.active {
+    color: ${theme.colors.darkBlue};
+  }
+
+  & svg {
     width: 10px;
     height: 10px;
     fill: currentColor;
+    /* stroke: currentColor; */
 
     @media screen and (min-width: ${theme.breakpoints.desktop}) {
       width: 21px;
