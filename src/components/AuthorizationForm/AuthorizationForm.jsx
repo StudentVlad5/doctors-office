@@ -17,7 +17,7 @@ import { saveToStorage } from 'services/localStorService';
       <AuthorizationSection>
         <AuthorizationContainer>
             <AuthorizationFormItem onSubmit={handleSubmit}>
-                <Titleline for="authorization_id" aria-label="Authorization_id">Авторизация</Titleline>
+                <Titleline htmlFor="authorization_id" aria-label="Authorization_id">Авторизация</Titleline>
                 <Input type="text" 
                     id="authorization_id" 
                     name="authorization_id" 
