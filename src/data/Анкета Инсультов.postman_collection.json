@@ -1,0 +1,127 @@
+{
+	"info": {
+		"_postman_id": "4dfcd71e-f3fd-4d83-82b0-63b559186533",
+		"name": "Анкета Инсультов",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29273287"
+	},
+	"item": [
+		{
+			"name": "Сохранить переменную",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://185.116.194.159:34345/edit?identifier=46732&perem_name=peren_value",
+					"protocol": "http",
+					"host": [
+						"185",
+						"116",
+						"194",
+						"159"
+					],
+					"port": "34345",
+					"path": [
+						"edit"
+					],
+					"query": [
+						{
+							"key": "identifier",
+							"value": "46732"
+						},
+						{
+							"key": "perem_name",
+							"value": "peren_value"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Считать форму в json",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://185.116.194.159:34345/read?identifier=1695976698811",
+					"protocol": "http",
+					"host": [
+						"185",
+						"116",
+						"194",
+						"159"
+					],
+					"port": "34345",
+					"path": [
+						"read"
+					],
+					"query": [
+						{
+							"key": "identifier",
+							"value": "1695976698811",
+							"description": "* - все"
+						}
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Считать форму в json",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://185.100.65.157:34345/read?identifier=1695976698811",
+							"protocol": "http",
+							"host": [
+								"185",
+								"100",
+								"65",
+								"157"
+							],
+							"port": "34345",
+							"path": [
+								"read"
+							],
+							"query": [
+								{
+									"key": "identifier",
+									"value": "1695976698811",
+									"description": "* - все"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Length",
+							"value": "5781"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 29 Sep 2023 11:16:03 GMT"
+						},
+						{
+							"key": "Server",
+							"value": "waitress"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"normal\": {\n        \"DOB\": \"1695979548164\",\n        \"actual-address\": true,\n        \"actualAddressReasonsForResidence\": \"Собственность\",\n        \"actualAddressSpecialMarks\": \"Коммунальная квартира\",\n        \"actualApartment\": \"9\",\n        \"actualCountry\": \"23\",\n        \"actualDistrict\": \"4\",\n        \"actualHouse\": \"7\",\n        \"actualHousing\": \"8\",\n        \"actualIndex\": \"1\",\n        \"actualLengthOfStay\": \"10 лет, 11 мес.\",\n        \"actualLocality\": \"5\",\n        \"actualRegion\": \"3\",\n        \"actualRegistrationInfo\": \"Есть только временная регистрация (при отсутствии постоянной)\",\n        \"actualStreet\": \"6\",\n        \"additional-conditions\": true,\n        \"additional-information\": true,\n        \"additional1\": \"null\",\n        \"additional2\": \"null\",\n        \"additionalInformation\": \"1й2\",\n        \"amountAdditionalExpenses\": \"10\",\n        \"amountAdditionalIncome\": \"5\",\n        \"amountAliment\": \"8\",\n        \"amountBasicIncome\": \"1\",\n        \"amountCredit\": \"7\",\n        \"amountDependents\": \"4\",\n        \"amountFamily\": \"3\",\n        \"amountOfChildren\": \"1\",\n        \"amountPartTimeIncome\": \"3\",\n        \"amountPension\": \"2\",\n        \"appartCost\": \"1\",\n        \"assets-Vehicle-1\": true,\n        \"assets-Vehicle-2\": true,\n        \"assets-Vehicle-3\": true,\n        \"assets-immovables-1\": true,\n        \"assets-immovables-2\": true,\n        \"assets-immovables-3\": true,\n        \"bankrupt\": \"Нахожусь\",\n        \"childrenAge\": \"2\",\n        \"cityOfAcquisition\": \"Санкт-Петербург\",\n        \"client-finance\": true,\n        \"client-info\": true,\n        \"client-target\": true,\n        \"clientBusinessPercentage\": \"\",\n        \"clientDegree\": \"\",\n        \"clientDriverLicense\": \"\",\n        \"clientEmail\": \"\",\n        \"clientEmploymentStatus\": \"Работник/Служащий\",\n        \"clientEmploymentType\": \"Бюджетная\",\n        \"clientFullName\": \"12\",\n        \"clientGender\": \"Мужской\",\n        \"clientHomePhoneNumber\": \"\",\n        \"clientINN\": \"\",\n        \"clientInternationalPassport\": \"\",\n        \"clientMilitaryID\": \"\",\n        \"clientName\": \"\",\n        \"clientOldFullName\": \"\",\n        \"clientPartTimeJob\": \"\",\n        \"clientPhoneNumber\": \"\",\n        \"clientRole\": \"Заёмщик\",\n        \"clientSnils\": \"3\",\n        \"credit-info\": true,\n        \"credit-target\": true,\n        \"creditSum\": \"3\",\n        \"creditTargetType\": \"Нецелевой кредит\",\n        \"creditTerm\": \"6\",\n        \"creditTraget\": \"\",\n        \"currentOrganizationWorkExperience\": \" лет  мес.\",\n        \"deal_id\": \"1276\",\n        \"departmentCode\": \"3\",\n        \"education\": \"1\",\n        \"employment-info\": true,\n        \"employment-status\": true,\n        \"executive\": \"Не являюсь\",\n        \"familyStatus\": \"Холост/не замужем\",\n        \"identifier\": \"1695976698811\",\n        \"immovablesAddress1\": \"\",\n        \"immovablesAddress2\": \"\",\n        \"immovablesAddress3\": \"\",\n        \"immovablesIsDeposit1\": \"false\",\n        \"immovablesIsDeposit2\": \"false\",\n        \"immovablesIsDeposit3\": \"false\",\n        \"immovablesOrigin1\": \"дарение\",\n        \"immovablesOrigin2\": \"\",\n        \"immovablesOrigin3\": \"\",\n        \"immovablesPrice1\": \"\",\n        \"immovablesPrice2\": \"\",\n        \"immovablesPrice3\": \"\",\n        \"immovablesShareSize1\": \"\",\n        \"immovablesShareSize2\": \"\",\n        \"immovablesShareSize3\": \"\",\n        \"immovablesSquare1\": \"\",\n        \"immovablesSquare2\": \"\",\n        \"immovablesSquare3\": \"\",\n        \"immovablesType1\": \"квартира\",\n        \"immovablesType2\": \"\",\n        \"immovablesType3\": \"\",\n        \"immovablesYear1\": \"\",\n        \"immovablesYear2\": \"\",\n        \"immovablesYear3\": \"\",\n        \"income-proof\": true,\n        \"incomeProof\": \"Без подтверждения\",\n        \"initialPayment\": \"2\",\n        \"insuranceConditions\": \"Обязательный пакет\",\n        \"isBankEmployee\": \"false\",\n        \"isOrganizationBankClient\": \"false\",\n        \"isRuCitizenship\": \"false\",\n        \"issuedByWhom\": \"4\",\n        \"jobTitle\": \"\",\n        \"lifespanCurrentOrganization\": \"\",\n        \"marriageContract\": \"Нет\",\n        \"matCapitalAmount\": \"5\",\n        \"nameSalaryBank\": \"\",\n        \"organization\": true,\n        \"organizationActualAddress\": \"2\",\n        \"organizationINN\": \"7\",\n        \"organizationIndustry\": \"Адвокат/юрист\",\n        \"organizationIndustryOther\": \"\",\n        \"organizationName\": \"1\",\n        \"organizationPhoneNumber\": \"6\",\n        \"organizationStaffAmount\": \"менее 10\",\n        \"organizationWebSite\": \"5\",\n        \"other\": true,\n        \"partnerSocialStatus\": \"Не работает\",\n        \"passportDateOfIssue\": \"1695979548164\",\n        \"passportNumber\": \"2\",\n        \"passportSeries\": \"1\",\n        \"paymentDate\": \"6\",\n        \"paymentType\": \"Аннуитетный\",\n        \"programType\": \"Военная ипотека\",\n        \"reasonForChangeFullName\": \"\",\n        \"region\": true,\n        \"registrationAddress\": \"5\",\n        \"relativeNameAndPhoneNumber\": \"\",\n        \"role\": true,\n        \"salaryCardNumber\": \"\",\n        \"social-status\": true,\n        \"source-initial-payment\": true,\n        \"sourceAdditionalExpenses\": \"9\",\n        \"sourceAdditionalIncome\": \"4\",\n        \"sourceInitialPayment\": \"Помощь родственников\",\n        \"startOfWorkDate\": \"1695978187708\",\n        \"startOfWorkInCurrentOrganizationDate\": \"1695978187708\",\n        \"subsidiesAmount\": \"4\",\n        \"success\": false,\n        \"sumExpenses\": \"11\",\n        \"sumIncome\": \"6\",\n        \"totalWorkExperience\": \" лет  мес.\",\n        \"type\": \"anket\",\n        \"upload-files\": false,\n        \"vehicleBrand1\": \"\",\n        \"vehicleBrand2\": \"\",\n        \"vehicleBrand3\": \"\",\n        \"vehicleIsDeposit1\": \"false\",\n        \"vehicleIsDeposit2\": \"false\",\n        \"vehicleIsDeposit3\": \"false\",\n        \"vehiclePrice1\": \"\",\n        \"vehiclePrice2\": \"\",\n        \"vehiclePrice3\": \"\",\n        \"vehicleYear1\": \"\",\n        \"vehicleYear2\": \"\",\n        \"vehicleYear3\": \"\",\n        \"work-experience\": true\n    }\n}"
+				}
+			]
+		}
+	]
+}

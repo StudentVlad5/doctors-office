@@ -1,3 +1,7 @@
+import { useEffect, useState } from 'react';
+import { fetchData } from 'services/APIservice';
+import { onFetchError } from 'helpers/Messages/NotifyMessages';
+import { onLoaded, onLoading } from 'helpers/Loader/Loader';
 import { Container } from 'components/baseStyles/CommonStyle.styled';
 import {
   AdditionalInfoBox,
@@ -31,8 +35,6 @@ import {
   Triangle,
   WordIcon,
 } from './CheckListDetails.styled';
-import { useEffect, useState } from 'react';
-import axios from 'axios';
 import clipboardCopy from 'clipboard-copy';
 
 export const CheckListDetails = () => {
@@ -46,19 +48,24 @@ export const CheckListDetails = () => {
     },
   ]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(
-          'http://185.116.194.159:34345/read?identifier=1696447916376'
-        );
-        setData(res.data);
-      } catch (err) {
-        console.log(err);
-      }
-    };
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-    fetchData();
+  useEffect(() => {
+    (async function getData() {
+      setIsLoading(true);
+      try {
+        const { data } = await fetchData('1696447916376');
+        if (!data) {
+          return onFetchError('Whoops, something went wrong');
+        }
+        setData(data);
+      } catch (error) {
+        setError(error);
+      } finally {
+        setIsLoading(false);
+      }
+    })();
   }, []);
 
   const handleSubmit = e => {
@@ -163,7 +170,9 @@ export const CheckListDetails = () => {
 
   return (
     <Container>
-      {data && data.normal && (
+      {isLoading ? onLoading() : onLoaded()}
+      {error && onFetchError('Whoops, something went wrong')}
+      {setData && data.normal && !error && (
         <>
           <CheckListBox>
             <div>
@@ -263,8 +272,6 @@ export const CheckListDetails = () => {
               </Tr>
               <Tr>
                 <Td>Артериальное давление</Td>
-
-                {/* ТУТ ДВА arterialPressureS ЯКИЙ ТРЕБА ПОКАЗУВАТИ ??????? !!!!!!!!!!!!!111*/}
 
                 <Td>
                   {data.normal.arterialPressureD}/
