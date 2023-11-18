@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import {
     ActiveListItemsSection, ActiveListItemsContainer, ControlContainer, TotalItems, ButtonToArhiveList, ButtonLogOut, BtnContainer, ItemsContainer, ControlPanelContainer, Title, ItemContainer, ItemInfo, ItemStatistic, ItemBtn, ItemCircle, ItemLine
   } from './ActiveListItems.styled';
@@ -9,23 +10,11 @@ import { fetchData } from 'services/APIservice';
 import { onFetchError } from 'helpers/Messages/NotifyMessages';
 import { onLoaded, onLoading } from 'helpers/Loader/Loader';
 
-//   const data = [
-//     {info: "Чек-лист №5 от 31/03/2023 Бригада №01/04 Время прибытия в больницу -- : -- Номер телефона: 8 705 123 45 67", 
-//     status: 1,
-//     id: 1},
-//     {info: "Чек-лист №4 от 31/03/2023 Бригада №02/12 Время прибытия в больницу 16 : 35 Номер телефона: 8 705 123 45 67", 
-//     status: 3,
-//     id: 2},
-//     {info: "Чек-лист №3 от 31/03/2023 Бригада №03/15 Время прибытия в больницу 15 : 35 Номер телефона: 8 705 123 45 67", 
-//     status: 5,
-//     id: 3},
-// ];
-  
   export const ActiveListItems = () => {
     const [checklists, setChecklists] = useState([]);
+    const [uniqueChecklists, setUniqueChecklists] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-
 
     useEffect(() => {
       (async function getData() {
@@ -36,11 +25,22 @@ import { onLoaded, onLoading } from 'helpers/Loader/Loader';
             return onFetchError('Whoops, something went wrong');
           }
           setChecklists(data.normal);
+          const uniqueIdentifier = [];
+          const uniqueChecklists = [];
+          data.normal.forEach(element => {
+            const isDuplicate = uniqueIdentifier.includes(element.identifier);
+            if (!isDuplicate) {
+              uniqueIdentifier.push(element.identifier);
+            }
+          });
+          uniqueIdentifier.sort(function (a, b) {return b - a});
+          uniqueIdentifier.map(it=> uniqueChecklists.push(data.normal.find(element=> element.identifier === it)));
+          setUniqueChecklists(uniqueChecklists);
         } catch (error) {
           setError(error);
         } finally {
           setIsLoading(false);
-          // setTimeout(()=>getData(), 60000)
+          setTimeout(()=>getData(), 60000)
         }
       })();
     }, []);
@@ -51,7 +51,7 @@ import { onLoaded, onLoading } from 'helpers/Loader/Loader';
             <ControlContainer>
                 <ControlPanelContainer>
                     <TotalItems>
-                    <span style={{whiteSpace:"nowrap"}}>Текущих чек-листов:&nbsp;{checklists?.length}</span>
+                    <span style={{whiteSpace:"nowrap"}}>Текущих чек-листов:&nbsp;{uniqueChecklists?.length}</span>
                     </TotalItems>
                     <BtnContainer>
                         <Link style={{textDecoration:"none"}} to="/archive">
@@ -67,11 +67,10 @@ import { onLoaded, onLoading } from 'helpers/Loader/Loader';
                 {isLoading ? onLoading() : onLoaded()}
                 {error && onFetchError('Whoops, something went wrong')}
                 {(checklists === undefined || checklists?.length === 0) && <Title>Ожидаем заполнения чек-листов</Title>}
-                {checklists && checklists?.length > 0 && 
-                checklists.map(item=><ItemContainer key={item.identifier} data-info={item.identifier}>
+                {uniqueChecklists && uniqueChecklists?.length > 0 && 
+                uniqueChecklists.map((item)=>(item?.identifier !== undefined && item?.identifier !== '') && <ItemContainer key={item?.identifier} data-info={item?.identifier}>
                     <ItemInfo>
-                      {/* {item.info} */}
-                      Чек-лист №5 от 31/03/2023 Бригада №01/04 Время прибытия в больницу -- : -- Номер телефона: 8 705 123 45 67
+                      Чек-лист №{item?.identifier} от {moment(new Date(+item?.identifier)).format("DD/MM/YYYY")} Бригада №{item?.application_number} Время прибытия в больницу {item?.deliveryTimeHh} : {item?.deliveryTimeMm} Номер телефона: {item?.numberPhone}
                       <Link style={{textDecoration:"none"}} to={`/checklist/${item.identifier}`}>
                       <ItemBtn type="button" aria-label="Подробнее">Подробнее</ItemBtn>
                       </Link>
@@ -122,31 +121,25 @@ import { onLoaded, onLoading } from 'helpers/Loader/Loader';
                           item?.majorSurgeriesOrSevereInjuries !== '' ||
                           item?.surgicalInterventions !== '' ||
                           item?.myocardialInfarction !== '' ||
-                          item?.stroke !== '' ||
-                          item?.arterialPuncture !== '' ||
-                          item?.smallOperations !== '' ||
-                          item?.cardiovascularDiseases !== '' ||
-                          item?.acuteInfectiousDisease !== '' ||
-                          item?.hemorrhagicStroke !== '' ||
-                          item?.convulsions !== ''
+                          item?.stroke !== '' 
                         ) ? theme.colors.darkGreen : theme.colors.white}></ItemCircle>
                         <ItemLine $color={(
                           item?.intracranialHemorrhages !== '' ||
                           item?.majorSurgeriesOrSevereInjuries !== '' ||
                           item?.surgicalInterventions !== '' ||
                           item?.myocardialInfarction !== '' ||
-                          item?.stroke !== '' ||
+                          item?.stroke !== ''
+                        ) ? theme.colors.linesBlue : theme.colors.darkGrey}></ItemLine>
+                        <ItemCircle $color={(
+                          item?.hemorrhages !== '' ||
+                          item?.SACStroke !== '' ||
+                          item?.ischemicStroke !== '' ||
                           item?.arterialPuncture !== '' ||
                           item?.smallOperations !== '' ||
                           item?.cardiovascularDiseases !== '' ||
                           item?.acuteInfectiousDisease !== '' ||
                           item?.hemorrhagicStroke !== '' ||
-                          item?.convulsions !== ''
-                        ) ? theme.colors.linesBlue : theme.colors.darkGrey}></ItemLine>
-                        <ItemCircle $color={(
-                          item?.hemorrhages !== '' ||
-                          item?.SACStroke !== '' ||
-                          item?.ischemicStroke !== ''                       
+                          item?.convulsions !== ''                      
                         ) ? theme.colors.darkGreen : theme.colors.white}></ItemCircle>
                     </ItemStatistic>
                 </ItemContainer>)}
