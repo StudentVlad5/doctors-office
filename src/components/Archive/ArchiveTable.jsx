@@ -86,7 +86,7 @@ export const ArchiveTable = () => {
         );
 
         /* --- data filter this week --- */
-        const today = new Date();
+        const today = new Date('2023-11-01');
         const currentWeekNumber = getWeekNumber(today);
         const archiveChecklists = sortedData.filter(
           ({ identifier }) =>
@@ -173,35 +173,35 @@ export const ArchiveTable = () => {
           .toLowerCase()
           .includes(filters['filterChecklist']) &&
         item.application_number
-          .toString()
+          ?.toString()
           .toLowerCase()
           .includes(filters['filterBrigadeSMP']) &&
         item.patientINN
-          .toString()
+          ?.toString()
           .toLowerCase()
           .includes(filters['filterPatientINN']) &&
         item.patientFullName
-          .toString()
+          ?.toString()
           .toLowerCase()
           .includes(filters['filterPatientFIO']) &&
-        item.numberHospital
-          .toString()
-          .toLowerCase()
-          .includes(filters['filterHospital']) &&
+        // item.numberHospital
+        //   ?.toString()
+        //   .toLowerCase()
+        //   .includes(filters['filterHospital']) &&
         item.employeeID
-          .toString()
+          ?.toString()
           .toLowerCase()
           .includes(filters['filterEmployeeID']) &&
-        item.checkStatus
-          .toString()
-          .toLowerCase()
-          .includes(filters['filterStatusChecklist']) &&
+        // item.checkStatus
+        //   ?.toString()
+        //   .toLowerCase()
+        //   .includes(filters['filterStatusChecklist']) &&
         item.startTimeAutoHh
-          .toString()
+          ?.toString()
           .toLowerCase()
           .includes(filters['filterDateStartChecklist']) &&
-        new Date(item.identifier).getMinutes
-          .getHours()
+        new Date(Number(item.identifier))
+          .getMinutes()
           .toString()
           .toLowerCase()
           .includes(filters['filterDurationOfHospitalization'])
@@ -343,7 +343,7 @@ export const ArchiveTable = () => {
                 пациента
               </span>
               <input
-                type="number"
+                type="text"
                 name="filterPatientINN"
                 placeholder=""
                 value={filters['filterPatientINN']}
@@ -412,7 +412,7 @@ export const ArchiveTable = () => {
                 сотрудника
               </span>
               <input
-                type="number"
+                type="text"
                 name="filterEmployeeID"
                 placeholder=""
                 value={filters['filterEmployeeID']}
