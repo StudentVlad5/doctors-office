@@ -149,7 +149,7 @@ export const Tr = styled.tr`
 `;
 
 export const TrRed = styled(Tr)`
-  background-color: ${theme.colors.accentCoral};
+background-color: ${props => props.$color};;
 `;
 
 export const Td = styled.td`

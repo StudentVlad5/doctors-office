@@ -37,6 +37,7 @@ import {
 } from './CheckListDetails.styled';
 import clipboardCopy from 'clipboard-copy';
 import { export2Doc } from 'services/exportToWord';
+import { theme } from 'components/baseStyles/Variables.styled';
 
 export const CheckListDetails = () => {
   const [data, setData] = useState([]);
@@ -266,31 +267,30 @@ export const CheckListDetails = () => {
             <PatientBoxTitle>Физиологические параметры</PatientBoxTitle>
             <Table>
               <tbody>
-              <Tr>
+              <TrRed $props={(Number(data.normal?.bloodSugarLevel) < 2.7 || Number(data.normal?.bloodSugarLevel) > 22) ? theme.colors.accentCoral : theme.colors.darkGrey}>
                 <Td>Содержание сахара в крови</Td>
                 <Td>{data.normal.bloodSugarLevel}</Td>
                 <Td>ммоль/л</Td>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed $props={(Number(data.normal?.bodyTemperature) < 37 ) ? theme.colors.accentCoral : theme.colors.darkGrey}>
                 <Td>Температура тела</Td>
                 <Td>{data.normal.bodyTemperature}</Td>
                 <Td>°C</Td>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed $props={(Number(data.normal?.arterialPressureS) > 110 ||  Number(data.normal?.arterialPressureD) > 180) ? theme.colors.accentCoral : theme.colors.darkGrey}>
                 <Td>Артериальное давление</Td>
-
                 <Td>
-                  {data.normal.arterialPressureD}/
-                  {data.normal.arterialPressureS}
+                  {data.normal.arterialPressureS}/
+                  {data.normal.arterialPressureD}
                 </Td>
                 <Td>мм. рт. ст.</Td>
-              </Tr>
+              </TrRed>
               <Tr>
                 <Td>Масса тела пациента</Td>
                 <Td>{data.normal.patientBodyWeight}</Td>
                 <Td>кг</Td>
               </Tr>
-              <TrRed>
+              <TrRed $props={(Number(data.normal?.patientAge) < 18 || Number(data.normal?.patientAge) > 80) ? theme.colors.accentCoral : theme.colors.darkGrey}>
                 <Td>Возраст пациента</Td>
                 <Td>{data.normal.patientAge}</Td>
                 <Td>лет</Td>
@@ -331,7 +331,7 @@ export const CheckListDetails = () => {
                     : '-'}
                 </TdSmall>
               </Tr>
-              <TrRed>
+              <TrRed $props={(data.normal?.myocardialInfarction.toString() === 'true' ) ? theme.colors.accentCoral : theme.colors.darkGrey}>
                 <TdSmall>
                   Инфаркт миокарда в предшествующие инсульту 3 месяца
                 </TdSmall>
@@ -341,7 +341,7 @@ export const CheckListDetails = () => {
                     : '-'}
                 </TdSmall>
               </TrRed>
-              <TrRed>
+              <TrRed $props={(data.normal?.stroke.toString() === 'true' ) ? theme.colors.accentCoral : theme.colors.darkGrey}>
                 <TdSmall>Инсульт в предшествующие инсульту 3 месяца</TdSmall>
                 <TdSmall>
                   {data.normal.stroke.toString() === 'true' ? 'Да' : '-'}
@@ -429,7 +429,7 @@ export const CheckListDetails = () => {
                   {data.normal.SACStroke.toString() === 'true' ? 'Да' : '-'}
                 </TdSmall>
               </Tr>
-              <TrRed>
+              <TrRed $props={(data.normal?.ischemicStroke.toString() === 'true' ) ? theme.colors.accentCoral : theme.colors.darkGrey}>
                 <TdSmall>Ишемический инсульт</TdSmall>
                 <TdSmall>
                   {data.normal.ischemicStroke.toString() === 'true'
