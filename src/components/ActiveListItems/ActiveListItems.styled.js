@@ -32,6 +32,7 @@ const ControlPanelContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   width: 100%;
+
   @media screen and (min-width: ${theme.breakpoints.desktop}) {
     flex-direction: row;
     justify-content: end;
@@ -39,18 +40,16 @@ const ControlPanelContainer = styled.div`
 `;
 const BtnContainer = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 24px;
+
   margin-top: 20px;
   width: 100%;
-  @media screen and (min-width: ${theme.breakpoints.tablet}) {
-    flex-direction: row;
-    justify-content: center;
-  }
+
   @media screen and (min-width: ${theme.breakpoints.desktop}) {
-    flex-direction: row;
     justify-content: end;
     margin-top: 0px;
   }
@@ -73,15 +72,23 @@ const ButtonToArhiveList = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
+
   width: 100%;
+  min-width: 155px;
   height: 49px;
-  font-size: 18x;
+
+  font-size: 16x;
   font-weight: 400;
   border-radius: 10px;
   border: 1px solid ${theme.colors.black};
   color: ${theme.colors.black};
   background-color: ${theme.colors.lightBlue};
   cursor: pointer;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    font-size: 20px;
+  }
+
   @media screen and (min-width: ${theme.breakpoints.tablet}) {
     width: 324px;
     font-size: 24px;
