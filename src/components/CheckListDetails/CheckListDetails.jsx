@@ -36,6 +36,7 @@ import {
   WordIcon,
 } from './CheckListDetails.styled';
 import clipboardCopy from 'clipboard-copy';
+import { export2Doc } from 'services/exportToWord';
 
 export const CheckListDetails = () => {
   const [data, setData] = useState([]);
@@ -173,7 +174,7 @@ export const CheckListDetails = () => {
       {isLoading ? onLoading() : onLoaded()}
       {error && onFetchError('Whoops, something went wrong')}
       {setData && data.normal && !error && (
-        <>
+        <div id="exportContent">
           <CheckListBox>
             <div>
               <BackContainer>
@@ -202,7 +203,7 @@ export const CheckListDetails = () => {
                 <CopyIcon />
                 {isCopied ? 'Скопировано!' : 'Скопировать данные'}
               </CheckListBtn>
-              <CheckListBtn type="button">
+              <CheckListBtn type="button" onClick={()=>export2Doc('exportContent')}>
                 <WordIcon /> Скачать в word
               </CheckListBtn>
             </CheckListBtnBox>
@@ -529,7 +530,7 @@ export const CheckListDetails = () => {
               </AdditionalInfoBtnBox>
             </AdditionalInfoForm>
           </AdditionalInfoBox>
-        </>
+        </div>
       )}
     </Container>
   );
