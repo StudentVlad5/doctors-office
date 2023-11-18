@@ -38,29 +38,45 @@ export const BackLink = styled(Link)`
   align-items: center;
   position: relative;
   left: 0;
-  height: 59px;
-  width: 296px;
+  height: 39px;
+  width: 200px;
   background-color: #4472c4;
   text-decoration: none;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    height: 59px;
+    width: 296px;
+  }
 `;
 
 export const Triangle = styled.div`
   position: absolute;
   top: 0;
-  left: -20px;
+  left: -15px;
   width: 0;
   height: 0;
-  border-top: 30px solid transparent;
-  border-bottom: 29.5px solid transparent;
-  border-right: 20px solid #4472c4;
+  border-top: 20px solid transparent;
+  border-bottom: 19.5px solid transparent;
+  border-right: 15px solid #4472c4;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    left: -20px;
+    border-top: 30px solid transparent;
+    border-bottom: 29.5px solid transparent;
+    border-right: 20px solid #4472c4;
+  }
 `;
 
 export const CheckListTextBack = styled.p`
   color: ${theme.colors.white};
-  font-size: 40px;
+  font-size: 25px;
   font-style: normal;
   font-weight: 400;
   line-height: normal;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    font-size: 40px;
+  }
 `;
 
 export const CheckListText = styled.p`
@@ -83,19 +99,30 @@ export const CheckListBtnBox = styled.div`
 `;
 
 export const CheckListBtn = styled.button`
+  display: flex;
+  align-items: center;
   border-radius: 17px;
-  padding: 11px 13px 11px 22px;
+  padding: 7px 9px 7px 12px;
   border-color: transparent;
   background: ${theme.colors.darkGreen};
 
   color: ${theme.colors.white};
   text-align: left;
-  font-size: 36px;
   font-style: normal;
+  font-size: 20px;
   font-weight: 700;
   line-height: normal;
   margin-bottom: 18px;
   cursor: pointer;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    font-size: 26px;
+  }
+
+  @media screen and (min-width: 1022px) {
+    font-size: 36px;
+    padding: 11px 13px 11px 22px;
+  }
 
   &:hover,
   &:focus {
@@ -113,11 +140,18 @@ export const CheckListBtn = styled.button`
 `;
 
 export const CopyIcon = styled(copyIcon)`
-  margin-right: 36px;
+  margin-right: 20px;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    margin-right: 36px;
+  }
 `;
 
 export const WordIcon = styled(wordIcon)`
-  margin-right: 36px;
+  margin-right: 20px;
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    margin-right: 36px;
+  }
 `;
 
 export const PatientBox = styled.div``;
@@ -149,7 +183,7 @@ export const Tr = styled.tr`
 `;
 
 export const TrRed = styled(Tr)`
-background-color: ${props => props.$color};;
+  background-color: ${props => props.$color};
 `;
 
 export const Td = styled.td`
@@ -205,7 +239,7 @@ export const AdditionalInfoFormLable = styled.label`
 `;
 
 export const AdditionalInfoFormInput = styled.input`
-  padding: 20px 257px 20px 25px;
+  padding: 10px 157px 10px 15px;
   width: 100%;
   border-radius: 17px;
   border: 1px solid ${theme.colors.black};
@@ -218,6 +252,7 @@ export const AdditionalInfoFormInput = styled.input`
   line-height: normal;
 
   @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    padding: 20px 257px 20px 25px;
     width: 547px;
   }
 `;
@@ -272,9 +307,14 @@ export const AdditionalInfoDataLable2 = styled.label`
 `;
 
 export const AdditionalInfoDataInput = styled(AdditionalInfoFormInput)`
-  width: 215px;
-  padding: 20px 45px;
+  width: 170px;
+  padding: 10px 25px;
   margin-right: 0;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    width: 215px;
+    padding: 20px 45px;
+  }
 
   @media screen and (min-width: 1022px) {
     margin-right: 33px;
@@ -282,8 +322,13 @@ export const AdditionalInfoDataInput = styled(AdditionalInfoFormInput)`
 `;
 
 export const AdditionalInfoDataInput2 = styled(AdditionalInfoFormInput)`
-  width: 300px;
-  padding: 20px 45px;
+  width: 250px;
+  padding: 10px 25px;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    width: 300px;
+    padding: 20px 45px;
+  }
 `;
 
 export const AdditionalInfoBtnBox = styled.div`
@@ -297,17 +342,25 @@ export const AdditionalInfoBtnBox = styled.div`
 `;
 
 export const AdditionalInfoBtn = styled.button`
-  padding: 18px 85px;
+  padding: 12px 35px;
   border-radius: 17px;
   border: 1px solid ${theme.colors.black};
   background: ${theme.colors.darkGreen};
 
   color: ${theme.colors.white};
-  font-size: 32px;
+  font-size: 20px;
   font-style: normal;
   font-weight: 700;
   line-height: normal;
   cursor: pointer;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}){
+  font-size: 25px; 
+  }
+  @media screen and (min-width: 1022px) {
+    font-size: 32px;
+    padding: 18px 85px;
+  }
 
   &:hover,
   &:focus {
