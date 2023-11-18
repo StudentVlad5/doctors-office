@@ -25,7 +25,6 @@ import { onLoaded, onLoading } from 'helpers/Loader/Loader';
     const [checklists, setChecklists] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
-    const [interval, setInterval] = useState(true);
 
 
     useEffect(() => {
@@ -41,28 +40,10 @@ import { onLoaded, onLoading } from 'helpers/Loader/Loader';
           setError(error);
         } finally {
           setIsLoading(false);
+          // setTimeout(()=>getData(), 60000)
         }
       })();
     }, []);
-
-    useEffect(() => {
-      async function getData() {
-        setIsLoading(true);
-        try {
-          const { data } = await fetchData('*');
-          if (!data) {
-            return onFetchError('Whoops, something went wrong');
-          }
-          setChecklists(data.normal);
-        } catch (error) {
-          setError(error);
-        } finally {
-          setIsLoading(false);
-          setInterval(!interval)
-        }
-      };
-      setTimeout(()=>getData(), 60000)
-    }, [interval]);
 
     return (
       <ActiveListItemsSection>

@@ -11,8 +11,17 @@ const ArchivePage = () => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, []);
 
+  // const handleClick = e => {
+  //   const listOfInput = document.querySelectorAll('.active');
+  //   listOfInput.forEach(item => item.classList.remove('active'));
+  // };
+
   return (
-    <ArchiveContainer>
+    <ArchiveContainer
+    // onClick={e => {
+    //   if (e.currentTarget === e.target) handleClick(e);
+    // }}
+    >
       <Title>Архив чек-листов</Title>
       <Subtitle>Фильтры и поиск</Subtitle>
       <ArchiveTable />
