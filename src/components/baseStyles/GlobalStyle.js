@@ -36,9 +36,58 @@ img {
   left:50%;
   transform: translateX(-50%);
 
-  /* display: inline-block;
-  width: 100%;
-  margin: auto auto 45px auto; */
+  display: inline-flex;
+  gap: 8px;
+  /* width: 100%; */
+  /* margin: auto auto 45px auto; */
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    gap: 10px;
+  }
+
+  @media screen and (min-width: ${theme.breakpoints.desktop}) {
+    gap: 20px;
+  }
+
+  & button{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 30px;
+  height: 30px;
+
+  border-radius: 10px;
+  border: 1px solid #999;
+  background: ${theme.colors.white};
+  cursor: pointer;
+  transition: all 0.25s ease-in;
+
+   @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    width: 36px;
+    height: 36px;
+  }
+
+  @media screen and (min-width: ${theme.breakpoints.desktop}) {
+      width: 46px;
+      height: 46px;
+  }
+
+  &:hover, &:focus, &:active{
+    background-color: #98CEFF;
+  }
+
+  &>svg{
+    width: 14px;
+    height: 14px;
+
+    @media screen and (min-width: ${theme.breakpoints.desktop}) {
+      width: 21px;
+      height: 21px;
+    }
+  }
+
+  }
 }
 
 .rc-pagination-total-text{

@@ -1,7 +1,7 @@
 import Pagination from 'rc-pagination';
 import {
-  // MdKeyboardDoubleArrowLeft,
-  // MdKeyboardDoubleArrowRight,
+  MdKeyboardDoubleArrowLeft,
+  MdKeyboardDoubleArrowRight,
   MdNavigateBefore,
   MdNavigateNext,
 } from 'react-icons/md';
@@ -45,8 +45,26 @@ export const PaginationBlock = ({
     }
     return originalElement;
   };
+
+  const FirstLastArrow = type => {
+    if (type === 'first') {
+      PaginationChange(1, size);
+    }
+    if (type === 'last') {
+      PaginationChange(Math.ceil(items.length / size), size);
+    }
+  };
+
   return (
     <div className="table-filter-info">
+      <button
+        type="button"
+        aria-label="to first page"
+        id="first"
+        onClick={e => FirstLastArrow(e.currentTarget.id)}
+      >
+        <MdKeyboardDoubleArrowLeft />
+      </button>
       <Pagination
         className="pagination-data"
         showTotal={(total, range) => `${range[0]}-${range[1]} of ${total}`}
@@ -59,6 +77,14 @@ export const PaginationBlock = ({
         onShowSizeChange={PerPageChange}
         style={{}}
       />
+      <button
+        type="button"
+        aria-label="to last page"
+        id="last"
+        onClick={e => FirstLastArrow(e.currentTarget.id)}
+      >
+        <MdKeyboardDoubleArrowRight />
+      </button>
     </div>
   );
 };
