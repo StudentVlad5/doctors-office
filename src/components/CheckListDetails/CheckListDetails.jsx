@@ -39,6 +39,7 @@ import clipboardCopy from 'clipboard-copy';
 import { useParams } from 'react-router-dom';
 import { export2Doc } from 'services/exportToWord';
 import { theme } from 'components/baseStyles/Variables.styled';
+import axios from 'axios';
 
 export const CheckListDetails = () => {
   const [data, setData] = useState([]);
@@ -74,9 +75,27 @@ export const CheckListDetails = () => {
     })();
   }, []);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
     console.log(inputData);
+
+    const url = 'http://185.116.194.159:34345/edit';
+    const identifier = id;
+    const data_perem_name = inputData.clinic;
+    const data_hospitalizationTime = inputData.hospitalizationTime;
+    const data_hospitalizationDate = inputData.hospitalizationDate;
+
+    try {
+      const res = await axios.post(
+        `${url}?identifier=${identifier}&perem_name=${data_perem_name}&hospitalizationTime=${data_hospitalizationTime}&hospitalizationDate=${data_hospitalizationDate}`,
+        {
+          ...inputData,
+        }
+      );
+      console.log('True', res.data);
+    } catch (err) {
+      console.log('Error', err);
+    }
 
     setInputData({
       clinic: '',
