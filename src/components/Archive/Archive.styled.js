@@ -8,6 +8,8 @@ const ArchiveContainer = styled(Container)`
 `;
 
 const Title = styled.h1`
+  margin-top: 20px;
+
   color: ${theme.colors.black};
   font-size: 28px;
   font-style: normal;
@@ -25,6 +27,8 @@ const Title = styled.h1`
 `;
 
 const Subtitle = styled.h2`
+  margin-top: 20px;
+
   color: ${theme.colors.black};
   font-size: 14px;
   font-style: normal;

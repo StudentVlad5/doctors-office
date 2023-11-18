@@ -122,6 +122,7 @@ const BtnWrapper = styled.div`
   gap: 23px;
 
   float: inline-end;
+  margin-top: 20px;
   margin-bottom: 13px;
 
   @media screen and (min-width: ${theme.breakpoints.desktop}) {
@@ -153,28 +154,9 @@ const BtnFilter = styled.button`
     /* stroke: currentColor; */
 
     @media screen and (min-width: ${theme.breakpoints.desktop}) {
-      width: 21px;
-      height: 21px;
+      width: 18px;
+      height: 18px;
     }
-  }
-`;
-
-const LearnMoreBtn = styled.button`
-  display: block;
-  margin-left: auto;
-  padding: 6px;
-
-  font-size: 10px;
-  font-weight: 500;
-  color: ${theme.colors.black};
-  background-color: all 0.25s ease-in;
-
-  transition: ${theme.transition};
-  cursor: pointer;
-
-  &:hover,
-  &:focus {
-    box-shadow: ${theme.colors.grey} 1px 1px 2px inset;
   }
 `;
 
@@ -277,7 +259,6 @@ export {
   TableData,
   BtnWrapper,
   BtnFilter,
-  LearnMoreBtn,
   ClearFiltersBtn,
   DownloadExcel,
   Link,

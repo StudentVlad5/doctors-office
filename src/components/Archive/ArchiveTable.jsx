@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchData } from 'services/APIservice';
 import { PaginationBlock } from 'helpers/Pagination/Pagination';
-import {
-  getFromStorage,
-  removeItem,
-  saveToStorage,
-} from 'services/localStorService';
+import { getFromStorage, saveToStorage } from 'services/localStorService';
 import { onLoading, onLoaded } from 'helpers/Loader/Loader';
 import { onFetchError } from 'helpers/Messages/NotifyMessages';
 import {
@@ -49,74 +45,30 @@ export const ArchiveTable = () => {
   const [error, setError] = useState(null);
   const [reload, setReload] = useState(false);
 
-  useEffect(() => {
-    (async function getData() {
-      setIsLoading(true);
-      try {
-        // const { data } = await fetchData('*');
-        // if (!data) {
-        //   return onFetchError('Whoops, something went wrong');
-        // }
-        // setChecklists(data);
-        // setFilterChecklists(data);
-        const sortedChecklists = [...archive].sort(
-          (a, b) => b.dateStartChecklist - a.dateStartChecklist
-        );
-        setChecklists(sortedChecklists);
-        setFilterChecklists(sortedChecklists);
-        saveToStorage('filters', filters);
-        // getActiveInput();
-      } catch (error) {
-        setError(error);
-        console.log('getData ~ error:', error);
-      } finally {
-        setIsLoading(false);
-        setReload(false);
-      }
-    })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reload, filters]);
-
-  // get selected filter elements after refresh
-  const handleActiveInput = key => {
-    const filtersFromLS = getFromStorage('filters');
-    const selectedFilters = filtersFromLS[key];
-    if (selectedFilters) {
-      selectedFilters.forEach(item => {
-        const inputs = document.querySelectorAll(`input[name="${item}"]`);
-        inputs?.forEach(input => input.classList.add('active'));
-      });
-    }
-  };
-
-  const getActiveInput = () => {
-    initialState.forEach(filter => handleActiveInput(filter));
-  };
-
   //get archive checklists
-  function getWeekNumber(date) {
-    if (new Date(date).getDay() === 0) {
-      const startOfYear = new Date(date.getFullYear(), 0, 1);
-      const startOfWeek = new Date(
-        startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-      );
+  //   function getWeekNumber(date) {
+  //     if (new Date(date).getDay() === 0) {
+  //       const startOfYear = new Date(date.getFullYear(), 0, 1);
+  //       const startOfWeek = new Date(
+  //         startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+  //       );
 
-      const diffInTime = date.getTime() - startOfWeek.getTime();
-      const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+  //       const diffInTime = date.getTime() - startOfWeek.getTime();
+  //       const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
 
-      return diffInWeeks;
-    }
+  //       return diffInWeeks;
+  //     }
 
-    const startOfYear = new Date(date.getFullYear(), 0, 1);
-    const startOfWeek = new Date(
-      startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-    );
+  //     const startOfYear = new Date(date.getFullYear(), 0, 1);
+  //     const startOfWeek = new Date(
+  //       startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+  //     );
 
-    const diffInTime = date.getTime() - startOfWeek.getTime();
-    const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+  //     const diffInTime = date.getTime() - startOfWeek.getTime();
+  //     const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
 
-    return diffInWeeks + 1; // Add 1 to account for the first week
-  }
+  //     return diffInWeeks + 1; // Add 1 to account for the first week
+  //   }
 
   useEffect(() => {
     (async function getData() {
@@ -126,25 +78,50 @@ export const ArchiveTable = () => {
         if (!data) {
           return onFetchError('Whoops, something went wrong');
         }
-        const today = new Date();
-        const currentWeekNumber = getWeekNumber(today);
-        const archiveChecklists = archive.filter(
-          //uses the archive.json until the fetch is working
-          ({ dateStartChecklist }) =>
-            currentWeekNumber === getWeekNumber(new Date(dateStartChecklist)) &&
-            today.getDay() >= new Date(dateStartChecklist).getDay()
-        );
-        setChecklists(archiveChecklists);
-        setFilterChecklists(archiveChecklists);
+        // setChecklists(data);
+        // setFilterChecklists(data);
+
+        /* --- uses the archive.json until the fetch is working --- */
+        setChecklists(archive);
+        setFilterChecklists(archive);
+
+        /* --- data filter this week --- */
+        // const today = new Date();
+        // const currentWeekNumber = getWeekNumber(today);
+        // const archiveChecklists = archive.filter(
+        //   ({ dateStartChecklist }) =>
+        //     currentWeekNumber === getWeekNumber(new Date(dateStartChecklist)) &&
+        //     today.getDay() >= new Date(dateStartChecklist).getDay()
+        // );
+        // setChecklists(archiveChecklists);
+        // setFilterChecklists(archiveChecklists);
+
+        saveToStorage('filters', filters);
+        // getActiveInput();
       } catch (error) {
         setError(error);
       } finally {
         setIsLoading(false);
         setReload(false);
-        setTimeout(() => getData(), 60000);
+        // setTimeout(() => getData(), 60000);
       }
     })();
-  }, [reload]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [reload, filters]);
+
+  // get selected filter elements after refresh
+  // const handleActiveInput = key => {
+  //   const filtersFromLS = getFromStorage('filters');
+  //   const selectedFilters = filtersFromLS[key];
+  //   if (selectedFilters) {
+  //     const inputs = document.querySelectorAll(`input[name="${key}"]`);
+  //     inputs?.forEach(input => input.classList.add('active'));
+  //   }
+  // };
+
+  // const getActiveInput = () => {
+  //   Object.keys(initialState).forEach(filter => handleActiveInput(filter));
+  // };
 
   const handleChangeFilter = e => {
     e.preventDefault();
@@ -156,22 +133,18 @@ export const ArchiveTable = () => {
     setFilters(selectedFilters);
     saveToStorage('filters', selectedFilters);
     document.querySelector(`button[id='${name}']`).classList.toggle('active');
-    // startFilterChecklists(e);
   };
 
   const startFilterChecklists = e => {
     e.preventDefault();
     const peremOfFilter = [];
+    // eslint-disable-next-line array-callback-return
     checklists.map(item => {
       if (
         item.numberChecklist
           .toString()
           .toLowerCase()
           .includes(filters['filterChecklist']) &&
-        // item.dateChecklist
-        //   .toString()
-        //   .toLowerCase()
-        //   .includes(filters['filterChecklist']) &&
         item.brigadeSMP
           .toString()
           .toLowerCase()
@@ -200,10 +173,6 @@ export const ArchiveTable = () => {
           .toString()
           .toLowerCase()
           .includes(filters['filterDateStartChecklist']) &&
-        // item.timeStartChecklist
-        //   .toString()
-        //   .toLowerCase()
-        //   .includes(filters['filterDateStartChecklist']) &&
         item.durationOfHospitalization
           .toString()
           .toLowerCase()
