@@ -20,8 +20,8 @@ import {
 import { ReactComponent as Close } from 'images/svg/close.svg';
 import { ReactComponent as Excel } from 'images/svg/excel.svg';
 import { FaFilter } from 'react-icons/fa';
-
 import archive from 'data/archive.json';
+import { utils as XLSXUtils, writeFile as writeXLSX } from 'xlsx';
 
 export const ArchiveTable = () => {
   const [checklists, setChecklists] = useState([]);
@@ -283,6 +283,29 @@ export const ArchiveTable = () => {
     getFromStorage('page') ? getFromStorage('page') : 1
   );
 
+  const handleDownloadExcel = () => {
+    const dataForExcel = filterChecklists.map(checklist => ({
+      'Чек-листа №': checklist.numberChecklist,
+      '№ Бригады СМП': checklist.brigadeSMP,
+      'ИИН пациента': checklist.patientINN,
+      'ФИО пациента': checklist.patientFIO,
+      'Поликлиника прикрепления': checklist.hospital,
+      'Идентификатор сотрудника': checklist.employeeID,
+      'Статус чек-листа': checklist.statusChecklist,
+      'Дата Чек-листа': new Date(checklist.dateChecklist).toLocaleDateString(),
+      'Дата и время начала чек-листа': `${new Date(
+        checklist.dateStartChecklist
+      ).toLocaleDateString()} ${checklist.timeStartChecklist}`,
+      ' Время от времени до госпитализации (от двери до иглы)':
+        checklist.durationOfHospitalization,
+    }));
+
+    const ws = XLSXUtils.json_to_sheet(dataForExcel);
+    const wb = XLSXUtils.book_new();
+    XLSXUtils.book_append_sheet(wb, ws, 'Данные Чек-листов');
+    writeXLSX(wb, 'Чек-листы.xlsx');
+  };
+
   return (
     <>
       <BtnWrapper>
@@ -297,7 +320,11 @@ export const ArchiveTable = () => {
         >
           <Close /> <span>Сбросить фильтры</span>
         </ClearFiltersBtn>
-        <DownloadExcel type="button" aria-label="Скачать в excel">
+        <DownloadExcel
+          type="button"
+          aria-label="Скачать в excel"
+          onClick={handleDownloadExcel}
+        >
           <Excel /> <span>Скачать в excel</span>
         </DownloadExcel>
       </BtnWrapper>
