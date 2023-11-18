@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { utils as XLSXUtils, writeFile as writeXLSX } from 'xlsx';
+import moment from 'moment';
 import { fetchData } from 'services/APIservice';
 import { PaginationBlock } from 'helpers/Pagination/Pagination';
 import { getFromStorage, saveToStorage } from 'services/localStorService';
@@ -20,8 +22,6 @@ import {
 import { ReactComponent as Close } from 'images/svg/close.svg';
 import { ReactComponent as Excel } from 'images/svg/excel.svg';
 import { FaFilter } from 'react-icons/fa';
-import archive from 'data/archive.json';
-import { utils as XLSXUtils, writeFile as writeXLSX } from 'xlsx';
 
 const initialState = {
   filterChecklist: '',
@@ -37,6 +37,8 @@ const initialState = {
 
 export const ArchiveTable = () => {
   const [checklists, setChecklists] = useState([]);
+  // eslint-disable-next-line no-unused-vars
+  const [uniqueChecklists, setUniqueChecklists] = useState([]);
   const [filterChecklists, setFilterChecklists] = useState([]);
   const [filters, setFilters] = useState(
     getFromStorage('filters') ? getFromStorage('filters') : initialState
@@ -45,30 +47,30 @@ export const ArchiveTable = () => {
   const [error, setError] = useState(null);
   const [reload, setReload] = useState(false);
 
-  //get archive checklists
-  //   function getWeekNumber(date) {
-  //     if (new Date(date).getDay() === 0) {
-  //       const startOfYear = new Date(date.getFullYear(), 0, 1);
-  //       const startOfWeek = new Date(
-  //         startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-  //       );
+  /* --- get archive checklists --- */
+  function getWeekNumber(date) {
+    if (new Date(date).getDay() === 0) {
+      const startOfYear = new Date(date.getFullYear(), 0, 1);
+      const startOfWeek = new Date(
+        startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+      );
 
-  //       const diffInTime = date.getTime() - startOfWeek.getTime();
-  //       const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+      const diffInTime = date.getTime() - startOfWeek.getTime();
+      const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
 
-  //       return diffInWeeks;
-  //     }
+      return diffInWeeks;
+    }
 
-  //     const startOfYear = new Date(date.getFullYear(), 0, 1);
-  //     const startOfWeek = new Date(
-  //       startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-  //     );
+    const startOfYear = new Date(date.getFullYear(), 0, 1);
+    const startOfWeek = new Date(
+      startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+    );
 
-  //     const diffInTime = date.getTime() - startOfWeek.getTime();
-  //     const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+    const diffInTime = date.getTime() - startOfWeek.getTime();
+    const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
 
-  //     return diffInWeeks + 1; // Add 1 to account for the first week
-  //   }
+    return diffInWeeks + 1; // Add 1 to account for the first week
+  }
 
   useEffect(() => {
     (async function getData() {
@@ -78,23 +80,49 @@ export const ArchiveTable = () => {
         if (!data) {
           return onFetchError('Whoops, something went wrong');
         }
-        // setChecklists(data);
-        // setFilterChecklists(data);
 
-        /* --- uses the archive.json until the fetch is working --- */
-        setChecklists(archive);
-        setFilterChecklists(archive);
+        const sortedData = data.normal.sort(
+          (a, b) => b.identifier - a.identifier
+        );
 
         /* --- data filter this week --- */
-        // const today = new Date();
-        // const currentWeekNumber = getWeekNumber(today);
-        // const archiveChecklists = archive.filter(
-        //   ({ dateStartChecklist }) =>
-        //     currentWeekNumber === getWeekNumber(new Date(dateStartChecklist)) &&
-        //     today.getDay() >= new Date(dateStartChecklist).getDay()
+        const today = new Date();
+        const currentWeekNumber = getWeekNumber(today);
+        const archiveChecklists = sortedData.filter(
+          ({ identifier }) =>
+            currentWeekNumber === getWeekNumber(new Date(Number(identifier))) &&
+            today.getDay() >= new Date(Number(identifier)).getDay()
+        );
+
+        /* --- get all unique identifiers --- */
+        // const uniqueIdentifiers = [];
+        // data.normal.forEach(element => {
+        //   const isDuplicate = uniqueIdentifiers.includes(element.identifier);
+        //   if (!isDuplicate) {
+        //     uniqueIdentifiers.push(element.identifier);
+        //   }
+        // });
+
+        // setUniqueChecklists(
+        //   uniqueIdentifiers.sort(function (a, b) {
+        //     return b - a;
+        //   })
         // );
-        // setChecklists(archiveChecklists);
-        // setFilterChecklists(archiveChecklists);
+
+        /* --- get unique identifier from archive checklists--- */
+        const uniqueIdentifiers = [];
+        const unique = archiveChecklists.filter(element => {
+          const isDuplicate = uniqueIdentifiers.includes(element.identifier);
+          if (!isDuplicate) {
+            uniqueIdentifiers.push(element.identifier);
+            return true;
+          }
+          return false;
+        });
+
+        setUniqueChecklists(uniqueIdentifiers);
+        setChecklists(unique);
+        setFilterChecklists(unique);
 
         saveToStorage('filters', filters);
         // getActiveInput();
@@ -106,10 +134,9 @@ export const ArchiveTable = () => {
         // setTimeout(() => getData(), 60000);
       }
     })();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reload, filters]);
 
-  // get selected filter elements after refresh
+  /* --- get selected filter elements after refresh--- */
   // const handleActiveInput = key => {
   //   const filtersFromLS = getFromStorage('filters');
   //   const selectedFilters = filtersFromLS[key];
@@ -141,11 +168,11 @@ export const ArchiveTable = () => {
     // eslint-disable-next-line array-callback-return
     checklists.map(item => {
       if (
-        item.numberChecklist
+        item.identifier
           .toString()
           .toLowerCase()
           .includes(filters['filterChecklist']) &&
-        item.brigadeSMP
+        item.application_number
           .toString()
           .toLowerCase()
           .includes(filters['filterBrigadeSMP']) &&
@@ -153,11 +180,11 @@ export const ArchiveTable = () => {
           .toString()
           .toLowerCase()
           .includes(filters['filterPatientINN']) &&
-        item.patientFIO
+        item.patientFullName
           .toString()
           .toLowerCase()
           .includes(filters['filterPatientFIO']) &&
-        item.hospital
+        item.numberHospital
           .toString()
           .toLowerCase()
           .includes(filters['filterHospital']) &&
@@ -165,15 +192,16 @@ export const ArchiveTable = () => {
           .toString()
           .toLowerCase()
           .includes(filters['filterEmployeeID']) &&
-        item.statusChecklist
+        item.checkStatus
           .toString()
           .toLowerCase()
           .includes(filters['filterStatusChecklist']) &&
-        item.dateStartChecklist
+        item.startTimeAutoHh
           .toString()
           .toLowerCase()
           .includes(filters['filterDateStartChecklist']) &&
-        item.durationOfHospitalization
+        new Date(item.identifier).getMinutes
+          .getHours()
           .toString()
           .toLowerCase()
           .includes(filters['filterDurationOfHospitalization'])
@@ -213,19 +241,24 @@ export const ArchiveTable = () => {
 
   const handleDownloadExcel = () => {
     const dataForExcel = filterChecklists.map(checklist => ({
-      'Чек-листа №': checklist.numberChecklist,
-      '№ Бригады СМП': checklist.brigadeSMP,
+      'Чек-листа №': checklist.identifier,
+      '№ Бригады СМП': checklist.application_number,
       'ИИН пациента': checklist.patientINN,
-      'ФИО пациента': checklist.patientFIO,
-      'Поликлиника прикрепления': checklist.hospital,
+      'ФИО пациента': checklist.patientFullName,
+      'Поликлиника прикрепления': checklist.numberHospital,
       'Идентификатор сотрудника': checklist.employeeID,
-      'Статус чек-листа': checklist.statusChecklist,
-      'Дата Чек-листа': new Date(checklist.dateChecklist).toLocaleDateString(),
-      'Дата и время начала чек-листа': `${new Date(
-        checklist.dateStartChecklist
-      ).toLocaleDateString()} ${checklist.timeStartChecklist}`,
-      ' Время от времени до госпитализации (от двери до иглы)':
-        checklist.durationOfHospitalization,
+      'Статус чек-листа': checklist.checkStatus,
+      'Дата Чек-листа': moment(new Date(+checklist?.identifier)).format(
+        'DD/MM/YYYY'
+      ),
+      'Дата и время начала чек-листа': `${checklist.startTimeAutoHh}:${checklist.startTimeAutoMm}`,
+      ' Время от времени до госпитализации (от двери до иглы)': `${
+        new Date(checklist?.identifier).getHours() -
+        new Date(checklist?.identifier).getHours()
+      } часов ${
+        new Date(checklist?.identifier).getMinutes() -
+        new Date(checklist?.identifier).getMinutes()
+      } минут`,
     }));
 
     const ws = XLSXUtils.json_to_sheet(dataForExcel);
@@ -473,28 +506,33 @@ export const ArchiveTable = () => {
             !error &&
             filterChecklists
               .slice((current - 1) * size, current * size)
-              .map(checklist => (
-                <TableRow key={checklist._id}>
+              .map(item => (
+                <TableRow key={item.identifier}>
                   <TableData>
-                    <Link to={`/checklist/${checklist._id}`}>
-                      № {checklist.numberChecklist} от{' '}
-                      {new Date(checklist.dateChecklist).toLocaleDateString()}
+                    <Link to={`/checklist/${item.identifier}`}>
+                      № {item.identifier} от{' '}
+                      {moment(new Date(+item?.identifier)).format('DD/MM/YYYY')}
                     </Link>
                   </TableData>
-                  <TableData>№ {checklist.brigadeSMP}</TableData>
-                  <TableData>{checklist.patientINN}</TableData>
-                  <TableData>{checklist.patientFIO}</TableData>
-                  <TableData>{checklist.hospital}</TableData>
-                  <TableData>{checklist.employeeID}</TableData>
-                  <TableData>{checklist.statusChecklist}</TableData>
+                  <TableData>№ {item.application_number}</TableData>
+                  <TableData>{item.patientINN}</TableData>
+                  <TableData>{item.patientFullName}</TableData>
+                  <TableData>{item.numberHospital}</TableData>
+                  <TableData>{item.employeeID}</TableData>
+                  <TableData>{item.checkStatus}</TableData>
                   <TableData>
-                    {new Date(
-                      checklist.dateStartChecklist
-                    ).toLocaleDateString()}
+                    {moment(new Date(+item?.identifier)).format('DD/MM/YYYY')}
                     <br />
-                    {checklist.timeStartChecklist}
+                    {item.startTimeAutoHh}:{item.startTimeAutoMm}
                   </TableData>
-                  <TableData>{checklist.durationOfHospitalization}</TableData>
+                  <TableData>
+                    {new Date(item?.identifier).getHours() -
+                      new Date(item?.identifier).getHours()}{' '}
+                    часов{' '}
+                    {new Date(item?.identifier).getMinutes() -
+                      new Date(item?.identifier).getMinutes()}{' '}
+                    минут
+                  </TableData>
                 </TableRow>
               ))}
         </tbody>
