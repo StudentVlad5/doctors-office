@@ -4,7 +4,7 @@ import { theme } from 'components/baseStyles/Variables.styled';
 import { Container } from 'components/baseStyles/CommonStyle.styled';
 
 const HeaderSection = styled.header`
-  width: 100vw;
+  width: 100%;
   margin: 0 auto;
   background: ${theme.colors.headerBlue};
 `;
