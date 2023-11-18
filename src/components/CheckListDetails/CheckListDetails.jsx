@@ -39,7 +39,6 @@ import clipboardCopy from 'clipboard-copy';
 import { useParams } from 'react-router-dom';
 import { export2Doc } from 'services/exportToWord';
 import { theme } from 'components/baseStyles/Variables.styled';
-import axios from 'axios';
 
 export const CheckListDetails = () => {
   const [data, setData] = useState([]);
@@ -56,13 +55,21 @@ export const CheckListDetails = () => {
   const [error, setError] = useState(null);
   const routerParams = useParams();
   const id = routerParams.id;
+  const checkData = {
+    bloodSugarLevelMin : 2.7,
+    bloodSugarLevelMax : 22,
+    bodyTemperature: 37,
+    arterialPressureS: 110,
+    arterialPressureD: 180,
+    patientAgeMin: 17,
+    patientAgeMax: 80,
+  }
 
   useEffect(() => {
     (async function getData() {
       setIsLoading(true);
       try {
         const { data } = await fetchData(`${id}`); //1696447704291
-        console.log(data);
         if (!data) {
           return onFetchError('Whoops, something went wrong');
         }
@@ -73,35 +80,30 @@ export const CheckListDetails = () => {
         setIsLoading(false);
       }
     })();
-  }, []);
+  }, [id]);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    console.log(inputData);
 
-    const url = 'http://185.116.194.159:34345/edit';
     const identifier = id;
     const data_perem_name = inputData.clinic;
     const data_hospitalizationTime = inputData.hospitalizationTime;
     const data_hospitalizationDate = inputData.hospitalizationDate;
 
     try {
-      const res = await axios.post(
-        `${url}?identifier=${identifier}&perem_name=${data_perem_name}&hospitalizationTime=${data_hospitalizationTime}&hospitalizationDate=${data_hospitalizationDate}`,
-        {
-          ...inputData,
-        }
+      setIsLoading(true);
+      const res = await fetchData(
+        `${identifier}&perem_name=${data_perem_name}&hospitalizationTime=${data_hospitalizationTime}&hospitalizationDate=${data_hospitalizationDate}`,
       );
-      console.log('True', res.data);
-    } catch (err) {
-      console.log('Error', err);
+      if (!res) {
+        return onFetchError('Whoops, something went wrong');
+      }
+      setData(res.normal);
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
     }
-
-    setInputData({
-      clinic: '',
-      hospitalizationTime: null,
-      hospitalizationDate: null,
-    });
   };
 
   const handleCopy = () => {
@@ -122,16 +124,16 @@ export const CheckListDetails = () => {
     Методика F-A-S-T:
       Провисание на лице:
       ${
-        data?.saggingFace && data.saggingFace.toString() === 'true' ? 'Да' : '-'
+        data?.saggingFace && data?.saggingFace.toString() === 'true' ? 'Да' : '-'
       }
       Смещение рук:
       ${
-        data?.handDisplacement && data.handDisplacement.toString() === 'true'
+        data?.handDisplacement && data?.handDisplacement.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Нарушения речи: ${
-        data?.speechDisorders && data.speechDisorders.toString() === 'true'
+        data?.speechDisorders && data?.speechDisorders.toString() === 'true'
           ? 'Да'
           : '-'
       }
@@ -151,72 +153,72 @@ export const CheckListDetails = () => {
     Анамнез:
       Внутричерепные кровоизлияния: ${
         data?.intracranialHemorrhages &&
-        data.intracranialHemorrhages.toString() === 'true'
+        data?.intracranialHemorrhages.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Большие операции или тяжелые травмы за последние 14 суток: ${
         data?.majorSurgeriesOrSevereInjuries &&
-        data.majorSurgeriesOrSevereInjuries.toString() === 'true'
+        data?.majorSurgeriesOrSevereInjuries.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Недавние внутричерепные или интраспинальные хирургические вмешательства: ${
         data?.surgicalInterventions &&
-        data.surgicalInterventions.toString() === 'true'
+        data?.surgicalInterventions.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Инфаркт миокарда в предшествующие инсульту 3 месяца: ${
         data?.myocardialInfarction &&
-        data.myocardialInfarction.toString() === 'true'
+        data?.myocardialInfarction.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Инсульт в предшествующие инсульту 3 месяца: ${
-        data?.stroke && data.stroke.toString() === 'true' ? 'Да' : '-'
+        data?.stroke && data?.stroke.toString() === 'true' ? 'Да' : '-'
       }
       Проведена пункция артерии в сложной для компрессии области в предшествующие инсульту 7 дней: ${
-        data?.arterialPuncture && data.arterialPuncture.toString() === 'true'
+        data?.arterialPuncture && data?.arterialPuncture.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Малые операции или инвазивные вмешательства в последние 10 дней: ${
-        data?.smallOperations && data.smallOperations.toString() === 'true'
+        data?.smallOperations && data?.smallOperations.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Сердечно-сосудистые заболевания (подострый бактериальный эндокардит, острый перикардит): ${
         data?.cardiovascularDiseases &&
-        data.cardiovascularDiseases.toString() === 'true'
+        data?.cardiovascularDiseases.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Острое инфекционное заболевание: ${
         data?.acuteInfectiousDisease &&
-        data.acuteInfectiousDisease.toString() === 'true'
+        data?.acuteInfectiousDisease.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Кровоизлияния в ЖКТ и мочевыводящих путях не позднее 21 дня до инсульта: ${
-        data?.hemorrhagicStroke && data.hemorrhagicStroke.toString() === 'true'
+        data?.hemorrhagicStroke && data?.hemorrhagicStroke.toString() === 'true'
           ? 'Да'
           : '-'
       }
       Судорожные приступы в дебюте заболевания (имеется связь с острой церебральной ишемией): ${
-        data?.convulsions && data.convulsions.toString() === 'true' ? 'Да' : '-'
+        data?.convulsions && data?.convulsions.toString() === 'true' ? 'Да' : '-'
       }
       ОНМК ранее: ${
-        data?.stroke && data.stroke.toString() === 'true' ? 'Да' : '-'
+        data?.stroke && data?.stroke.toString() === 'true' ? 'Да' : '-'
       }
       Гемморагический: ${
-        data?.hemorrhages && data.hemorrhages.toString() === 'true' ? 'Да' : '-'
+        data?.hemorrhages && data?.hemorrhages.toString() === 'true' ? 'Да' : '-'
       }
       САК: ${
-        data?.SACStroke && data.SACStroke.toString() === 'true' ? 'Да' : '-'
+        data?.SACStroke && data?.SACStroke.toString() === 'true' ? 'Да' : '-'
       }
       Ишемический инсульт: ${
-        data?.ischemicStroke && data.ischemicStroke.toString() === 'true'
+        data?.ischemicStroke && data?.ischemicStroke.toString() === 'true'
           ? 'Да'
           : '-'
       }
@@ -234,13 +236,11 @@ export const CheckListDetails = () => {
       setTimeout(() => setIsCopied(false), 3000);
     });
   };
-
   return (
     <Container>
       {isLoading ? onLoading() : onLoaded()}
       {error && onFetchError('Whoops, something went wrong')}
-      {setData && data && !error && (
-        <div id="exportContent">
+         <div id="exportContent">
           <CheckListBox>
             <div>
               <BackContainer>
@@ -271,7 +271,7 @@ export const CheckListDetails = () => {
               </CheckListBtn>
               <CheckListBtn
                 type="button"
-                onClick={() => export2Doc('exportContent')}
+                onClick={() => export2Doc('exportContent', data?.patientFullName)}
               >
                 <WordIcon /> Скачать в word
               </CheckListBtn>
@@ -303,7 +303,7 @@ export const CheckListDetails = () => {
                 <Tr>
                   <Td>Провисание на лице</Td>
                   <Td>
-                    {data?.saggingFace && data.saggingFace.toString() === 'true'
+                    {data?.saggingFace && data?.saggingFace.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </Td>
@@ -312,7 +312,7 @@ export const CheckListDetails = () => {
                   <Td>Смещение рук</Td>
                   <Td>
                     {data?.handDisplacement &&
-                    data.handDisplacement.toString() === 'true'
+                    data?.handDisplacement.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </Td>
@@ -321,7 +321,7 @@ export const CheckListDetails = () => {
                   <Td>Нарушения речи</Td>
                   <Td>
                     {data?.speechDisorders &&
-                    data.speechDisorders.toString() === 'true'
+                    data?.speechDisorders.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </Td>
@@ -341,8 +341,8 @@ export const CheckListDetails = () => {
               <tbody>
                 <TrRed
                   $props={
-                    Number(data?.bloodSugarLevel) < 2.7 ||
-                    Number(data?.bloodSugarLevel) > 22
+                    Number(data?.bloodSugarLevel) < checkData.bloodSugarLevelMin ||
+                    Number(data?.bloodSugarLevel) > checkData.bloodSugarLevelMax
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -353,7 +353,7 @@ export const CheckListDetails = () => {
                 </TrRed>
                 <TrRed
                   $props={
-                    Number(data?.bodyTemperature) < 37
+                    Number(data?.bodyTemperature) < checkData.bodyTemperature
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -364,8 +364,8 @@ export const CheckListDetails = () => {
                 </TrRed>
                 <TrRed
                   $props={
-                    Number(data?.arterialPressureS) > 110 ||
-                    Number(data?.arterialPressureD) > 180
+                    Number(data?.arterialPressureS) > checkData.arterialPressureS ||
+                    Number(data?.arterialPressureD) > checkData.arterialPressureD
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -383,8 +383,8 @@ export const CheckListDetails = () => {
                 </Tr>
                 <TrRed
                   $props={
-                    Number(data?.patientAge) < 18 ||
-                    Number(data?.patientAge) > 80
+                    Number(data?.patientAge) < checkData.patientAgeMin ||
+                    Number(data?.patientAge) > checkData.patientAgeMax
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -403,7 +403,7 @@ export const CheckListDetails = () => {
                   <TdSmall>Внутричерепные кровоизлияния</TdSmall>
                   <TdSmall style={{ width: 194 }}>
                     {data?.intracranialHemorrhages &&
-                    data.intracranialHemorrhages.toString() === 'true'
+                    data?.intracranialHemorrhages.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -414,7 +414,7 @@ export const CheckListDetails = () => {
                   </TdSmall>
                   <TdSmall>
                     {data?.majorSurgeriesOrSevereInjuries &&
-                    data.majorSurgeriesOrSevereInjuries.toString() === 'true'
+                    data?.majorSurgeriesOrSevereInjuries.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -426,7 +426,7 @@ export const CheckListDetails = () => {
                   </TdSmall>
                   <TdSmall>
                     {data?.surgicalInterventions &&
-                    data.surgicalInterventions.toString() === 'true'
+                    data?.surgicalInterventions.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -434,7 +434,7 @@ export const CheckListDetails = () => {
                 <TrRed
                   $props={
                     data?.myocardialInfarction &&
-                    data.myocardialInfarction.toString() === 'true'
+                    data?.myocardialInfarction.toString() === 'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -444,21 +444,21 @@ export const CheckListDetails = () => {
                   </TdSmall>
                   <TdSmall>
                     {data?.myocardialInfarction &&
-                    data.myocardialInfarction.toString() === 'true'
+                    data?.myocardialInfarction.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
                 </TrRed>
                 <TrRed
                   $props={
-                    data?.stroke && data.stroke.toString() === 'true'
+                    data?.stroke && data?.stroke.toString() === 'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
                 >
                   <TdSmall>Инсульт в предшествующие инсульту 3 месяца</TdSmall>
                   <TdSmall>
-                    {data?.stroke && data.stroke.toString() === 'true'
+                    {data?.stroke && data?.stroke.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -470,7 +470,7 @@ export const CheckListDetails = () => {
                   </TdSmall>
                   <TdSmall>
                     {data?.arterialPuncture &&
-                    data.arterialPuncture.toString() === 'true'
+                    data?.arterialPuncture.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -482,7 +482,7 @@ export const CheckListDetails = () => {
                   </TdSmall>
                   <TdSmall>
                     {data?.smallOperations &&
-                    data.smallOperations.toString() === 'true'
+                    data?.smallOperations.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -494,7 +494,7 @@ export const CheckListDetails = () => {
                   </TdSmall>
                   <TdSmall>
                     {data?.cardiovascularDiseases &&
-                    data.cardiovascularDiseases.toString() === 'true'
+                    data?.cardiovascularDiseases.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -503,7 +503,7 @@ export const CheckListDetails = () => {
                   <TdSmall>Острое инфекционное заболевание</TdSmall>
                   <TdSmall>
                     {data?.acuteInfectiousDisease &&
-                    data.acuteInfectiousDisease.toString() === 'true'
+                    data?.acuteInfectiousDisease.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -515,7 +515,7 @@ export const CheckListDetails = () => {
                   </TdSmall>
                   <TdSmall>
                     {data?.hemorrhagicStroke &&
-                    data.hemorrhagicStroke.toString() === 'true'
+                    data?.hemorrhagicStroke.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -526,7 +526,7 @@ export const CheckListDetails = () => {
                     острой церебральной ишемией)
                   </TdSmall>
                   <TdSmall>
-                    {data?.convulsions && data.convulsions.toString() === 'true'
+                    {data?.convulsions && data?.convulsions.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -535,7 +535,7 @@ export const CheckListDetails = () => {
                   <TdSmall>ОНМК ранее</TdSmall>
                   {/* НЕ ЗНАЙШОВ stroke ПРОСТО ПОКЛАВ!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
                   <TdSmall>
-                    {data?.stroke && data.stroke.toString() === 'true'
+                    {data?.stroke && data?.stroke.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -543,7 +543,7 @@ export const CheckListDetails = () => {
                 <Tr>
                   <TdSmall>Гемморагический</TdSmall>
                   <TdSmall>
-                    {data?.hemorrhages && data.hemorrhages.toString() === 'true'
+                    {data?.hemorrhages && data?.hemorrhages.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -551,7 +551,7 @@ export const CheckListDetails = () => {
                 <Tr>
                   <TdSmall>САК</TdSmall>
                   <TdSmall>
-                    {data?.SACStroke && data.SACStroke.toString() === 'true'
+                    {data?.SACStroke && data?.SACStroke.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -559,7 +559,7 @@ export const CheckListDetails = () => {
                 <TrRed
                   $props={
                     data?.ischemicStroke &&
-                    data.ischemicStroke.toString() === 'true'
+                    data?.ischemicStroke.toString() === 'true'
                       ? theme.colors.accentCoral
                       : theme.colors.darkGrey
                   }
@@ -567,7 +567,7 @@ export const CheckListDetails = () => {
                   <TdSmall>Ишемический инсульт</TdSmall>
                   <TdSmall>
                     {data?.ischemicStroke &&
-                    data.ischemicStroke.toString() === 'true'
+                    data?.ischemicStroke.toString() === 'true'
                       ? 'Да'
                       : '-'}
                   </TdSmall>
@@ -584,20 +584,20 @@ export const CheckListDetails = () => {
                 </Tr>
                 <Tr>
                   <Td>№ бригады СМП</Td>
-                  {/* НЕ ЗНАЙШОВ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
+                  {/* НЕТ ДАННЫХ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
 
                   <Td>№01/04</Td>
                 </Tr>
                 <Tr>
                   <Td>Заполнение чек-листа начато</Td>
-                  {/* НЕ ЗНАЙШОВ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
+                  {/* НЕТ ДАННЫХ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
 
                   <Td>15:45 31.08.2023</Td>
                 </Tr>
 
                 <Tr>
                   <Td>Заполнение чек-листа завершено</Td>
-                  {/* НЕ ЗНАЙШОВ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
+                  {/* НЕТ ДАННЫХ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
 
                   <Td>16:05 31.08.2023</Td>
                 </Tr>
@@ -667,7 +667,6 @@ export const CheckListDetails = () => {
             </AdditionalInfoForm>
           </AdditionalInfoBox>
         </div>
-      )}
     </Container>
   );
 };
