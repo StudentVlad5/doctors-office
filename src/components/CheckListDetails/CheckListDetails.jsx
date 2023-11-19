@@ -71,7 +71,6 @@ export const CheckListDetails = () => {
       setIsLoading(true);
       try {
         const { data } = await fetchData(`${id}`); //1696580949776
-        console.log(data);
         if (!data) {
           return onFetchError('Whoops, something went wrong');
         }

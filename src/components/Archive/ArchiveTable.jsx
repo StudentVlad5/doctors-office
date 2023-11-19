@@ -98,21 +98,6 @@ export const ArchiveTable = () => {
         //     today.getDay() >= new Date(Number(identifier)).getDay()
         // );
 
-        /* --- get all unique identifiers --- */
-        // const uniqueIdentifiers = [];
-        // data.normal.forEach(element => {
-        //   const isDuplicate = uniqueIdentifiers.includes(element.identifier);
-        //   if (!isDuplicate) {
-        //     uniqueIdentifiers.push(element.identifier);
-        //   }
-        // });
-
-        // setUniqueChecklists(
-        //   uniqueIdentifiers.sort(function (a, b) {
-        //     return b - a;
-        //   })
-        // );
-
         /* --- get unique identifier from archive checklists--- */
         const uniqueIdentifiers = [];
         // const unique = archiveChecklists.filter(element => {
@@ -181,8 +166,8 @@ export const ArchiveTable = () => {
           .join('')
           .includes(filters['filterBrigadeSMP']) &&
         item.patientINN
-          ?.toString()
-          .toLowerCase()
+          ?.split('')
+          .join('')
           .includes(filters['filterPatientINN']) &&
         item.patientFullName
           ?.split('')
@@ -196,18 +181,18 @@ export const ArchiveTable = () => {
         item.employeeID
           ?.split('')
           .join('')
-          .includes(filters['filterEmployeeID'])
+          .includes(filters['filterEmployeeID']) &&
         // &&
-        // // item.checkStatus
+        // // item.checkStatus // при появлении параметров закоммитить
         // //   ?.toString()
         // //   .toLowerCase()
         // //   .includes(filters['filterStatusChecklist'])
+        item.startTimeAutoHh
+          ?.toString()
+          .toLowerCase()
+          .includes(filters['filterDateStartChecklist'])
         //&&
-        // item.startTimeAutoHh
-        //   ?.toString()
-        //   .toLowerCase()
-        //   .includes(filters['filterDateStartChecklist']) &&
-        // new Date(Number(item.identifier))
+        // new Date(Number(item.identifier)) // при появлении параметров переделать на получаемый параметр
         //   .getMinutes()
         //   .toString()
         //   .toLowerCase()
@@ -224,6 +209,7 @@ export const ArchiveTable = () => {
     setFilters(initialState);
     const listOfInput = document.querySelectorAll('.active');
     listOfInput.forEach(item => item.classList.remove('active'));
+    setReload(true);
   };
 
   const handleSearchOnEnter = e => {
@@ -256,9 +242,9 @@ export const ArchiveTable = () => {
       'Идентификатор сотрудника': checklist.employeeID,
       'Статус чек-листа': checklist.checkStatus,
       'Дата Чек-листа': moment(new Date(+checklist?.identifier)).format(
-        'DD/MM/YYYY'
+        'DD.MM.YYYY'
       ),
-      'Дата и время начала чек-листа': `${checklist.startTimeAutoHh}:${checklist.startTimeAutoMm}`,
+      'Время начала чек-листа': `${checklist.startTimeAutoHh}:${checklist.startTimeAutoMm}`,
       ' Время от времени до госпитализации (от двери до иглы)': `${
         new Date(checklist?.identifier).getHours() -
         new Date(checklist?.identifier).getHours()
