@@ -136,7 +136,6 @@ export const ArchiveTable = () => {
       } finally {
         setIsLoading(false);
         setReload(false);
-        // setTimeout(() => getData(), 60000);
       }
     })();
   }, [reload]);
