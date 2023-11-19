@@ -183,7 +183,7 @@ export const Tr = styled.tr`
 `;
 
 export const TrRed = styled(Tr)`
-  background-color: ${props => props.$color};
+  background-color: ${props => props.$props};
 `;
 
 export const Td = styled.td`

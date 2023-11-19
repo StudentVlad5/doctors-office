@@ -182,7 +182,7 @@ const ItemCircle = styled.div`
   height: 41px;
   border-radius: 50%;
   border: 1px solid ${theme.colors.black};
-  background-color: ${props => props.$color};
+  background-color: ${props => props.$props};
 
   &:nth-child(n)::after {
     position: absolute;
@@ -250,7 +250,7 @@ const ItemLine = styled.div`
   display: flex;
   width: 10px;
   height: 20px;
-  background-color: ${props => props.$color};
+  background-color: ${props => props.$props};
 
   @media screen and (min-width: ${theme.breakpoints.tablet}) {
     width: 70px;
