@@ -3,7 +3,10 @@ import { utils as XLSXUtils, writeFile as writeXLSX } from 'xlsx';
 import moment from 'moment';
 import { fetchData } from 'services/APIservice';
 import { PaginationBlock } from 'helpers/Pagination/Pagination';
-import { getFromStorage, saveToStorage } from 'services/localStorService';
+import {
+  getFromStorage,
+  // saveToStorage
+} from 'services/localStorService';
 import { onLoading, onLoaded } from 'helpers/Loader/Loader';
 import { onFetchError } from 'helpers/Messages/NotifyMessages';
 import {
@@ -40,37 +43,38 @@ export const ArchiveTable = () => {
   // eslint-disable-next-line no-unused-vars
   const [uniqueChecklists, setUniqueChecklists] = useState([]);
   const [filterChecklists, setFilterChecklists] = useState([]);
-  const [filters, setFilters] = useState(
-    getFromStorage('filters') ? getFromStorage('filters') : initialState
-  );
+  const [filters, setFilters] = useState(initialState);
+  // const [filters, setFilters] = useState(
+  //   getFromStorage('filters') ? getFromStorage('filters') : initialState
+  // );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [reload, setReload] = useState(false);
 
   /* --- get archive checklists --- */
-  function getWeekNumber(date) {
-    if (new Date(date).getDay() === 0) {
-      const startOfYear = new Date(date.getFullYear(), 0, 1);
-      const startOfWeek = new Date(
-        startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-      );
+  // function getWeekNumber(date) {
+  //   if (new Date(date).getDay() === 0) {
+  //     const startOfYear = new Date(date.getFullYear(), 0, 1);
+  //     const startOfWeek = new Date(
+  //       startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+  //     );
 
-      const diffInTime = date.getTime() - startOfWeek.getTime();
-      const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+  //     const diffInTime = date.getTime() - startOfWeek.getTime();
+  //     const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
 
-      return diffInWeeks;
-    }
+  //     return diffInWeeks;
+  //   }
 
-    const startOfYear = new Date(date.getFullYear(), 0, 1);
-    const startOfWeek = new Date(
-      startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-    );
+  //   const startOfYear = new Date(date.getFullYear(), 0, 1);
+  //   const startOfWeek = new Date(
+  //     startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
+  //   );
 
-    const diffInTime = date.getTime() - startOfWeek.getTime();
-    const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
+  //   const diffInTime = date.getTime() - startOfWeek.getTime();
+  //   const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
 
-    return diffInWeeks + 1; // Add 1 to account for the first week
-  }
+  //   return diffInWeeks + 1; // Add 1 to account for the first week
+  // }
 
   useEffect(() => {
     (async function getData() {
@@ -86,13 +90,13 @@ export const ArchiveTable = () => {
         );
 
         /* --- data filter this week --- */
-        const today = new Date('2023-11-01');
-        const currentWeekNumber = getWeekNumber(today);
-        const archiveChecklists = sortedData.filter(
-          ({ identifier }) =>
-            currentWeekNumber === getWeekNumber(new Date(Number(identifier))) &&
-            today.getDay() >= new Date(Number(identifier)).getDay()
-        );
+        // const today = new Date();
+        // const currentWeekNumber = getWeekNumber(today);
+        // const archiveChecklists = sortedData.filter(
+        //   ({ identifier }) =>
+        //     currentWeekNumber === getWeekNumber(new Date(Number(identifier))) &&
+        //     today.getDay() >= new Date(Number(identifier)).getDay()
+        // );
 
         /* --- get all unique identifiers --- */
         // const uniqueIdentifiers = [];
@@ -111,7 +115,8 @@ export const ArchiveTable = () => {
 
         /* --- get unique identifier from archive checklists--- */
         const uniqueIdentifiers = [];
-        const unique = archiveChecklists.filter(element => {
+        // const unique = archiveChecklists.filter(element => {
+        const unique = sortedData.filter(element => {
           const isDuplicate = uniqueIdentifiers.includes(element.identifier);
           if (!isDuplicate) {
             uniqueIdentifiers.push(element.identifier);
@@ -124,7 +129,7 @@ export const ArchiveTable = () => {
         setChecklists(unique);
         setFilterChecklists(unique);
 
-        saveToStorage('filters', filters);
+        // saveToStorage('filters', filters);
         // getActiveInput();
       } catch (error) {
         setError(error);
@@ -134,7 +139,7 @@ export const ArchiveTable = () => {
         // setTimeout(() => getData(), 60000);
       }
     })();
-  }, [reload, filters]);
+  }, [reload]);
 
   /* --- get selected filter elements after refresh--- */
   // const handleActiveInput = key => {
@@ -158,8 +163,8 @@ export const ArchiveTable = () => {
       [name]: value,
     };
     setFilters(selectedFilters);
-    saveToStorage('filters', selectedFilters);
-    document.querySelector(`button[id='${name}']`).classList.toggle('active');
+    // saveToStorage('filters', selectedFilters);
+    document.querySelector(`button[id='${name}']`).classList.add('active');
   };
 
   const startFilterChecklists = e => {
@@ -173,38 +178,41 @@ export const ArchiveTable = () => {
           .toLowerCase()
           .includes(filters['filterChecklist']) &&
         item.application_number
-          ?.toString()
-          .toLowerCase()
+          ?.split('/')
+          .join('')
           .includes(filters['filterBrigadeSMP']) &&
         item.patientINN
           ?.toString()
           .toLowerCase()
           .includes(filters['filterPatientINN']) &&
         item.patientFullName
-          ?.toString()
-          .toLowerCase()
+          ?.split('')
+          .join('')
           .includes(filters['filterPatientFIO']) &&
-        // item.numberHospital
-        //   ?.toString()
-        //   .toLowerCase()
-        //   .includes(filters['filterHospital']) &&
+        // &&
+        // // item.numberHospital
+        // //   ?.toString()
+        // //   .toLowerCase()
+        // //   .includes(filters['filterHospital'])
         item.employeeID
-          ?.toString()
-          .toLowerCase()
-          .includes(filters['filterEmployeeID']) &&
-        // item.checkStatus
+          ?.split('')
+          .join('')
+          .includes(filters['filterEmployeeID'])
+        // &&
+        // // item.checkStatus
+        // //   ?.toString()
+        // //   .toLowerCase()
+        // //   .includes(filters['filterStatusChecklist'])
+        //&&
+        // item.startTimeAutoHh
         //   ?.toString()
         //   .toLowerCase()
-        //   .includes(filters['filterStatusChecklist']) &&
-        item.startTimeAutoHh
-          ?.toString()
-          .toLowerCase()
-          .includes(filters['filterDateStartChecklist']) &&
-        new Date(Number(item.identifier))
-          .getMinutes()
-          .toString()
-          .toLowerCase()
-          .includes(filters['filterDurationOfHospitalization'])
+        //   .includes(filters['filterDateStartChecklist']) &&
+        // new Date(Number(item.identifier))
+        //   .getMinutes()
+        //   .toString()
+        //   .toLowerCase()
+        //   .includes(filters['filterDurationOfHospitalization'])
       ) {
         peremOfFilter.push(item);
       }
@@ -511,7 +519,7 @@ export const ArchiveTable = () => {
                   <TableData>
                     <Link to={`/checklist/${item.identifier}`}>
                       № {item.identifier} от{' '}
-                      {moment(new Date(+item?.identifier)).format('DD/MM/YYYY')}
+                      {moment(new Date(+item?.identifier)).format('DD.MM.YYYY')}
                     </Link>
                   </TableData>
                   <TableData>№ {item.application_number}</TableData>
@@ -521,7 +529,7 @@ export const ArchiveTable = () => {
                   <TableData>{item.employeeID}</TableData>
                   <TableData>{item.checkStatus}</TableData>
                   <TableData>
-                    {moment(new Date(+item?.identifier)).format('DD/MM/YYYY')}
+                    {moment(new Date(+item?.identifier)).format('DD.MM.YYYY')}
                     <br />
                     {item.startTimeAutoHh}:{item.startTimeAutoMm}
                   </TableData>
