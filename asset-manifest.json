@@ -1,11 +1,11 @@
 {
   "files": {
     "main.css": "/doctors-office/static/css/main.cd2e038f.css",
-    "main.js": "/doctors-office/static/js/main.f7d84c34.js",
+    "main.js": "/doctors-office/static/js/main.8e93e531.js",
     "static/js/876.5f20b598.chunk.js": "/doctors-office/static/js/876.5f20b598.chunk.js",
     "static/js/849.f4deff76.chunk.js": "/doctors-office/static/js/849.f4deff76.chunk.js",
-    "static/js/305.924928cb.chunk.js": "/doctors-office/static/js/305.924928cb.chunk.js",
-    "static/js/248.08eef3df.chunk.js": "/doctors-office/static/js/248.08eef3df.chunk.js",
+    "static/js/305.cae502bf.chunk.js": "/doctors-office/static/js/305.cae502bf.chunk.js",
+    "static/js/248.10109f62.chunk.js": "/doctors-office/static/js/248.10109f62.chunk.js",
     "static/js/541.4563e9e2.chunk.js": "/doctors-office/static/js/541.4563e9e2.chunk.js",
     "static/js/255.39052085.chunk.js": "/doctors-office/static/js/255.39052085.chunk.js",
     "static/media/close.svg": "/doctors-office/static/media/close.5a86920edec343cacfcaa6cd69fe4685.svg",
@@ -14,16 +14,16 @@
     "static/media/copy.svg": "/doctors-office/static/media/copy.27957b9c266a76c4681c376514e660a4.svg",
     "index.html": "/doctors-office/index.html",
     "main.cd2e038f.css.map": "/doctors-office/static/css/main.cd2e038f.css.map",
-    "main.f7d84c34.js.map": "/doctors-office/static/js/main.f7d84c34.js.map",
+    "main.8e93e531.js.map": "/doctors-office/static/js/main.8e93e531.js.map",
     "876.5f20b598.chunk.js.map": "/doctors-office/static/js/876.5f20b598.chunk.js.map",
     "849.f4deff76.chunk.js.map": "/doctors-office/static/js/849.f4deff76.chunk.js.map",
-    "305.924928cb.chunk.js.map": "/doctors-office/static/js/305.924928cb.chunk.js.map",
-    "248.08eef3df.chunk.js.map": "/doctors-office/static/js/248.08eef3df.chunk.js.map",
+    "305.cae502bf.chunk.js.map": "/doctors-office/static/js/305.cae502bf.chunk.js.map",
+    "248.10109f62.chunk.js.map": "/doctors-office/static/js/248.10109f62.chunk.js.map",
     "541.4563e9e2.chunk.js.map": "/doctors-office/static/js/541.4563e9e2.chunk.js.map",
     "255.39052085.chunk.js.map": "/doctors-office/static/js/255.39052085.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.cd2e038f.css",
-    "static/js/main.f7d84c34.js"
+    "static/js/main.8e93e531.js"
   ]
 }
