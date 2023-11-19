@@ -1,6 +1,6 @@
-import styled from "styled-components";
-import { theme } from "components/baseStyles/Variables.styled";
-import { Container } from "components/baseStyles/CommonStyle.styled";
+import styled from 'styled-components';
+import { theme } from 'components/baseStyles/Variables.styled';
+import { Container } from 'components/baseStyles/CommonStyle.styled';
 
 const AuthorizationSection = styled.section`
   display: flex;
@@ -44,7 +44,7 @@ const Input = styled.input`
   min-height: 45px;
   margin-top: 40px;
   margin-bottom: 40px;
-  padding: 4px 8px;
+  padding: 8px;
   font-size: 18px;
   font-weight: 400;
   border-radius: 6px;
@@ -74,11 +74,13 @@ const ButtonSubmit = styled.button`
   justify-content: center;
   align-items: center;
   min-height: 45px;
+  min-width: 150px;
   font-size: 18px;
   font-weight: 400;
   border-radius: 6px;
   color: ${theme.colors.white};
   background-color: ${theme.colors.darkGreen};
+
   @media screen and (min-width: ${theme.breakpoints.tablet}) {
     min-width: 432px;
     min-height: 65px;
