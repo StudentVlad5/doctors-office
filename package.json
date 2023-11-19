@@ -11,6 +11,7 @@
     "clipboard-copy": "^4.0.1",
     "file-saver": "^2.0.5",
     "modern-normalize": "^2.0.0",
+    "moment": "^2.29.4",
     "notiflix": "^3.2.6",
     "prop-types": "^15.8.1",
     "rc-pagination": "^3.7.0",
