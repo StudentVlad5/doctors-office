@@ -76,70 +76,70 @@ import { onLoaded, onLoading } from 'helpers/Loader/Loader';
                       </Link>
                     </ItemInfo>
                     <ItemStatistic>
-                        <ItemCircle $color={(
-                          item?.patientFullName !== '' || 
-                          item?.patientINN !== '' || 
-                          item?.visualDescription !== ''                  
+                        <ItemCircle $props={(
+                          (item?.patientFullName && item?.patientFullName !== '') || 
+                          (item?.patientINN && item?.patientINN !== '') || 
+                          (item?.visualDescriptio && item?.visualDescription !== '')                  
                           ) ? theme.colors.darkGreen : theme.colors.white}></ItemCircle>
-                        <ItemLine $color={(
-                          item?.patientFullName !== '' || 
-                          item?.patientINN !== '' || 
-                          item?.visualDescription !== ''  
+                        <ItemLine $props={(
+                          (item?.patientFullName && item?.patientFullName !== '') || 
+                          (item?.patientINN && item?.patientINN !== '') || 
+                          (item?.visualDescriptio && item?.visualDescription !== '') 
                         )  ? theme.colors.linesBlue : theme.colors.darkGrey}></ItemLine>
-                        <ItemCircle $color={(
-                          item?.saggingFace !== '' || 
-                          item?.handDisplacement !== '' || 
-                          item?.speechDisorders !== '' || 
-                          item?.firstSymptomsTimeHh !== '' || 
-                          item?.firstSymptomsTimeMm !== ''
+                        <ItemCircle $props={(
+                          (item?.saggingFace && item?.saggingFace !== '') || 
+                          (item?.handDisplacement && item?.handDisplacement !== '') || 
+                          (item?.speechDisorders !== '' && item?.speechDisorders !== '') || 
+                          (item?.firstSymptomsTimeHh && item?.firstSymptomsTimeHh !== '') || 
+                          (item?.firstSymptomsTimeMm && item?.firstSymptomsTimeMm !== '')
                         ) ? theme.colors.darkGreen : theme.colors.white}></ItemCircle>
-                        <ItemLine $color={(
-                          item?.saggingFace !== '' || 
-                          item?.handDisplacement !== '' || 
-                          item?.speechDisorders !== '' || 
-                          item?.firstSymptomsTimeHh !== '' || 
-                          item?.firstSymptomsTimeMm !== ''
+                        <ItemLine $props={(
+                          (item?.saggingFace && item?.saggingFace !== '') || 
+                          (item?.handDisplacement && item?.handDisplacement !== '') || 
+                          (item?.speechDisorders !== '' && item?.speechDisorders !== '') || 
+                          (item?.firstSymptomsTimeHh && item?.firstSymptomsTimeHh !== '') || 
+                          (item?.firstSymptomsTimeMm && item?.firstSymptomsTimeMm !== '')
                         ) ? theme.colors.linesBlue : theme.colors.darkGrey}></ItemLine>
-                        <ItemCircle $color={(
-                          item?.bloodSugarLevel !== '' ||
-                          item?.bodyTemperature !== '' ||
-                          item?.arterialPressureD  !== '' ||
-                          item?.arterialPressureS !== '' ||
-                          item?.patientBodyWeight !== '' ||
-                          item?.patientAge !== ''
+                        <ItemCircle $props={(
+                          (item?.bloodSugarLevel && item?.bloodSugarLevel !== '') ||
+                          (item?.bodyTemperature && item?.bodyTemperature !== '') ||
+                          (item?.arterialPressureD && item?.arterialPressureD  !== '') ||
+                          (item?.arterialPressureS && item?.arterialPressureS !== '') ||
+                          (item?.patientBodyWeight && item?.patientBodyWeight !== '') ||
+                          (item?.patientAge && item?.patientAge !== '')
                         ) ? theme.colors.darkGreen : theme.colors.white}></ItemCircle>
-                        <ItemLine $color={(
-                          item?.bloodSugarLevel !== '' ||
-                          item?.bodyTemperature !== '' ||
-                          item?.arterialPressureD  !== '' ||
-                          item?.arterialPressureS !== '' ||
-                          item?.patientBodyWeight !== '' ||
-                          item?.patientAge !== ''
+                        <ItemLine $props={(
+                          (item?.bloodSugarLevel && item?.bloodSugarLevel !== '') ||
+                          (item?.bodyTemperature && item?.bodyTemperature !== '') ||
+                          (item?.arterialPressureD && item?.arterialPressureD  !== '') ||
+                          (item?.arterialPressureS && item?.arterialPressureS !== '') ||
+                          (item?.patientBodyWeight && item?.patientBodyWeight !== '') ||
+                          (item?.patientAge && item?.patientAge !== '')
                         ) ? theme.colors.linesBlue : theme.colors.darkGrey}></ItemLine>
-                        <ItemCircle $color={(
-                          item?.intracranialHemorrhages !== '' ||
-                          item?.majorSurgeriesOrSevereInjuries !== '' ||
-                          item?.surgicalInterventions !== '' ||
-                          item?.myocardialInfarction !== '' ||
-                          item?.stroke !== '' 
+                        <ItemCircle $props={(
+                          (item?.intracranialHemorrhages && item?.intracranialHemorrhages !== '') ||
+                          (item?.majorSurgeriesOrSevereInjuries && item?.majorSurgeriesOrSevereInjuries !== '') ||
+                          (item?.surgicalInterventions && item?.surgicalInterventions !== '') ||
+                          (item?.myocardialInfarction && item?.myocardialInfarction !== '') ||
+                          (item?.stroke && item?.stroke !== '') 
                         ) ? theme.colors.darkGreen : theme.colors.white}></ItemCircle>
-                        <ItemLine $color={(
-                          item?.intracranialHemorrhages !== '' ||
-                          item?.majorSurgeriesOrSevereInjuries !== '' ||
-                          item?.surgicalInterventions !== '' ||
-                          item?.myocardialInfarction !== '' ||
-                          item?.stroke !== ''
+                        <ItemLine $props={(
+                          (item?.intracranialHemorrhages && item?.intracranialHemorrhages !== '') ||
+                          (item?.majorSurgeriesOrSevereInjuries && item?.majorSurgeriesOrSevereInjuries !== '') ||
+                          (item?.surgicalInterventions && item?.surgicalInterventions !== '') ||
+                          (item?.myocardialInfarction && item?.myocardialInfarction !== '') ||
+                          (item?.stroke && item?.stroke !== '') 
                         ) ? theme.colors.linesBlue : theme.colors.darkGrey}></ItemLine>
-                        <ItemCircle $color={(
-                          item?.hemorrhages !== '' ||
-                          item?.SACStroke !== '' ||
-                          item?.ischemicStroke !== '' ||
-                          item?.arterialPuncture !== '' ||
-                          item?.smallOperations !== '' ||
-                          item?.cardiovascularDiseases !== '' ||
-                          item?.acuteInfectiousDisease !== '' ||
-                          item?.hemorrhagicStroke !== '' ||
-                          item?.convulsions !== ''                      
+                        <ItemCircle $props={(
+                          (item?.hemorrhages && item?.hemorrhages !== '') ||
+                          (item?.SACStroke && item?.SACStroke !== '') ||
+                          (item?.ischemicStroke && item?.ischemicStroke !== '') ||
+                          (item?.arterialPuncture && item?.arterialPuncture !== '') ||
+                          (item?.smallOperations && item?.smallOperations !== '') ||
+                          (item?.cardiovascularDiseases && item?.cardiovascularDiseases !== '') ||
+                          (item?.acuteInfectiousDisease && item?.acuteInfectiousDisease !== '') ||
+                          (item?.hemorrhagicStroke && item?.hemorrhagicStroke !== '') ||
+                          (item?.convulsions && item?.convulsions !== '')                      
                         ) ? theme.colors.darkGreen : theme.colors.white}></ItemCircle>
                     </ItemStatistic>
                 </ItemContainer>)}

@@ -131,7 +131,6 @@ export const ArchiveTable = () => {
       } finally {
         setIsLoading(false);
         setReload(false);
-        // setTimeout(() => getData(), 60000);
       }
     })();
   }, [reload, filters]);
@@ -159,7 +158,7 @@ export const ArchiveTable = () => {
     };
     setFilters(selectedFilters);
     saveToStorage('filters', selectedFilters);
-    document.querySelector(`button[id='${name}']`).classList.toggle('active');
+    document.querySelector(`button[id='${name}']`).classList.add('active');
   };
 
   const startFilterChecklists = e => {
