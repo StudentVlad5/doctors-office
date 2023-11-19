@@ -105,8 +105,8 @@ img {
 
 .rc-pagination {
   display: flex;
-  align-items: center;
   justify-content: flex-end;
+  align-items: stretch;
 }
 
 .rc-pagination-item,
@@ -147,8 +147,35 @@ img {
 
 .rc-pagination-jump-next button:after,
 .rc-pagination-jump-prev button:after {
-  display: block;
-  content: "•••";
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  content: "...";
+
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+
+  background-color: ${theme.colors.white};
+  border-radius: 10px;
+  border: 1px solid #999;
+  
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+  -moz-transition: 0.3s;
+  -o-transition: 0.3s;
+
+  @media screen and (min-width: ${theme.breakpoints.tablet}) {
+    width: 36px;
+    height: 36px;
+    padding: 10px;
+  }
+
+  @media screen and (min-width: ${theme.breakpoints.desktop}) {
+    width: 46px;
+    height: 46px;
+    padding: 10px 20px;
+  }
 }
 
 .rc-pagination-item,
