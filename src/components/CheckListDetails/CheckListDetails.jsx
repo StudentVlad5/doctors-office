@@ -101,6 +101,11 @@ export const CheckListDetails = () => {
         return onFetchError('Whoops, something went wrong');
       }
       setData(res.normal);
+      setInputData({
+        clinic: '',
+        hospitalizationTime: '',
+        hospitalizationDate: '',
+      });
     } catch (error) {
       setError(error);
     } finally {
@@ -124,14 +129,12 @@ export const CheckListDetails = () => {
       Визуальное описание: ${data?.visualDescription}
 
     Методика F-A-S-T:
-      Провисание на лице:
-      ${
+      Провисание на лице: ${
         data?.saggingFace && data?.saggingFace.toString() === 'true'
           ? 'Да'
           : '-'
       }
-      Смещение рук:
-      ${
+      Смещение рук: ${
         data?.handDisplacement && data?.handDisplacement.toString() === 'true'
           ? 'Да'
           : '-'
@@ -221,30 +224,30 @@ export const CheckListDetails = () => {
           ? 'Да'
           : ''
       }
-      Гемморагический: ${
-        data?.hemorrhages && data?.hemorrhages.toString() === 'true'
-          ? 'Да'
-          : '-'
-      }
-      САК: ${
-        data?.SACStroke && data?.SACStroke.toString() === 'true' ? 'Да' : '-'
-      }
-      Ишемический инсульт: ${
-        data?.ischemicStroke && data?.ischemicStroke.toString() === 'true'
-          ? 'Да'
-          : '-'
-      }
+       Гемморагический: ${
+         data?.hemorrhages && data?.hemorrhages.toString() === 'true'
+           ? 'Да'
+           : '-'
+       }
+       САК: ${
+         data?.SACStroke && data?.SACStroke.toString() === 'true' ? 'Да' : '-'
+       }
+       Ишемический инсульт: ${
+         data?.ischemicStroke && data?.ischemicStroke.toString() === 'true'
+           ? 'Да'
+           : '-'
+       }
 
     Данные по заполнителю:
       ФИО сотрудника: ${data?.medicalStaffFullName}
       № бригады СМП: №${data?.application_number}
       Заполнение чек-листа начато: ${data?.startTimeAutoHh}:${
       data?.startTimeAutoMm
-    } 
-      31.08.2023
+    } ${moment(new Date(+data?.identifier)).format('DD.MM.YYYY')}
       Заполнение чек-листа завершено:${data?.endTimeAutoHh}:${
       data?.endTimeAutoMm
-    }  31.08.2023
+    } ${moment(new Date(+data?.identifier)).format('DD.MM.YYYY')}
+
   `;
     clipboardCopy(patientData);
 
@@ -347,8 +350,7 @@ export const CheckListDetails = () => {
               <Tr>
                 <Td>Время появления первых симптомов</Td>
                 <Td>
-                  {data?.firstSymptomsTimeHh}:{data?.firstSymptomsTimeMm}{' '}
-                  31.08.2023
+                  {data?.firstSymptomsTimeHh}:{data?.firstSymptomsTimeMm}
                 </Td>
               </Tr>
             </tbody>
@@ -613,19 +615,17 @@ export const CheckListDetails = () => {
               </Tr>
               <Tr>
                 <Td>Заполнение чек-листа начато</Td>
-                {/* НЕТ ДАТИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
-
                 <Td>
-                  {data?.startTimeAutoHh}:{data?.startTimeAutoMm} 31.08.2023
+                  {data?.startTimeAutoHh}:{data?.startTimeAutoMm}{' '}
+                  {moment(new Date(+data?.identifier)).format('DD.MM.YYYY')}
                 </Td>
               </Tr>
 
               <Tr>
                 <Td>Заполнение чек-листа завершено</Td>
-                {/* НЕТ ДАТИ !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11 */}
-
                 <Td>
-                  {data?.endTimeAutoHh}:{data?.endTimeAutoMm} 31.08.2023
+                  {data?.endTimeAutoHh}:{data?.endTimeAutoMm}{' '}
+                  {moment(new Date(+data?.identifier)).format('DD.MM.YYYY')}
                 </Td>
               </Tr>
             </tbody>
