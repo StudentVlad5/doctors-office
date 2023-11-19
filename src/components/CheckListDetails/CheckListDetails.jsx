@@ -39,6 +39,7 @@ import clipboardCopy from 'clipboard-copy';
 import { useParams } from 'react-router-dom';
 import { export2Doc } from 'services/exportToWord';
 import { theme } from 'components/baseStyles/Variables.styled';
+import moment from 'moment';
 
 export const CheckListDetails = () => {
   const [data, setData] = useState([]);
@@ -70,6 +71,7 @@ export const CheckListDetails = () => {
       setIsLoading(true);
       try {
         const { data } = await fetchData(`${id}`); //1696580949776
+        console.log(data);
         if (!data) {
           return onFetchError('Whoops, something went wrong');
         }
@@ -109,7 +111,7 @@ export const CheckListDetails = () => {
   const handleCopy = () => {
     const patientData = `
     Чек-лист №${data?.identifier}
-    от 31/03/2023
+    от ${moment(new Date(+data?.identifier)).format('DD/MM/YYYY')}
     Бригада ${data?.application_number}
     Предполагаемое время прибытия в больницу: ${data?.deliveryTimeHh}:${
       data?.deliveryTimeMm
@@ -268,7 +270,7 @@ export const CheckListDetails = () => {
             {data?.time}
             <CheckListText>
               Чек-лист №{data?.identifier} <br />
-              от 31/03/2023
+              от {moment(new Date(+data?.identifier)).format('DD/MM/YYYY')}
               <br />
               Бригада №{data?.application_number}
               <br />
