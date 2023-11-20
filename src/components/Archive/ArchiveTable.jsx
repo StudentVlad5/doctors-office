@@ -35,6 +35,7 @@ const initialState = {
   filterEmployeeID: '',
   filterStatusChecklist: '',
   filterDateStartChecklist: '',
+  filterTimeStartChecklist: '',
   filterDurationOfHospitalization: '',
 };
 
@@ -156,6 +157,8 @@ export const ArchiveTable = () => {
     const peremOfFilter = [];
     // eslint-disable-next-line array-callback-return
     checklists.map(item => {
+      const time = [];
+      time.push(item.startTimeAutoHh, item.startTimeAutoMm);
       if (
         item.identifier
           .toString()
@@ -173,29 +176,27 @@ export const ArchiveTable = () => {
           ?.split('')
           .join('')
           .includes(filters['filterPatientFIO']) &&
-        // &&
-        // // item.numberHospital
-        // //   ?.toString()
-        // //   .toLowerCase()
-        // //   .includes(filters['filterHospital'])
+        // item.numberHospital // при появлении параметров раскоммитить
+        //   ?.toString()
+        //   .toLowerCase()
+        //   .includes(filters['filterHospital']) &&
         item.employeeID
           ?.split('')
           .join('')
           .includes(filters['filterEmployeeID']) &&
-        // &&
-        // // item.checkStatus // при появлении параметров закоммитить
-        // //   ?.toString()
-        // //   .toLowerCase()
-        // //   .includes(filters['filterStatusChecklist'])
-        item.startTimeAutoHh
+        item.checkStatus
           ?.toString()
           .toLowerCase()
-          .includes(filters['filterDateStartChecklist'])
+          .includes(filters['filterStatusChecklist']) &&
+        new Date(Number(item.identifier))
+          ?.toISOString()
+          .split(':')
+          .join('')
+          .includes(filters['filterDateStartChecklist']) &&
+        time?.join('').includes(filters['filterTimeStartChecklist'])
         //&&
         // new Date(Number(item.identifier)) // при появлении параметров переделать на получаемый параметр
         //   .getMinutes()
-        //   .toString()
-        //   .toLowerCase()
         //   .includes(filters['filterDurationOfHospitalization'])
       ) {
         peremOfFilter.push(item);
@@ -234,7 +235,7 @@ export const ArchiveTable = () => {
 
   const handleDownloadExcel = () => {
     const dataForExcel = filterChecklists.map(checklist => ({
-      'Чек-листа №': checklist.identifier,
+      'Чек-лист': checklist.identifier,
       '№ Бригады СМП': checklist.application_number,
       'ИИН пациента': checklist.patientINN,
       'ФИО пациента': checklist.patientFullName,
@@ -447,7 +448,7 @@ export const ArchiveTable = () => {
             </TableHead>
             <TableHead>
               <span>
-                Дата и время начала <br />
+                Дата <br />
                 чек-листа
               </span>
               <input
@@ -461,6 +462,30 @@ export const ArchiveTable = () => {
               <BtnFilter
                 type="button"
                 id="filterDateStartChecklist"
+                onClick={e => {
+                  toggleFilterItem(e);
+                }}
+              >
+                <FaFilter />
+              </BtnFilter>
+            </TableHead>
+            <TableHead>
+              <span>
+                Время начала
+                <br />
+                чек-листа
+              </span>
+              <input
+                type="text"
+                name="filterTimeStartChecklist"
+                placeholder=""
+                value={filters['filterTimeStartChecklist']}
+                onKeyDown={e => handleSearchOnEnter(e)}
+                onChange={e => handleChangeFilter(e)}
+              />
+              <BtnFilter
+                type="button"
+                id="filterTimeStartChecklist"
                 onClick={e => {
                   toggleFilterItem(e);
                 }}
@@ -503,11 +528,14 @@ export const ArchiveTable = () => {
                 <TableRow key={item.identifier}>
                   <TableData>
                     <Link to={`/checklist/${item.identifier}`}>
-                      № {item.identifier} от{' '}
-                      {moment(new Date(+item?.identifier)).format('DD.MM.YYYY')}
+                      {item.identifier}
                     </Link>
                   </TableData>
-                  <TableData>№ {item.application_number}</TableData>
+                  {item.application_number ? (
+                    <TableData>№ {item.application_number}</TableData>
+                  ) : (
+                    <TableData></TableData>
+                  )}
                   <TableData>{item.patientINN}</TableData>
                   <TableData>{item.patientFullName}</TableData>
                   <TableData>{item.numberHospital}</TableData>
@@ -515,9 +543,14 @@ export const ArchiveTable = () => {
                   <TableData>{item.checkStatus}</TableData>
                   <TableData>
                     {moment(new Date(+item?.identifier)).format('DD.MM.YYYY')}
-                    <br />
-                    {item.startTimeAutoHh}:{item.startTimeAutoMm}
                   </TableData>
+                  {item.startTimeAutoHh && item.startTimeAutoMm ? (
+                    <TableData>
+                      {item.startTimeAutoHh}:{item.startTimeAutoMm}
+                    </TableData>
+                  ) : (
+                    <TableData></TableData>
+                  )}
                   <TableData>
                     {new Date(item?.identifier).getHours() -
                       new Date(item?.identifier).getHours()}{' '}
