@@ -110,16 +110,32 @@ export const ArchiveTable = () => {
           }
           return false;
         });
-        unique.forEach(it=> {
-          if(!it.application_number){it.application_number = ''};
-          if(!it.patientINN) {it.patientINN = ''}
-          if(!it.patientFullName) {it.patientFullName = ''};
-          if(!it.employeeID) {it.employeeID = ''};
-          if(!it.checkStatus) {it.checkStatus = ''};
-          if(!it.numberHospital) {it.numberHospital = ''};
-          if(!it.startTimeAutoHh) {it.startTimeAutoHh = ''};
-          if(!it.startTimeAutoHh) {it.startTimeAutoMm = ''}
-      })
+        unique.forEach(it => {
+          if (!it.application_number) {
+            it.application_number = '';
+          }
+          if (!it.patientINN) {
+            it.patientINN = '';
+          }
+          if (!it.patientFullName) {
+            it.patientFullName = '';
+          }
+          if (!it.employeeID) {
+            it.employeeID = '';
+          }
+          if (!it.checkStatus) {
+            it.checkStatus = '';
+          }
+          if (!it.numberHospital) {
+            it.numberHospital = '';
+          }
+          if (!it.startTimeAutoHh) {
+            it.startTimeAutoHh = '';
+          }
+          if (!it.startTimeAutoHh) {
+            it.startTimeAutoMm = '';
+          }
+        });
         setUniqueChecklists(uniqueIdentifiers);
         setChecklists(unique);
         setFilterChecklists(unique);
@@ -198,8 +214,8 @@ export const ArchiveTable = () => {
           ?.toString()
           .toLowerCase()
           .includes(filters['filterStatusChecklist']) &&
-          moment(new Date(+item.identifier)).format(
-            'DD.MM.YYYY')
+        moment(new Date(+item.identifier))
+          .format('DD.MM.YYYY')
           .includes(filters['filterDateStartChecklist']) &&
         time?.join('').includes(filters['filterTimeStartChecklist'])
         //&&
@@ -539,11 +555,7 @@ export const ArchiveTable = () => {
                       {item.identifier}
                     </Link>
                   </TableData>
-                  {item.application_number ? (
-                    <TableData>{item.application_number}</TableData>
-                  ) : (
-                    <TableData></TableData>
-                  )}
+                  <TableData>{item.application_number}</TableData>
                   <TableData>{item.patientINN}</TableData>
                   <TableData>{item.patientFullName}</TableData>
                   <TableData>{item.numberHospital}</TableData>
