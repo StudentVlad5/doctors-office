@@ -202,7 +202,7 @@ export const ArchiveTable = () => {
         peremOfFilter.push(item);
       }
     });
-
+    setCurrent(1);
     setFilterChecklists(peremOfFilter);
   };
 
