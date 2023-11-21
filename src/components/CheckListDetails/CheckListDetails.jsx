@@ -46,7 +46,7 @@ export const CheckListDetails = () => {
   const [isCopied, setIsCopied] = useState(false);
   const [inputData, setInputData] = useState([
     {
-      clinic: '',
+      numberHospital: '',
       hospitalizationTime: '',
       hospitalizationDate: '',
     },
@@ -87,7 +87,7 @@ export const CheckListDetails = () => {
     e.preventDefault();
 
     const identifier = id;
-    const data_numberHospital = inputData.clinic;
+    const data_numberHospital = inputData.numberHospital;
     const data_hospitalizationTime = inputData.hospitalizationTime;
     const data_hospitalizationDate = inputData.hospitalizationDate;
 
@@ -730,9 +730,9 @@ export const CheckListDetails = () => {
               </AdditionalInfoFormText>
               <AdditionalInfoFormInput
                 type="text"
-                value={inputData.clinic || ''}
+                value={inputData.numberHospital || data?.numberHospital ||''}
                 onChange={e =>
-                  setInputData({ ...inputData, clinic: e.target.value })
+                  setInputData({ ...inputData, numberHospital: e.target.value })
                 }
               />
             </AdditionalInfoFormLable>
@@ -746,7 +746,7 @@ export const CheckListDetails = () => {
                 <AdditionalInfoDataLable>
                   <AdditionalInfoDataInput
                     type="time"
-                    value={inputData.hospitalizationTime || ''}
+                    value={inputData.hospitalizationTime || data?.hospitalizationTime ||''}
                     onChange={e =>
                       setInputData({
                         ...inputData,
@@ -759,7 +759,7 @@ export const CheckListDetails = () => {
                 <AdditionalInfoDataLable2>
                   <AdditionalInfoDataInput2
                     type="date"
-                    value={inputData.hospitalizationDate || ''}
+                    value={inputData.hospitalizationDate ||  data?.hospitalizationDate ||''}
                     onChange={e =>
                       setInputData({
                         ...inputData,
