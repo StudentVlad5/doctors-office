@@ -97,7 +97,6 @@ export const CheckListDetails = () => {
       if (!res) {
         return onFetchError('Whoops, something went wrong');
       }
-      console.log(inputData);
     } catch (error) {
       setError(error);
     } finally {
