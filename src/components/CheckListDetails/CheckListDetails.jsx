@@ -70,7 +70,7 @@ export const CheckListDetails = () => {
     (async function getData() {
       setIsLoading(true);
       try {
-        const { data } = await fetchData(`${id}`); //1696580949776
+        const { data } = await fetchData(`read?identifier=${id}`); //1696580949776
         if (!data) {
           return onFetchError('Whoops, something went wrong');
         }
@@ -94,7 +94,7 @@ export const CheckListDetails = () => {
     try {
       setIsLoading(true);
       const res = await fetchData(
-        `${identifier}&numberHospital=${data_numberHospital}&hospitalizationTime=${data_hospitalizationTime}&hospitalizationDate=${data_hospitalizationDate}`
+        `edit?identifier=${identifier}&numberHospital=${data_numberHospital}&hospitalizationTime=${data_hospitalizationTime}&hospitalizationDate=${data_hospitalizationDate}`
       );
       if (!res) {
         return onFetchError('Whoops, something went wrong');
