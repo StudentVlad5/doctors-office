@@ -248,6 +248,11 @@ export const CheckListDetails = () => {
       data?.endTimeAutoMm
     } ${moment(new Date(+data?.identifier)).format('DD.MM.YYYY')}
 
+    Дополнительная информация от инсультного центра:
+      Поликлиника прикрепления пациента: ${data?.numberHospital || ''}
+      Дата и время госпитализации: ${data?.hospitalizationTime || ''}  ${
+      data?.hospitalizationDate || ''
+    }
   `;
     clipboardCopy(patientData);
 
@@ -730,7 +735,7 @@ export const CheckListDetails = () => {
               </AdditionalInfoFormText>
               <AdditionalInfoFormInput
                 type="text"
-                value={inputData.numberHospital || data?.numberHospital ||''}
+                value={inputData.numberHospital || data?.numberHospital || ''}
                 onChange={e =>
                   setInputData({ ...inputData, numberHospital: e.target.value })
                 }
@@ -746,7 +751,11 @@ export const CheckListDetails = () => {
                 <AdditionalInfoDataLable>
                   <AdditionalInfoDataInput
                     type="time"
-                    value={inputData.hospitalizationTime || data?.hospitalizationTime ||''}
+                    value={
+                      inputData.hospitalizationTime ||
+                      data?.hospitalizationTime ||
+                      ''
+                    }
                     onChange={e =>
                       setInputData({
                         ...inputData,
@@ -759,7 +768,11 @@ export const CheckListDetails = () => {
                 <AdditionalInfoDataLable2>
                   <AdditionalInfoDataInput2
                     type="date"
-                    value={inputData.hospitalizationDate ||  data?.hospitalizationDate ||''}
+                    value={
+                      inputData.hospitalizationDate ||
+                      data?.hospitalizationDate ||
+                      ''
+                    }
                     onChange={e =>
                       setInputData({
                         ...inputData,
