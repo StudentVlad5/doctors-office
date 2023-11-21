@@ -39,7 +39,7 @@ import clipboardCopy from 'clipboard-copy';
 import { useParams } from 'react-router-dom';
 import { theme } from 'components/baseStyles/Variables.styled';
 import moment from 'moment';
-import { export2Docx } from 'services/exportToWord'; 
+import { export2Docx } from 'services/exportToWord';
 
 export const CheckListDetails = () => {
   const [data, setData] = useState([]);
@@ -99,12 +99,13 @@ export const CheckListDetails = () => {
       if (!res) {
         return onFetchError('Whoops, something went wrong');
       }
-      setData(res.normal);
-      setInputData({
-        clinic: '',
-        hospitalizationTime: '',
-        hospitalizationDate: '',
-      });
+      console.log(inputData);
+      // setData(res.normal);
+      // setInputData({
+      //   clinic: '',
+      //   hospitalizationTime: '',
+      //   hospitalizationDate: '',
+      // });
     } catch (error) {
       setError(error);
     } finally {
@@ -255,7 +256,7 @@ export const CheckListDetails = () => {
       setTimeout(() => setIsCopied(false), 3000);
     });
   };
-  
+
   return (
     <Container>
       {isLoading ? onLoading() : onLoaded()}
@@ -291,7 +292,9 @@ export const CheckListDetails = () => {
             </CheckListBtn>
             <CheckListBtn
               type="button"
-              onClick={() => export2Docx('exportContent', data?.patientFullName)}
+              onClick={() =>
+                export2Docx('exportContent', data?.patientFullName)
+              }
             >
               <WordIcon /> Скачать в word
             </CheckListBtn>
@@ -420,7 +423,14 @@ export const CheckListDetails = () => {
           <PatientBoxTitle>Анамнез</PatientBoxTitle>
           <Table>
             <tbody>
-              <Tr>
+              <TrRed
+                $props={
+                  data?.intracranialHemorrhages &&
+                  data?.intracranialHemorrhages.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>Внутричерепные кровоизлияния</TdSmall>
                 <TdSmall style={{ width: 194 }}>
                   {data?.intracranialHemorrhages &&
@@ -428,8 +438,15 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed
+                $props={
+                  data?.majorSurgeriesOrSevereInjuries &&
+                  data?.majorSurgeriesOrSevereInjuries.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>
                   Большие операции или тяжелые травмы за последние 14 суток
                 </TdSmall>
@@ -439,8 +456,15 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed
+                $props={
+                  data?.surgicalInterventions &&
+                  data?.surgicalInterventions.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>
                   Недавние внутричерепные или интраспинальные хирургические
                   вмешательства
@@ -451,7 +475,7 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
+              </TrRed>
               <TrRed
                 $props={
                   data?.myocardialInfarction &&
@@ -484,7 +508,14 @@ export const CheckListDetails = () => {
                     : '-'}
                 </TdSmall>
               </TrRed>
-              <Tr>
+              <TrRed
+                $props={
+                  data?.arterialPuncture &&
+                  data?.arterialPuncture.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>
                   Проведена пункция артерии в сложной для компрессии области в
                   предшествующие инсульту 7 дней.
@@ -495,8 +526,15 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed
+                $props={
+                  data?.smallOperations &&
+                  data?.smallOperations.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>
                   Малые операции или инвазивные вмешательства в последние 10
                   дней
@@ -507,8 +545,15 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed
+                $props={
+                  data?.cardiovascularDiseases &&
+                  data?.cardiovascularDiseases.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>
                   Сердечно-сосудистые заболевания (подострый бактериальный
                   эндокардит, острый перикардит)
@@ -519,8 +564,15 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed
+                $props={
+                  data?.acuteInfectiousDisease &&
+                  data?.acuteInfectiousDisease.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>Острое инфекционное заболевание</TdSmall>
                 <TdSmall>
                   {data?.acuteInfectiousDisease &&
@@ -528,8 +580,15 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed
+                $props={
+                  data?.hemorrhagicStroke &&
+                  data?.hemorrhagicStroke.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>
                   Кровоизлияния в ЖКТ и мочевыводящих путях не позднее 21 дня до
                   инсульта
@@ -540,8 +599,14 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed
+                $props={
+                  data?.convulsions && data?.convulsions.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall>
                   Судорожные приступы в дебюте заболевания (имеется связь с
                   острой церебральной ишемией)
@@ -551,7 +616,7 @@ export const CheckListDetails = () => {
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
+              </TrRed>
               <TrRed
                 $props={
                   (data?.hemorrhages &&
@@ -574,22 +639,34 @@ export const CheckListDetails = () => {
                     : ''}
                 </TdSmall>
               </TrRed>
-              <Tr>
+              <TrRed
+                $props={
+                  data?.hemorrhages && data?.hemorrhages.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall style={{ paddingLeft: 60 }}>Гемморагический</TdSmall>
                 <TdSmall>
                   {data?.hemorrhages && data?.hemorrhages.toString() === 'true'
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
-              <Tr>
+              </TrRed>
+              <TrRed
+                $props={
+                  data?.SACStroke && data?.SACStroke.toString() === 'true'
+                    ? theme.colors.accentCoral
+                    : theme.colors.darkGrey
+                }
+              >
                 <TdSmall style={{ paddingLeft: 60 }}>САК</TdSmall>
                 <TdSmall>
                   {data?.SACStroke && data?.SACStroke.toString() === 'true'
                     ? 'Да'
                     : '-'}
                 </TdSmall>
-              </Tr>
+              </TrRed>
               <TrRed
                 $props={
                   data?.ischemicStroke &&
