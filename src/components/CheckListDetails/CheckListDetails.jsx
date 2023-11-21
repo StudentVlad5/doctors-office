@@ -44,13 +44,11 @@ import { export2Docx } from 'services/exportToWord';
 export const CheckListDetails = () => {
   const [data, setData] = useState([]);
   const [isCopied, setIsCopied] = useState(false);
-  const [inputData, setInputData] = useState([
-    {
-      numberHospital: '',
-      hospitalizationTime: '',
-      hospitalizationDate: '',
-    },
-  ]);
+  const [inputData, setInputData] = useState({
+    numberHospital: data?.numberHospital || '',
+    hospitalizationTime: data?.hospitalizationTime || '',
+    hospitalizationDate: data?.hospitalizationDate || '',
+  });
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -100,12 +98,6 @@ export const CheckListDetails = () => {
         return onFetchError('Whoops, something went wrong');
       }
       console.log(inputData);
-      // setData(res.normal);
-      // setInputData({
-      //   clinic: '',
-      //   hospitalizationTime: '',
-      //   hospitalizationDate: '',
-      // });
     } catch (error) {
       setError(error);
     } finally {
@@ -737,7 +729,11 @@ export const CheckListDetails = () => {
                 type="text"
                 value={inputData.numberHospital || data?.numberHospital || ''}
                 onChange={e =>
-                  setInputData({ ...inputData, numberHospital: e.target.value })
+                  setInputData({
+                    ...data,
+                    numberHospital:
+                      e.target.value || data?.numberHospital || '',
+                  })
                 }
               />
             </AdditionalInfoFormLable>
@@ -758,8 +754,9 @@ export const CheckListDetails = () => {
                     }
                     onChange={e =>
                       setInputData({
-                        ...inputData,
-                        hospitalizationTime: e.target.value,
+                        ...data,
+                        hospitalizationTime:
+                          e.target.value || data?.hospitalizationTime || '',
                       })
                     }
                   />
@@ -775,8 +772,9 @@ export const CheckListDetails = () => {
                     }
                     onChange={e =>
                       setInputData({
-                        ...inputData,
-                        hospitalizationDate: e.target.value,
+                        ...data,
+                        hospitalizationDate:
+                          e.target.value || data?.hospitalizationDate || '',
                       })
                     }
                   />
