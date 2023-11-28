@@ -45,43 +45,16 @@ export const ArchiveTable = () => {
   const [uniqueChecklists, setUniqueChecklists] = useState([]);
   const [filterChecklists, setFilterChecklists] = useState([]);
   const [filters, setFilters] = useState(initialState);
-  // const [filters, setFilters] = useState(
-  //   getFromStorage('filters') ? getFromStorage('filters') : initialState
-  // );
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [reload, setReload] = useState(false);
-
-  /* --- get archive checklists --- */
-  // function getWeekNumber(date) {
-  //   if (new Date(date).getDay() === 0) {
-  //     const startOfYear = new Date(date.getFullYear(), 0, 1);
-  //     const startOfWeek = new Date(
-  //       startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-  //     );
-
-  //     const diffInTime = date.getTime() - startOfWeek.getTime();
-  //     const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
-
-  //     return diffInWeeks;
-  //   }
-
-  //   const startOfYear = new Date(date.getFullYear(), 0, 1);
-  //   const startOfWeek = new Date(
-  //     startOfYear.setDate(startOfYear.getDate() - startOfYear.getDay())
-  //   );
-
-  //   const diffInTime = date.getTime() - startOfWeek.getTime();
-  //   const diffInWeeks = Math.floor(diffInTime / (1000 * 3600 * 24 * 7));
-
-  //   return diffInWeeks + 1; // Add 1 to account for the first week
-  // }
 
   useEffect(() => {
     (async function getData() {
       setIsLoading(true);
       try {
         const { data } = await fetchData('read?identifier=*');
+        // // &checkStatus="Архивный"
         if (!data) {
           return onFetchError('Whoops, something went wrong');
         }
@@ -89,15 +62,6 @@ export const ArchiveTable = () => {
         const sortedData = data.normal.sort(
           (a, b) => b.identifier - a.identifier
         );
-
-        /* --- data filter this week --- */
-        // const today = new Date();
-        // const currentWeekNumber = getWeekNumber(today);
-        // const archiveChecklists = sortedData.filter(
-        //   ({ identifier }) =>
-        //     currentWeekNumber === getWeekNumber(new Date(Number(identifier))) &&
-        //     today.getDay() >= new Date(Number(identifier)).getDay()
-        // );
 
         /* --- get unique identifier from archive checklists--- */
         const uniqueIdentifiers = [];
@@ -150,20 +114,6 @@ export const ArchiveTable = () => {
       }
     })();
   }, [reload]);
-
-  /* --- get selected filter elements after refresh--- */
-  // const handleActiveInput = key => {
-  //   const filtersFromLS = getFromStorage('filters');
-  //   const selectedFilters = filtersFromLS[key];
-  //   if (selectedFilters) {
-  //     const inputs = document.querySelectorAll(`input[name="${key}"]`);
-  //     inputs?.forEach(input => input.classList.add('active'));
-  //   }
-  // };
-
-  // const getActiveInput = () => {
-  //   Object.keys(initialState).forEach(filter => handleActiveInput(filter));
-  // };
 
   const handleChangeFilter = e => {
     e.preventDefault();
@@ -218,10 +168,11 @@ export const ArchiveTable = () => {
           .format('DD.MM.YYYY')
           .includes(filters['filterDateStartChecklist']) &&
         time?.join('').includes(filters['filterTimeStartChecklist'])
-        //&&
-        // new Date(Number(item.identifier)) // при появлении параметров переделать на получаемый параметр
-        //   .getMinutes()
-        //   .includes(filters['filterDurationOfHospitalization'])
+        &&
+        item.timeStartToEndHospitality
+          ?.toString()
+          .toLowerCase()
+          .includes(filters['filterDurationOfHospitalization'])
       ) {
         peremOfFilter.push(item);
       }
@@ -259,24 +210,19 @@ export const ArchiveTable = () => {
 
   const handleDownloadExcel = () => {
     const dataForExcel = filterChecklists.map(checklist => ({
-      'Чек-лист': checklist.identifier,
-      '№ Бригады СМП': checklist.application_number,
-      'ИИН пациента': checklist.patientINN,
-      'ФИО пациента': checklist.patientFullName,
-      'Поликлиника прикрепления': checklist.numberHospital,
-      'Идентификатор сотрудника': checklist.employeeID,
-      'Статус чек-листа': checklist.checkStatus,
-      'Дата Чек-листа': moment(new Date(+checklist?.identifier)).format(
+      'Чек-лист': checklist?.identifier ? checklist.identifier: '',
+      '№ Бригады СМП': checklist?.application_number ? checklist?.application_number : '',
+      'ИИН пациента': checklist?.patientINN ? checklist?.patientINN : '',
+      'ФИО пациента': checklist?.patientFullName ? checklist?.patientFullName : '',
+      'Поликлиника прикрепления': checklist?.numberHospital ? checklist?.numberHospital : '',
+      'Идентификатор сотрудника': checklist?.employeeID ? checklist?.employeeID : '',
+      'Статус чек-листа': checklist?.checkStatus ? checklist?.checkStatus : '',
+      'Дата Чек-листа': checklist?.identifier ? moment(new Date(+checklist?.identifier)).format(
         'DD.MM.YYYY'
-      ),
+      ) : '',
       'Время начала чек-листа': `${checklist.startTimeAutoHh}:${checklist.startTimeAutoMm}`,
       ' Время от времени до госпитализации (от двери до иглы)': `${
-        new Date(checklist?.identifier).getHours() -
-        new Date(checklist?.identifier).getHours()
-      } часов ${
-        new Date(checklist?.identifier).getMinutes() -
-        new Date(checklist?.identifier).getMinutes()
-      } минут`,
+        checklist?.timeStartToEndHospitality ? checklist?.timeStartToEndHospitality : ''}`
     }));
 
     const ws = XLSXUtils.json_to_sheet(dataForExcel);
@@ -519,8 +465,8 @@ export const ArchiveTable = () => {
             </TableHead>
             <TableHead>
               <span>
-                Время от времени до <br />
-                госпитализации <br />
+                Время от прибытия пациента <br />
+                до госпитализации <br />
                 (от двери до иглы)
               </span>
               <input
@@ -566,18 +512,13 @@ export const ArchiveTable = () => {
                   </TableData>
                   {item.startTimeAutoHh && item.startTimeAutoMm ? (
                     <TableData>
-                      {item.startTimeAutoHh}:{item.startTimeAutoMm}
+                      {item.startTimeAutoHh.length < 2 ? "0" + item.startTimeAutoHh : item.startTimeAutoHh}:{item.startTimeAutoMm.length < 2 ? "0" + item.startTimeAutoMm : item.startTimeAutoMm}
                     </TableData>
                   ) : (
                     <TableData></TableData>
                   )}
                   <TableData>
-                    {new Date(item?.identifier).getHours() -
-                      new Date(item?.identifier).getHours()}{' '}
-                    часов{' '}
-                    {new Date(item?.identifier).getMinutes() -
-                      new Date(item?.identifier).getMinutes()}{' '}
-                    минут
+                    {item?.timeStartToEndHospitality ? item?.timeStartToEndHospitality : "-"} 
                   </TableData>
                 </TableRow>
               ))}
